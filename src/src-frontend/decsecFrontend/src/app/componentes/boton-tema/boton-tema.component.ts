@@ -15,7 +15,7 @@ export class BotonTemaComponent {
   temaActual: string = 'claro'; // Inicialmente, establece el tema claro
   iconoTema: string = 'pi pi-sun'; // Inicialmente, establece el tema claro
   cambiarTema() {
-    const container = document.getElementById("bodyLogin") as HTMLElement;
+    const container = document.getElementById("bodyId") as HTMLElement;
       if (this.temaActual == 'claro') {
           this.iconoTema = 'pi pi-moon iconoClaro';
           this.themeService.switchTheme("bootstrap4-dark-purple");

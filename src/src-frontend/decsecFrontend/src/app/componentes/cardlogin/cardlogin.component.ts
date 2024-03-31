@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { PasswordModule } from 'primeng/password';
 import { CalendarModule } from 'primeng/calendar';
+import { Router } from '@angular/router';
 
 
 
@@ -28,10 +29,16 @@ import { CalendarModule } from 'primeng/calendar';
   providers : [MessageService]
 })
 export class CardloginComponent {
-  
+  constructor(private router: Router) {}
+
   visible: boolean = false;
 
   showDialog() {
       this.visible = true;
   }
+
+  iniciarSesion(){
+    this.router.navigate(['adminConsole']);
+  }
+
 }
