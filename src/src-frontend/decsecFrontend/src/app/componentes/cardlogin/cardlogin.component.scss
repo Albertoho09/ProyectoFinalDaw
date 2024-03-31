@@ -1,0 +1,27 @@
+.imagen-container{
+    background-image: url("../../assets/ejemplo/logocompleto.png");
+    background-size: cover; /* Ajusta el tamaño de la imagen para que cubra todo el contenedor */
+    background-position: center; /* Centra la imagen dentro del contenedor */
+    height: 100%; /* Ajusta la altura del contenedor según sea necesario */
+    clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%);
+}
+.cardLogin{
+    background-color: var(--surface-card);
+    box-shadow: 0 10px 12px rgba(0, 0, 0, 0.1); /* xOffset yOffset blurRadius spreadRadius color */
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+.botonInicioSesion{
+    text-indent: 15px;
+    width: 50%;
+    border-radius: 5px;
+}
+
+.cardRegistro{
+    padding: 20px;
+    border-radius: 50px;
+}
+.logoDialog{
+    width: 65px; height: 65px;
+}

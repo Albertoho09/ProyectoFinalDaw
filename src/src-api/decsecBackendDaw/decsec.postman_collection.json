@@ -1,0 +1,582 @@
+{
+	"info": {
+		"_postman_id": "4565ea7e-e14a-428b-9e9f-7450b8599a23",
+		"name": "decsec",
+		"description": "Collecion de la Api Decsec creada por Alberto Hidalgo Olivera para Desarrollo de Aplicaciones Web",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27255167"
+	},
+	"item": [
+		{
+			"name": "Controllador Usuario",
+			"item": [
+				{
+					"name": "listar usuarios siendo admin (modelo)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb3JyZW9AZ21haWwuY29tIiwiaWF0IjoxNzA5NTkzODIxLCJleHAiOjE3MDk2Mjk4MjF9.r8vMF_pifSm2QxiEedpEMKu_zsLnE_L5UHMqa_uOl9E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/v1/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "# Listar Usuarios\n\nObtiene la lista de usuarios.\n\n- **Endpoint:** `/api/usuarios`\n- **Método:** GET\n- **Roles Permitidos:** 'ROLE_USER', 'ROLE_ADMIN'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se devuelve la lista de usuarios o usuariosDTO según los roles del usuario autenticado.\n    \n\n#### Ejemplo (Roles 'ROLE_USER')\n\n``` json\n[\n  {\n    \"nombre\": \"Usuario1\",\n    \"email\": \"usuario1@example.com\"\n    // Otros campos\n  },\n  {\n    \"nombre\": \"Usuario2\",\n    \"email\": \"usuario2@example.com\"\n    // Otros campos\n  }\n]\n\n ```\n\n#### Ejemplo (Roles 'ROLE_ADMIN')\n\n``` json\n{\n        \"id\": 1,\n        \"nick\": \"Raikeor\",\n        \"nombre\": \"Alberto\",\n        \"apellidos\": \"Hidalgo\",\n        \"fechaNac\": \"2024-03-05\",\n        \"password\": \"$2a$10$bdwuK3Y1IOEVZr0HRnL6kOsfQ5qYdjTAMCy9Z2GqSLEW.LvhKd/LW\",\n        \"privado\": false,\n        \"fotoperfil\": null,\n        \"email\": \"correo@gmail.com\",\n        \"roles\": [\n            \"ROLE_ADMIN\"\n        ],\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** El usuario no tiene los roles necesarios para acceder al recurso."
+					},
+					"response": []
+				},
+				{
+					"name": "iniciar Sesion (admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"correo@gmail.com\",\r\n    \"password\": \"melva\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCALHOST+API}}auth/signin",
+							"host": [
+								"{{LOCALHOST+API}}auth"
+							],
+							"path": [
+								"signin"
+							]
+						},
+						"description": "# Iniciar Sesión (Sign In)\n\nInicia sesión con credenciales de usuario existentes.\n\n- **Endpoint:** `/api/signin`\n    \n- **Método:** POST\n    \n- **Autenticación Requerida:** No\n    \n\n## Parámetros de Entrada\n\n- **Body:** Objeto `SigninRequest` con las credenciales de inicio de sesión.\n    \n\n### Estructura de SigninRequest\n\n``` json\n{\n  \"email\": \"valor_del_email\",\n  \"password\": \"valor_de_la_contraseña\"\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Inicio de sesión exitoso. Se devuelve un token de acceso.\n    \n\n#### Ejemplo Exitoso\n\n``` json\n{\n  \"accessToken\": \"tu_access_token\",\n  \"tokenType\": \"Bearer\"\n}\n\n ```\n\n### Código de Estado 401 Unauthorized\n\n- **Descripción:** Credenciales incorrectas o acceso no autorizado.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Error de autenticación. Verifica las credenciales proporcionadas.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "iniciar Sesion (usuario)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"otrocorreo@gmail.com\",\r\n    \"password\": \"tomate\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCALHOST+API}}auth/signin",
+							"host": [
+								"{{LOCALHOST+API}}auth"
+							],
+							"path": [
+								"signin"
+							]
+						},
+						"description": "# Iniciar Sesión (Sign In)\n\nInicia sesión con credenciales de usuario existentes.\n\n- **Endpoint:** `/api/signin`\n    \n- **Método:** POST\n    \n- **Autenticación Requerida:** No\n    \n\n## Parámetros de Entrada\n\n- **Body:** Objeto `SigninRequest` con las credenciales de inicio de sesión.\n    \n\n### Estructura de SigninRequest\n\n``` json\n{\n  \"email\": \"valor_del_email\",\n  \"password\": \"valor_de_la_contraseña\"\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Inicio de sesión exitoso. Se devuelve un token de acceso.\n    \n\n#### Ejemplo Exitoso\n\n``` json\n{\n  \"accessToken\": \"tu_access_token\",\n  \"tokenType\": \"Bearer\"\n}\n\n ```\n\n### Código de Estado 401 Unauthorized\n\n- **Descripción:** Credenciales incorrectas o acceso no autorizado.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Error de autenticación. Verifica las credenciales proporcionadas.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "listar usuarios por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Mzg0MywiZXhwIjoxNzA5NjI5ODQzfQ.jb69E7kvYIlG03qdxltlpQ80-ovWzZ7NdRJvWSscfkQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/v1/users/12",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"12"
+							]
+						},
+						"description": "# Obtener Usuario por ID\n\nObtiene información de un usuario específico por su ID.\n\n- **Endpoint:** `/api/usuarios/{id}`\n- **Método:** GET\n- **Roles Permitidos:** 'ROLE_USER', 'ROLE_ADMIN'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID del usuario que se desea obtener.\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se devuelve la información del usuario solicitado.\n    \n\n#### Ejemplo (Roles 'ROLE_USER')\n\n``` json\n  {\n    \"nombre\": \"Usuario1\",\n    \"email\": \"usuario1@example.com\"\n    // Otros campos\n  }\n\n ```\n\n#### Ejemplo (Roles 'ROLE_ADMIN')\n\n``` json\n{        \n       \"id\": 1,        \n       \"nick\": \"Raikeor\",        \n       \"nombre\": \"Alberto\",        \n       \"apellidos\": \"Hidalgo\",        \n       \"fechaNac\": \"2024-03-05\",       \n       \"password\": \"$2a$10$bdwuK3Y1IOEVZr0HRnL6kOsfQ5qYdjTAMCy9Z2GqSLEW.LvhKd/LW\",        \n       \"privado\": false,        \n        \"fotoperfil\": null,        \n       \"email\": \"correo@gmail.com\",        \n       \"roles\": [            \n          \"ROLE_ADMIN\"        \n],}\n\n ```\n\n### Código de Estado 404 Not Found\n\n- **Descripción:** El usuario con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"El usuario con ID: {id} no existe\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** El usuario no tiene los roles necesarios para acceder al recurso.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. El usuario no tiene los roles necesarios.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar cualquier usuario admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb3JyZW9AZ21haWwuY29tIiwiaWF0IjoxNzA5Mjg1NzQzLCJleHAiOjE3MDkzMjE3NDN9.Ipxb-MQxjRK86icxKZtRjxg0crgRyejGVMdi6zuCtNA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\" : \"merendengue\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/v1/users/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"3"
+							]
+						},
+						"description": "# Actualizar Parcialmente Otro Usuario\n\nActualiza parcialmente la información de un usuario por su ID.\n\n- **Endpoint:** `/api/usuarios/{id}`\n- **Método:** PATCH\n- **Roles Permitidos:** 'ROLE_ADMIN'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID del usuario que se desea actualizar.\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado con roles de administrador.\n- **updates (en el cuerpo de la solicitud):** Mapa con las propiedades y valores a actualizar.\n    \n\n### Ejemplo de Body\n\n``` json\n{\n  \"nombre\": \"NuevoNombre\",\n  \"email\": \"nuevo_email@example.com\"\n  // Otros campos que desees actualizar\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se ha actualizado parcialmente la información del usuario.\n    \n\n#### Ejemplo Exitoso\n\n``` json\n{\n  \"nombre\": \"NuevoNombre\",\n  \"email\": \"nuevo_email@example.com\",\n  // Otros campos actualizados\n}\n\n ```\n\n### Código de Estado 404 Not Found\n\n- **Descripción:** El usuario con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"El usuario con ID: {id} no existe\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** El usuario autenticado no tiene los roles necesarios para acceder al recurso.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de administrador.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar mi usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTI4NDYxOSwiZXhwIjoxNzA5MzIwNjE5fQ.PnkVB5OxnsZCjh6612Be7nqkay_J_JbR6I6zw26fo-E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nick\": \"el mandangon\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/v1/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "# Actualizar Parcialmente Mi Usuario\n\nActualiza parcialmente la información del usuario autenticado.\n\n- **Endpoint:** `/api/usuarios`\n- **Método:** PATCH\n- **Roles Permitidos:** 'ROLE_USER', 'ROLE_ADMIN'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n- **updates (en el cuerpo de la solicitud):** Mapa con las propiedades y valores a actualizar.\n    \n\n### Ejemplo de Body\n\n``` json\n{\n  \"nombre\": \"NuevoNombre\",\n  \"email\": \"nuevo_email@example.com\"\n  // Otros campos que desees actualizar\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se ha actualizado parcialmente la información del usuario autenticado.\n    \n\n#### Ejemplo Exitoso\n\n``` json\n{\n  \"nombre\": \"NuevoNombre\",\n  \"email\": \"nuevo_email@example.com\",\n  // Otros campos actualizados\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** El usuario autenticado no tiene los roles necesarios para acceder al recurso.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n\"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones de la entidad usuario"
+		},
+		{
+			"name": "Controllador Publicacion",
+			"item": [
+				{
+					"name": "Listar Publicaciones",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Mzg0MywiZXhwIjoxNzA5NjI5ODQzfQ.jb69E7kvYIlG03qdxltlpQ80-ovWzZ7NdRJvWSscfkQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/v1/publicaciones",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"publicaciones"
+							]
+						},
+						"description": "# Listar Publicaciones\n\nObtiene una lista de publicaciones según los roles del usuario autenticado.\n\nSi eres administrador podras listar sin restricciones.\n\nEn cambio si eres usuario dependera de si el usuario es privado o no.\n\n- **Endpoint:** `/api/publicaciones`\n- **Método:** GET\n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **email (opcional en la URL):** Filtra las publicaciones por el email del usuario. Si no introduces el email listaras tus publicaciones.\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se devuelve la lista de publicaciones según los roles y parámetros proporcionados.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n[\n    {\n        \"id\": 1,\n        \"foto\": null,\n        \"comentarioUsuario\": \"Foto de Andres 1\",\n        \"megusta\": 1,\n        \"fechaPublicacion\": \"2024-03-05\",\n        \"emailUsuario\": \"otrocorreo@gmail.com\"\n    },\n    {\n        \"id\": 2,\n        \"foto\": null,\n        \"comentarioUsuario\": \"Foto de Andres 2\",\n        \"megusta\": 0,\n        \"fechaPublicacion\": \"2024-03-05\",\n        \"emailUsuario\": \"otrocorreo@gmail.com\"\n    }\n]\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios o no tiene acceso a las publicaciones solicitadas.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden (Usuario Privado)\n\n- **Descripción:** El usuario autenticado intenta acceder a las publicaciones de un usuario privado.\n    \n\nEjemplo de error\n\n``` json\n{\n  \"mensaje\": \"Publicaciones no disponibles, usuario privado.\"\n}\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5NjYzOCwiZXhwIjoxNzA5NjMyNjM4fQ.oOEbCdYTcoA6UiuUkqHGdGfycE_HbDYNDkCZq21v7rA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentarioUsuario\" : \"Aqui en la playita makina\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/v1/publicaciones",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"publicaciones"
+							]
+						},
+						"description": "# Crear Publicación\n\nCrea una nueva publicación para el usuario autenticado.\n\n- **Endpoint:** `/api/publicaciones`\n- **Método:** POST\n- **Roles Permitidos:** 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de Entrada\n\n- **datos (en el cuerpo de la solicitud):** Mapa con los datos necesarios para crear la publicación.\n    \n\n### Ejemplo de Body\n\n``` json\n{\n  \"comentario\": \"Contenido de la publicación\",\n  // Otros campos necesarios como la foto se añadiran mas adelante\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 201 Created\n\n- **Descripción:** La publicación ha sido creada exitosamente.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n    \"id\": 9,\n    \"foto\": null,\n    \"comentarioUsuario\": \"Aqui en la playita makina\",\n    \"megusta\": 0,\n    \"fechaPublicacion\": \"2024-03-05\",\n    \"emailUsuario\": \"otrocorreo@gmail.com\"\n}\n\n ```\n\n### Código de Estado 400 Bad Request\n\n- **Descripción:** La solicitud es incorrecta debido a datos faltantes o erróneos.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Faltan valores o estos son erróneos\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\nEjemplo de error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5NjYzOCwiZXhwIjoxNzA5NjMyNjM4fQ.oOEbCdYTcoA6UiuUkqHGdGfycE_HbDYNDkCZq21v7rA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentarioUsuario\" : \"realizando un nuevo comentario porque me equivoque en el anterior, losiento\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/v1/publicaciones/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"publicaciones",
+								"3"
+							]
+						},
+						"description": "# Actualizar Parcialmente Publicación\n\nActualiza parcialmente la información de una publicación perteneciente al usuario autenticado.\n\n- **Endpoint:** `/api/publicaciones/{id}`\n- **Método:** PATCH\n- **Roles Permitidos:** 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID de la publicación que se desea actualizar.\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n- **updates (en el cuerpo de la solicitud):** Mapa con las propiedades y valores a actualizar.\n    \n\n### Ejemplo de Body\n\n``` json\n{\n\"comentarioUsuario\" : \"realizando un nuevo comentario\"\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se ha actualizado parcialmente la información de la publicación.\n    \n\n#### Ejemplo Exitoso\n\n``` json\n{\n  \"id\": 1,\n  \"titulo\": \"Nuevo Título\",\n  \"contenido\": \"Nuevo Contenido\",\n  // Otros campos actualizados\n}\n\n ```\n\n### Código de Estado 400 Bad Request\n\n- **Descripción:** La solicitud es incorrecta porque la publicación no pertenece al usuario autenticado.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"La publicación que quieres editar no te pertenece\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios o no tiene acceso a la publicación.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5NTk2MiwiZXhwIjoxNzA5NjMxOTYyfQ.mI6BonBsCKUEV93IXEVgcKcbGEPcE6cA3Dei9odGvKE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{LOCALHOST+API}}publicaciones/1",
+							"host": [
+								"{{LOCALHOST+API}}publicaciones"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me gusta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Nzg4MCwiZXhwIjoxNzA5NjMzODgwfQ.nepDVIGdrWf9xSaPErkvBsSPbUAv53lCcDBP2XaGzcU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{LOCALHOST+API}}publicaciones/quitarmegusta/1",
+							"host": [
+								"{{LOCALHOST+API}}publicaciones"
+							],
+							"path": [
+								"quitarmegusta",
+								"1"
+							]
+						},
+						"description": "# Interacción con \"Me Gusta\" en Publicaciones\n\nRealiza acciones para indicar que te gusta o no te gusta una publicación.\n\n## Dar \"Me Gusta o No Me Gusta\" a una Publicación\n\n- **Endpoint:** `/api/publicaciones/(darmegusta || quitarmegusta)/{id}`\n- **Métodos:** POST\n- **Autenticación Requerida:** Sí\n    \n\n### Parámetros de URL\n\n- **id (en la URL):** ID de la publicación a la que se le dará \"Me Gusta\" o se le quitara el \"Me Gusta\".\n    \n\n### Respuestas\n\n#### Código de Estado 200 OK\n\n- **Descripción:** Se ha indicado que te gusta o no la publicación exitosamente.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"Has indicado que te gusta la publicación\"\n}\n\n ```\n\n``` json\n{\n  \"mensaje\": \"Has indicado que no te gusta la publicación\"\n}\n\n ```\n\n#### Código de Estado 404 Not Found\n\n- **Descripción:** La publicación con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"La publicación con ID: {id} no existe\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones de la entidad Publicacion"
+		},
+		{
+			"name": "Controllador Comentario",
+			"item": [
+				{
+					"name": "Mis comentarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Nzg4MCwiZXhwIjoxNzA5NjMzODgwfQ.nepDVIGdrWf9xSaPErkvBsSPbUAv53lCcDBP2XaGzcU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCALHOST+API}}comentarios",
+							"host": [
+								"{{LOCALHOST+API}}comentarios"
+							]
+						},
+						"description": "# Listar Comentarios\n\nObtiene una lista de todos los comentarios o solo los comentarios del usuario autenticado.\n\n- **Endpoint:** `/api/comentarios`\n- **Método:** GET\n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se devuelve la lista de comentarios según los roles del usuario autenticado.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n[\n    {\n        \"id\": 1,\n        \"comentario\": \"comentario mas modificado\",\n        \"hora\": \"2024-03-05T01:30:35.807141\",\n        \"nickUsuario\": \"Revived\"\n    }\n    {\n        \"id\": 2,\n        \"comentario\": \"comentario mas modificado\",\n        \"hora\": \"2024-03-05T01:30:35.807141\",\n        \"nickUsuario\": \"Revived\"\n    }\n]\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar comentarios (admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Nzg4MCwiZXhwIjoxNzA5NjMzODgwfQ.nepDVIGdrWf9xSaPErkvBsSPbUAv53lCcDBP2XaGzcU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCALHOST+API}}comentarios",
+							"host": [
+								"{{LOCALHOST+API}}comentarios"
+							]
+						},
+						"description": "# Listar Comentarios\n\nObtiene una lista de todos los comentarios o solo los comentarios del usuario autenticado.\n\n- **Endpoint:** `/api/comentarios`\n    \n- **Método:** GET\n    \n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n    \n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se devuelve la lista de comentarios según los roles del usuario autenticado.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n[\n    {\n        \"id\": 1,\n        \"comentario\": \"comentario mas modificado\",\n        \"hora\": \"2024-03-05T01:30:35.807141\",\n        \"nickUsuario\": \"Revived\"\n    }\n    {\n        \"id\": 2,\n        \"comentario\": \"comentario mas modificado\",\n        \"hora\": \"2024-03-05T01:30:35.807141\",\n        \"nickUsuario\": \"Revived\"\n    }\n]\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5OTY1MywiZXhwIjoxNzA5NjM1NjUzfQ.ukMGEN3KpEmq5dzEfcwuwhziX7cqThzTD5lqHOEGZ5E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"Hola\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCALHOST+API}}comentarios/1",
+							"host": [
+								"{{LOCALHOST+API}}comentarios"
+							],
+							"path": [
+								"1"
+							]
+						},
+						"description": "# Crear Comentario en Publicación\n\nCrea un nuevo comentario en una publicación específica.\n\n- **Endpoint:** `/api/comentarios/{id}`\n- **Método:** POST\n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID de la publicación a la que se agregará el comentario.\n    \n\n## Parámetros de Entrada\n\n- **comentario (en el cuerpo de la solicitud):** Objeto JSON con el contenido del comentario.\n    \n\n### Ejemplo de Body\n\n``` json\n{\n  \"comentario\": \"Contenido del comentario\"\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 201 Created\n\n- **Descripción:** El comentario ha sido creado exitosamente.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n    \"id\": 2,\n    \"comentario\": \"Hola\",\n    \"hora\": \"2024-03-05T01:48:11.4531698\",\n    \"nickUsuario\": \"Revived\"\n}\n\n ```\n\n### Código de Estado 404 Not Found\n\n- **Descripción:** La publicación con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"La publicación con ID: {id} no existe\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\nEjemplo de error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n\n ```\n\n### Código de Estado 400 Bad Request\n\n- **Descripción:** La solicitud es incorrecta debido a datos faltantes o erróneos.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Faltan valores o estos son erróneos\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar Comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Nzg4MCwiZXhwIjoxNzA5NjMzODgwfQ.nepDVIGdrWf9xSaPErkvBsSPbUAv53lCcDBP2XaGzcU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"comentario mas modificado\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCALHOST+API}}comentarios/1",
+							"host": [
+								"{{LOCALHOST+API}}comentarios"
+							],
+							"path": [
+								"1"
+							]
+						},
+						"description": "# Actualizar Comentario en Publicación\n\nActualiza el contenido de un comentario perteneciente al usuario autenticado.\n\n- **Endpoint:** `/api/comentarios/{id}`\n- **Método:** PATCH\n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID del comentario que se desea actualizar.\n    \n\n## Parámetros de Entrada\n\n- **comentario (en el cuerpo de la solicitud):** Objeto JSON con el nuevo contenido del comentario.\n    \n\n### Ejemplo de Body\n\n``` json\n{\n  \"comentario\": \"Nuevo contenido del comentario\"\n}\n\n ```\n\n## Respuestas\n\n### Código de Estado 201 Created\n\n- **Descripción:** El comentario ha sido actualizado exitosamente.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n    \"id\": 1,\n    \"comentario\": \"comentario mas modificado\",\n    \"hora\": \"2024-03-05T01:30:35.807141\",\n    \"nickUsuario\": \"Revived\"\n}\n\n ```\n\n### Código de Estado 304 Not Modified\n\n- **Descripción:** El comentario no pertenece al usuario autenticado y no se ha modificado.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"El comentario no te pertenece\"\n}\n\n ```\n\n### Código de Estado 404 Not Found\n\n- **Descripción:** El comentario con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"El comentario no existe\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Comentario de Publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5Nzg4MCwiZXhwIjoxNzA5NjMzODgwfQ.nepDVIGdrWf9xSaPErkvBsSPbUAv53lCcDBP2XaGzcU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCALHOST+API}}comentarios/4",
+							"host": [
+								"{{LOCALHOST+API}}comentarios"
+							],
+							"path": [
+								"4"
+							]
+						},
+						"description": "# Listar Comentarios de una Publicación\n\nObtiene una lista de comentarios pertenecientes a una publicación específica.\n\n- **Endpoint:** `/api/comentarios/{id}`\n- **Método:** GET\n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID de la publicación de la cual se listarán los comentarios.\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 200 OK\n\n- **Descripción:** Se devuelve la lista de comentarios de la publicación.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n[\n    {\n        \"id\": 3,\n        \"comentario\": \"hola de nuevo\",\n        \"hora\": \"2024-03-05T01:35:54.132597\",\n        \"nickUsuario\": \"Revived\"\n    }\n]\n\n ```\n\n### Código de Estado 404 Not Found\n\n- **Descripción:** La publicación con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"La publicación con ID: {id} no existe\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\n#### Ejemplo de Error\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar Comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvdHJvY29ycmVvQGdtYWlsLmNvbSIsImlhdCI6MTcwOTU5OTY1MywiZXhwIjoxNzA5NjM1NjUzfQ.ukMGEN3KpEmq5dzEfcwuwhziX7cqThzTD5lqHOEGZ5E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{LOCALHOST+API}}comentarios/1",
+							"host": [
+								"{{LOCALHOST+API}}comentarios"
+							],
+							"path": [
+								"1"
+							]
+						},
+						"description": "# Borrar Comentario\n\nElimina un comentario específico.\n\n- **Endpoint:** `/api/comentarios/{id}`\n- **Método:** DELETE\n- **Roles Permitidos:** 'ROLE_ADMIN', 'ROLE_USER'\n- **Autenticación Requerida:** Sí\n    \n\n## Parámetros de URL\n\n- **id (en la URL):** ID del comentario que se desea eliminar.\n    \n\n## Parámetros de Entrada\n\n- **usuario** (en el encabezado): Usuario autenticado.\n    \n\n## Respuestas\n\n### Código de Estado 201 Created\n\n- **Descripción:** El comentario ha sido eliminado exitosamente.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"Comentario borrado\"\n}\n\n ```\n\n### Código de Estado 200 OK\n\n- **Descripción:** El comentario ha sido eliminado exitosamente.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"Comentario borrado\"\n}\n\n ```\n\n### Código de Estado 304 Not Modified\n\n- **Descripción:** El comentario no pertenece al usuario autenticado y no se ha modificado.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"El comentario no te pertenece\"\n}\n\n ```\n\n### Código de Estado 404 Not Found\n\n- **Descripción:** El comentario con el ID proporcionado no existe.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"El comentario no existe\"\n}\n\n ```\n\n### Código de Estado 403 Forbidden\n\n- **Descripción:** Acceso denegado. El usuario autenticado no tiene los roles necesarios.\n    \n\n#### Ejemplo de Respuesta\n\n``` json\n{\n  \"mensaje\": \"Acceso denegado. Se requieren roles de usuario o administrador.\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones de la entidad Comentario"
+		}
+	],
+	"variable": [
+		{
+			"key": "LOCALHOST+API",
+			"value": "localhost:8081/api/v1/",
+			"type": "string"
+		}
+	]
+}
