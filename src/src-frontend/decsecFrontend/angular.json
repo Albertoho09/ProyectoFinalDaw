@@ -3,11 +3,18 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "decsecFrontend": {
+    "DecsecFrontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
         }
       },
       "root": "",
@@ -30,14 +37,17 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeflex/primeflex.css",
               "src/styles.scss",
               {
-                "input": "src/app/assets/temas/theme-bootstrap4-light-purple.scss",
+                "input": "src/assets/temas/theme-bootstrap4-light-purple.scss",
                 "bundleName": "bootstrap4-light-purple",
                 "inject": false
               },
               {
-                "input": "src/app/assets/temas/theme-bootstrap4-dark-purple.scss",
+                "input": "src/assets/temas/theme-bootstrap4-dark-purple.scss",
                 "bundleName": "bootstrap4-dark-purple",
                 "inject": false
               }
@@ -72,10 +82,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "decsecFrontend:build:production"
+              "buildTarget": "DecsecFrontend:build:production"
             },
             "development": {
-              "buildTarget": "decsecFrontend:build:development"
+              "buildTarget": "DecsecFrontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "decsecFrontend:build"
+            "buildTarget": "DecsecFrontend:build"
           }
         },
         "test": {
@@ -107,5 +117,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

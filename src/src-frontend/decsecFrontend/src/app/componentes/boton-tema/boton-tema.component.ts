@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { TemasServiceService } from '../../servicios/temas-service.service'
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-boton-tema',
-  standalone: true,
-  imports: [NgClass],
   templateUrl: './boton-tema.component.html',
   styleUrl: './boton-tema.component.scss'
 })

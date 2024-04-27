@@ -1,0 +1,29 @@
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+            (click)="openNew()"></button>
+            <h4>Crear un nuevo registro</h4>
+        </ng-template>
+</p-toolbar>
+<p-dialog [(visible)]="formDialog" [style]="{ width: '450px' }" header="Crear Registro" [modal]="true" styleClass="p-fluid">
+    <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+    <ng-template pTemplate="content">
+        <div class="flex justify-content-center align-items-center">
+            <h3>Socio</h3>
+        </div>
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" pInputText id="nombre" [(ngModel)]="socio.nombre" required/>
+            <small class="p-error" *ngIf="submitted && !socio.nombre">Se requiere el nombre.</small>
+        </div>
+        <div class="field">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" id="apellidos" pInputText [(ngModel)]="socio.apellido" required/>
+            <small class="p-error" *ngIf="submitted && !socio.apellido">Se requieren los apellidos.</small>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>

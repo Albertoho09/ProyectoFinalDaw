@@ -1,10 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
-//@import "primeng/resources/themes/bootstrap4-dark-purple/theme.css";
-//@import "primeng/resources/themes/bootstrap4-light-purple/theme.css";
-//@import "primeng/resources/themes/md-dark-indigo/theme.css";
-//@import "primeng/resources/themes/mira/theme.css";
-//@import "primeng/resources/themes/nano/theme.css";
-//@import "primeng/resources/themes/luna-pink/theme.css";
-@import "primeng/resources/primeng.css";
-@import "primeflex/primeflex.css";
-@import "primeicons/primeicons.css";
+.bodyClaro{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image: url("assets/fondo/fondo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.bodyOscuro{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image: url("assets/fondo/fondoOscuro.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
