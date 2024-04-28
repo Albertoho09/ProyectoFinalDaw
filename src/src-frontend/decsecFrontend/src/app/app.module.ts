@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -22,6 +21,7 @@ import { PasswordModule } from 'primeng/password';
 import { CalendarModule } from 'primeng/calendar';
 import { AvatarModule } from 'primeng/avatar';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -38,9 +38,12 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { RippleModule } from 'primeng/ripple';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 import { TemasServiceService } from './servicios/temas-service.service';
 import { BotonTemaComponent } from './componentes/boton-tema/boton-tema.component';
 import { MenuadminComponent } from './admin/menuadmin/menuadmin.component';
+import { UsuarioService } from './servicios/usuario.service';
+import { TablausuarioComponent } from './admin/tablausuario/tablausuario.component';
 
 @NgModule({
   declarations: [
@@ -51,12 +54,15 @@ import { MenuadminComponent } from './admin/menuadmin/menuadmin.component';
     CardloginComponent,
     SelectorComponent,
     BotonTemaComponent,
-    MenuadminComponent
+    MenuadminComponent,
+    TablausuarioComponent
   ],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
+    InputSwitchModule,
     CardModule,
+    TagModule,
     PasswordModule,
     CalendarModule,
     FileUploadModule,
@@ -66,7 +72,6 @@ import { MenuadminComponent } from './admin/menuadmin/menuadmin.component';
     FormsModule,
     AvatarModule,
     TableModule,
-    HttpClientModule,
     InputTextModule,
     RippleModule,
     DialogModule,
@@ -83,7 +88,7 @@ import { MenuadminComponent } from './admin/menuadmin/menuadmin.component';
     MenubarModule,
     AppRoutingModule
   ],
-  providers: [ConfirmationService, ServicioSocioService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService],
+  providers: [ConfirmationService, ServicioSocioService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

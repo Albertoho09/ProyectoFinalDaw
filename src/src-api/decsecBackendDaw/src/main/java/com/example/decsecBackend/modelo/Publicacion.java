@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
@@ -26,8 +25,9 @@ public class Publicacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Lob
-	private byte[] foto;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@ElementCollection(fetch = FetchType.LAZY, targetClass = Imagen.class)
+    private List<Imagen> imagenes = new ArrayList<>();
 
 	@NotNull
 	private String comentarioUsuario;

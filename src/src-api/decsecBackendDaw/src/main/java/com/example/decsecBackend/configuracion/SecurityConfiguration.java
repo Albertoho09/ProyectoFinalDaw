@@ -77,12 +77,4 @@ public class SecurityConfiguration {
             throws Exception {
         return config.getAuthenticationManager();
     }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
 }

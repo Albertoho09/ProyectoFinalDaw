@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,12 +23,10 @@ import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(userController.class);
 
 	@Autowired
 	private UsuarioServicioImpl usuarioservice;

@@ -1,7 +1,9 @@
 package com.example.decsecBackend.dtos;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.example.decsecBackend.modelo.Imagen;
 import com.example.decsecBackend.modelo.Publicacion;
 
 import lombok.Data;
@@ -15,7 +17,7 @@ public class PublicacionDTO {
 
     private Long id;
 
-    private byte[] foto;
+    private List<Imagen> imagenes;
 
     private String comentarioUsuario;
 
@@ -27,7 +29,7 @@ public class PublicacionDTO {
 
     public PublicacionDTO(Publicacion publi) {
         this.id = publi.getId();
-        this.foto = publi.getFoto();
+        this.imagenes = publi.getImagenes();
         this.comentarioUsuario = publi.getComentarioUsuario();
         this.megusta = publi.getMegusta();
         this.fechaPublicacion = publi.getFechaPublicacion();

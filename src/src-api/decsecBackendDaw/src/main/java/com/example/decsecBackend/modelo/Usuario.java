@@ -25,8 +25,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
@@ -50,8 +50,8 @@ public class Usuario implements UserDetails {
 
 	private Boolean privado;
 
-	@Lob
-	private byte[] fotoperfil;
+    @OneToOne
+    private Imagen foto;
 
 	@Column(unique = true)
 	private String email;

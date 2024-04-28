@@ -105,9 +105,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 				case "password":
 					usu.setPassword((String) valor);
 					break;
-				case "fotoperfil":
-					usu.setFotoperfil(valor.toString().getBytes());
-					break;
 				case "privado":
 					usu.setPrivado((valor instanceof Boolean) ? (Boolean) valor : false);
 					break;
