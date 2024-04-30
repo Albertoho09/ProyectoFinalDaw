@@ -25,14 +25,12 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { ServicioSocioService } from './servicios/servicio-socio.service';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MessageService } from 'primeng/api';
 import { CardloginComponent } from './login/cardlogin/cardlogin.component';
 import { AuthServiceService } from './servicios/auth-service.service';
-import { SelectorComponent } from './admin/selector/selector.component';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { RippleModule } from 'primeng/ripple';
@@ -51,7 +49,6 @@ import { HttpClientModule } from '@angular/common/http';
     AdminComponent,
     LoginComponent,
     CardloginComponent,
-    SelectorComponent,
     BotonTemaComponent,
     MenuadminComponent,
     TablausuarioComponent
@@ -88,7 +85,7 @@ import { HttpClientModule } from '@angular/common/http';
     MenubarModule,
     AppRoutingModule
   ],
-  providers: [ConfirmationService, ServicioSocioService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService],
+  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
