@@ -1,8 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { Usuario, SignUpRequest } from '../../interfaces/Usuario';
+import { Usuario, SignUpRequest, usuarioAdmin } from '../../interfaces/Usuario';
 import { AuthServiceService } from '../../servicios/auth-service.service';
 import { UsuarioService } from '../../servicios/usuario.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cardlogin',
@@ -22,24 +23,28 @@ export class CardloginComponent implements OnInit{
   usuario!: SignUpRequest;
   file!: File;
   imagenURL: string = "https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png";
-  constructor(private router: Router, private servicio: AuthServiceService, private usuariService: UsuarioService) {}
+  usuarioForm!: FormGroup;
+  emailRepetido = false;
+  constructor(private router: Router, private formBuilder: FormBuilder, private servicio: AuthServiceService, private usuariService: UsuarioService) {}
 
   ngOnInit(): void {
     this.usu = {
       "email": '',
       "password": ''
     };
-    
-    this.usuario ={
-      "nick": "",
-      "nombre": "",
-      "apellidos": "",
-      "email": "",
-      "password": "",
-      "privado": false,
-      "fechaNac": new Date()
-    };
+    this.usuarioForm = this.formBuilder.group({
+      nick: ['', Validators.required],
+      nombre: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      privado: [false],
+      fechaNac: [new Date()]
+    });
   }
+
+
+  get f() { return this.usuarioForm.controls; }
 
   onUpload(event:any) {
     this.file = event.files[0];
@@ -54,14 +59,22 @@ export class CardloginComponent implements OnInit{
     console.log(this.imagenURL);
   }
 
+  validarEmail(){
+    this.usuariService.validarEmail(this.usuarioForm.get('email')?.value)
+    .subscribe(
+      response => {this.emailRepetido = response;
+        console.log(this.emailRepetido);
+      }
+    )
+  }
+
   registrarUsuario(){
-    this.usuariService.crearUsuario(this.usuario, this.file).subscribe(
+    const socio = this.usuarioForm.value as unknown as SignUpRequest;
+    this.usuariService.crearUsuario(socio, this.file).subscribe(
       response => {
-        // Manejar la respuesta del servidor
         console.log('Respuesta del servidor:', response);
       },
       error => {
-        // Manejar errores
         console.error('Error al enviar datos:', error);
       }
     )

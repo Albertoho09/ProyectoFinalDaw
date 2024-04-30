@@ -30,7 +30,9 @@
                     <td>{{ usuario.apellidos }}</td>
                     <td>{{ usuario.email }}</td>
                     <td>{{ usuario.password }}</td>
-                    <td><p-avatar *ngIf="usuario.foto != null" image="data:{{usuario.foto.tipo}};base64,{{usuario.foto.datos}}" size="xlarge" shape="circle"></p-avatar></td>
+                    <td>  
+                        <p-avatar [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'" size="xlarge" shape="circle"></p-avatar>
+                    </td>
                     <td>{{ usuario.fechaNac }}</td>                    
                     <td><p-tag [value]="usuario.roles[0] === 'ROLE_USER' ? 'Usuario' : 'Administrador'" [severity]="getSeverityRol(usuario.roles[0])"></p-tag></td>
                     <td><p-tag [value]="usuario.privado ? 'Privado' : 'Público'" [severity]="getSeverityPrivado(usuario.privado)"></p-tag></td>

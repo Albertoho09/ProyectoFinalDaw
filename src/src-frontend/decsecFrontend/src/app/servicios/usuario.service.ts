@@ -38,4 +38,7 @@ export class UsuarioService {
 
     return this.http.get<any>(this.baseURL, {headers:headers});
   }
+  validarEmail(email:String) {
+     return this.http.get<boolean>(this.baseURLAUTH+'/validar-email?email=' + email);
+  }
 }

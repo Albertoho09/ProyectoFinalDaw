@@ -26,7 +26,6 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ServicioSocioService } from './servicios/servicio-socio.service';
-import { TablaComponent } from './admin/tabla/tabla.component';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -44,11 +43,11 @@ import { BotonTemaComponent } from './componentes/boton-tema/boton-tema.componen
 import { MenuadminComponent } from './admin/menuadmin/menuadmin.component';
 import { UsuarioService } from './servicios/usuario.service';
 import { TablausuarioComponent } from './admin/tablausuario/tablausuario.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TablaComponent,
     AdminComponent,
     LoginComponent,
     CardloginComponent,
@@ -63,6 +62,7 @@ import { TablausuarioComponent } from './admin/tablausuario/tablausuario.compone
     InputSwitchModule,
     CardModule,
     TagModule,
+    HttpClientModule,
     PasswordModule,
     CalendarModule,
     FileUploadModule,

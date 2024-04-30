@@ -23,6 +23,7 @@ import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
+
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/v1/users")
@@ -99,5 +100,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(usuario.getId(),
 				updates));
 	}
+
 
 }
