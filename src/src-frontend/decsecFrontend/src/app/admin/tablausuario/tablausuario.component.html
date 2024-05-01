@@ -1,55 +1,55 @@
-<div class="card">
-    <p-toast></p-toast>
-    <div class="table-responsive">
-        <p-table [value]="usuarios" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
-            currentPageReportTemplate="Mostrando {first} de {last} del {totalRecords} total"
-            [rowsPerPageOptions]="[5, 10, 20]">
-            <ng-template pTemplate="caption">
-                <div class="flex align-items-center justify-content-between">
-                    <h5 class="m-0">Usuarios</h5>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Nick</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Email</th>
-                    <th>Contraseña</th>
-                    <th>Foto Perfil</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>ROL</th>
-                    <th>Privacidad</th>
-                    <th>Borrar</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-usuario>
-                <tr>
-                    <td>{{ usuario.id }}</td>
-                    <td>{{ usuario.nombre }}</td>
-                    <td>{{ usuario.apellidos }}</td>
-                    <td>{{ usuario.email }}</td>
-                    <td>{{ usuario.password }}</td>
-                    <td>  
-                        <p-avatar [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'" size="xlarge" shape="circle"></p-avatar>
-                    </td>
-                    <td>{{ usuario.fechaNac }}</td>                    
-                    <td><p-tag [value]="usuario.roles[0] === 'ROLE_USER' ? 'Usuario' : 'Administrador'" [severity]="getSeverityRol(usuario.roles[0])"></p-tag></td>
-                    <td><p-tag [value]="usuario.privado ? 'Privado' : 'Público'" [severity]="getSeverityPrivado(usuario.privado)"></p-tag></td>
-                    <td>
-                        <div class="flex align-items-center justify-content-center gap-2">
-                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                (click)="deleteProduct(usuario)"></button>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-                <div class="flex align-items-center justify-content-between">
-                    Hay en total {{usuarios ? usuarios.length : 0 }}.
-                </div>
-            </ng-template>
-        </p-table>
-    </div>
-</div>
+<p-toast></p-toast>
+    <p-table [value]="usuarios" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} de {last} del {totalRecords} total"
+        [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Usuarios</h5>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nick</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Contraseña</th>
+                <th>Foto Perfil</th>
+                <th>Fecha Nacimiento</th>
+                <th>ROL</th>
+                <th>Privacidad</th>
+                <th>Borrar</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usuario>
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.apellidos }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.password }}</td>
+                <td>
+                    <p-avatar
+                        [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'"
+                        size="xlarge" shape="circle"></p-avatar>
+                </td>
+                <td>{{ usuario.fechaNac }}</td>
+                <td><p-tag [value]="usuario.roles[0] === 'ROLE_USER' ? 'Usuario' : 'Administrador'"
+                        [severity]="getSeverityRol(usuario.roles[0])"></p-tag></td>
+                <td><p-tag [value]="usuario.privado ? 'Privado' : 'Público'"
+                        [severity]="getSeverityPrivado(usuario.privado)"></p-tag></td>
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="deleteProduct(usuario)"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Hay en total {{usuarios ? usuarios.length : 0 }}.
+            </div>
+        </ng-template>
+    </p-table>
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
