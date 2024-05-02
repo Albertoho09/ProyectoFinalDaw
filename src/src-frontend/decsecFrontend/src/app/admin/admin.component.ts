@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent {
+  tablaSeleccionada: string = 'usuarios';
+
+  actualizarTabla(tabla: string) {
+    this.tablaSeleccionada = tabla;
+  }
 
 }

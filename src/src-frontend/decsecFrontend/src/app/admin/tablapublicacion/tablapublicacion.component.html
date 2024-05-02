@@ -1,0 +1,47 @@
+<p-toast></p-toast>
+<p-table [value]="publicaciones" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} de {last} del {totalRecords} total" [rowsPerPageOptions]="[5, 10, 20]">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Publicaciones</h5>
+            <app-publicacionform [usuario]="usuario"></app-publicacionform>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Fecha Publicación</th>
+            <th>Comentario</th>
+            <th>Foto/s</th>
+            <th>Likes</th>
+            <th>Borrar</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-publicacion>
+        <tr>
+            <td>{{ publicacion.id }}</td>
+            <td>{{ publicacion.fechaPublicacion }}</td>
+            <td>{{ publicacion.comentarioUsuario }}</td>
+            <td>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button pButton pRipple [disabled]="publicacion.imagenes.length === 0" (click)="mostrarImagen()">
+                        {{ publicacion.imagenes.length !== 0 ? 'Mostrar imagen' : 'Sin imagen' }}
+                      </button>
+                </div>
+            </td>
+            <td>{{ publicacion.megusta }}</td>
+            <td>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteProduct(publicacion)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Hay en total {{publicaciones ? publicaciones.length : 0 }}.
+        </div>
+    </ng-template>
+</p-table>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

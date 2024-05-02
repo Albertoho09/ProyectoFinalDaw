@@ -22,6 +22,15 @@ export class UsuarioService {
     return this.http.post<any>(this.baseURLAUTH+'/signin', usuario);
   }
 
+  obtenerUsuarioToken(){
+    const accessToken = this.serviciotoken.getToken();
+
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer '+accessToken
+    })
+    return this.http.get<any>(this.baseURL+"/token", {headers:headers});
+  }
+
   crearUsuario(datos: SignUpRequest, fotoPerfil:File) {
     const formData = new FormData();
     formData.append('usuario', JSON.stringify(datos));
@@ -30,7 +39,7 @@ export class UsuarioService {
   }
 
   obtenerUsuarios(){
-    const accessToken = localStorage.getItem("token");
+    const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
       'Authorization': 'Bearer '+accessToken

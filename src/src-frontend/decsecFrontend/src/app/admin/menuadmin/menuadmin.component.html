@@ -1,19 +1,19 @@
 <p-card class="p-0">
     <div class="flex flex-column">
-        <i class="pi pi-users">
+        <i class="pi pi-users" (click)="seleccionarOpcion('usuarios')">
             <span class="tooltip">Usuarios</span>
         </i>
-        <i class="pi pi-images">
+        <i class="pi pi-images" (click)="seleccionarOpcion('publicaciones')">
             <span class="tooltip">Publicaciones</span>
         </i>
-        <i class="pi pi-comments">
+        <i class="pi pi-comments" (click)="seleccionarOpcion('comentarios')">
             <span class="tooltip">Comentarios</span>
         </i>
         <div class="divisor flex flex-column">
-            <i class="pi pi-comment iconochat">
+            <i class="pi pi-comment iconochat" (click)="seleccionarOpcion('chat')">
                 <span class="tooltip">Chat</span>
             </i>
-            <i class="pi pi-sign-out iconologout">
+            <i class="pi pi-sign-out iconologout" (click)="exit()">
                 <span class="tooltip">Cerrar Sesión</span>
             </i>
         </div>

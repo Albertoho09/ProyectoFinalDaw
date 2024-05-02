@@ -84,7 +84,7 @@ export class CardloginComponent implements OnInit{
     this.usuariService.registroUsuario(this.usu).subscribe(
       response => {
         console.log(response);
-        localStorage.setItem('token', response.token);
+        sessionStorage.setItem('token', response.token);
         this.router.navigate(['admin']);
       },
       error => {

@@ -26,22 +26,22 @@ export class AuthServiceService {
   }
 
   loggedIn(): boolean {
-    if (typeof localStorage !== 'undefined') {
-      return !!localStorage.getItem('token');
+    if (typeof sessionStorage !== 'undefined') {
+      return !!sessionStorage.getItem('token');
     }
     return false;
   }
 
   getToken() {
-    if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem('token');
+    if (typeof sessionStorage !== 'undefined') {
+      return sessionStorage.getItem('token');
     }
     return '';
   }
 
   logout() {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('token');
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.removeItem('token');
       this.router.navigate(['/login']);
     }
   }

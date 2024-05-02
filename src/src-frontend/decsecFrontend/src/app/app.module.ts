@@ -42,6 +42,9 @@ import { MenuadminComponent } from './admin/menuadmin/menuadmin.component';
 import { UsuarioService } from './servicios/usuario.service';
 import { TablausuarioComponent } from './admin/tablausuario/tablausuario.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TablapublicacionComponent } from './admin/tablapublicacion/tablapublicacion.component';
+import { PublicacionService } from './servicios/publicacion.service';
+import { PublicacionformComponent } from './componentes/publicacionform/publicacionform.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,9 @@ import { HttpClientModule } from '@angular/common/http';
     CardloginComponent,
     BotonTemaComponent,
     MenuadminComponent,
-    TablausuarioComponent
+    TablausuarioComponent,
+    TablapublicacionComponent,
+    PublicacionformComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -85,7 +90,7 @@ import { HttpClientModule } from '@angular/common/http';
     MenubarModule,
     AppRoutingModule
   ],
-  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService],
+  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

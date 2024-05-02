@@ -60,6 +60,22 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/token")
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> obtenerPorToken(@AuthenticationPrincipal Usuario usuario) {
+		if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
+			if (usuarioservice.existePorEmail(usuario.getEmail())) {
+				return ResponseEntity.ok(usuarioservice.encontrarPorEmail(usuario.getEmail()));
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con email:" + usuario.getEmail() + " no existe");
+		} else {
+			if (usuarioservice.existePorEmail(usuario.getEmail())) {
+				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.encontrarPorEmail(usuario.getEmail())));
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con email:" + usuario.getEmail() + " no existe");
+		}
+	}
+
 	@DeleteMapping
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> borrarMiUsuario(

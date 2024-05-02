@@ -22,5 +22,11 @@ export interface usuarioAdmin {
     password: string;
     privado: Boolean;
     roles: Array<String>;
-    foto: File;
+    foto: Imagen;
+}
+interface Imagen {
+    id: number;
+    nombre: string;
+    tipo: string;
+    datos: any;
 }
