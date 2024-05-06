@@ -1,15 +1,18 @@
 <div class="container-fluid">
-        <div class="flex m-4">
-            <div class="col-1 flex justify-content-center ">
-                <app-menuadmin (opcionSeleccionada)="actualizarTabla($event)"></app-menuadmin>
+    <div class="flex m-4">
+        <div class="col-1 flex justify-content-center ">
+            <app-menuadmin (opcionSeleccionada)="actualizarTabla($event)"></app-menuadmin>
+        </div>
+        <div class="col-11">
+            <div *ngIf="tablaSeleccionada === 'usuarios'">
+                <app-tablausuario></app-tablausuario>
             </div>
-            <div class="col-11">
-                <div *ngIf="tablaSeleccionada === 'usuarios'">
-                    <app-tablausuario></app-tablausuario>
-                  </div>
-                  <div *ngIf="tablaSeleccionada === 'publicaciones'">
-                    <app-tablapublicacion></app-tablapublicacion>
-                </div> 
+            <div *ngIf="tablaSeleccionada === 'publicaciones'">
+                <app-tablapublicacion></app-tablapublicacion>
+            </div>
+            <div *ngIf="tablaSeleccionada === 'comentarios'">
+                <app-tablacomentario></app-tablacomentario>
             </div>
         </div>
+    </div>
 </div>

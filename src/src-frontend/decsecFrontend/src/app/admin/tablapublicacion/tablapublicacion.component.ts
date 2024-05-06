@@ -14,25 +14,22 @@ export class TablapublicacionComponent implements OnInit {
   publicaciones!: publicacionAdmin[];
   usuario!: usuarioAdmin;
 
-  constructor(private servicioPubli : PublicacionService, private servicioUsu : UsuarioService){}
+  constructor(private servicioPubli: PublicacionService, private servicioUsu: UsuarioService) { }
   ngOnInit(): void {
     this.servicioPubli.obtenerPublicaciones().subscribe(
-      (data) =>{
+      (data) => {
         this.publicaciones = data;
-        this.publicaciones.forEach(element => {
-          console.log(element);
-        });
       }
     )
 
     this.servicioUsu.obtenerUsuarioToken().subscribe(
-      (data) =>{
+      (data) => {
         this.usuario = data
       }
     )
   }
 
-  obtenerUsuarioToken():usuarioAdmin | null{
+  obtenerUsuarioToken(): usuarioAdmin | null {
     return null;
   }
 

@@ -45,6 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TablapublicacionComponent } from './admin/tablapublicacion/tablapublicacion.component';
 import { PublicacionService } from './servicios/publicacion.service';
 import { PublicacionformComponent } from './componentes/publicacionform/publicacionform.component';
+import { TablacomentarioComponent } from './admin/tablacomentario/tablacomentario.component';
+import { ComentarioService } from './servicios/comentario.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { PublicacionformComponent } from './componentes/publicacionform/publicac
     MenuadminComponent,
     TablausuarioComponent,
     TablapublicacionComponent,
-    PublicacionformComponent
+    PublicacionformComponent,
+    TablacomentarioComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -90,7 +93,7 @@ import { PublicacionformComponent } from './componentes/publicacionform/publicac
     MenubarModule,
     AppRoutingModule
   ],
-  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService],
+  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService, ComentarioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
