@@ -24,9 +24,25 @@
             <td>{{ publicacion.comentarioUsuario }}</td>
             <td>
                 <div class="flex align-items-center justify-content-center gap-2">
-                    <button pButton pRipple [disabled]="publicacion.imagenes.length === 0" (click)="mostrarImagen()">
-                        {{ publicacion.imagenes.length !== 0 ? 'Mostrar imagen' : 'Sin imagen' }}
-                      </button>
+                      <p-button 
+                      icon="pi pi-external-link"
+                      [disabled]="publicacion.imagenes.length === 0"  
+                      label="{{ publicacion.imagenes.length !== 0 ? 'Mostrar imagen' : 'Sin imagen' }}" 
+                      (click)="displayBasic = true" />
+                  <p-galleria 
+                      [value]="publicacion.imagenes" 
+                      [(visible)]="displayBasic" 
+                      [responsiveOptions]="responsiveOptions" 
+                      [containerStyle]="{'max-width': '50%'}" 
+                      [numVisible]="7"
+                      [circular]="true"
+                      [fullScreen]="true"
+                      [showItemNavigators]="true"
+                      [showThumbnails]="false">
+                          <ng-template pTemplate="item" let-imagen>
+                              <img [src]="'data:' + imagen.tipo + ';base64,' + imagen.datos" style="width: 100%; display: block;"/>
+                          </ng-template>
+                  </p-galleria>
                 </div>
             </td>
             <td>{{ publicacion.megusta }}</td>

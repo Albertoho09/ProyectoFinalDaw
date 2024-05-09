@@ -34,7 +34,7 @@ public class Publicacion {
 
 	private int megusta = 0;
 
-	private LocalDate fechaPublicacion = LocalDate.now();
+	private LocalDate fechaPublicacion;
 
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)

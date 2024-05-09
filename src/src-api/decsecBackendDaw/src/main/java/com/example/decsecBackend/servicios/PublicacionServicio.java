@@ -8,8 +8,6 @@ import com.example.decsecBackend.modelo.Publicacion;
 
 public interface PublicacionServicio {
 
-    PublicacionDTO crearPublicacion(Map<String, Object> datos, String email);
-
     List<PublicacionDTO> listarPublicaciones();
 
     List<PublicacionDTO> listarPublicacionesUsuario(String email);

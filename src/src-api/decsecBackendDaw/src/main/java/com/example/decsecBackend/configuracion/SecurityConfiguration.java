@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/v1/publicaciones")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
                         .requestMatchers(HttpMethod.POST, "/api/v1/publicaciones**")
-                        .hasAnyAuthority(Role.ROLE_USER.toString())
+                        .hasAnyAuthority(Role.ROLE_USER.toString(), Role.ROLE_ADMIN.toString())
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/publicaciones")
                         .hasAnyAuthority(Role.ROLE_USER.toString())
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/comentarios**")

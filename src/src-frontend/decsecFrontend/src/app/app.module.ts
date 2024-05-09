@@ -45,6 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TablapublicacionComponent } from './admin/tablapublicacion/tablapublicacion.component';
 import { PublicacionService } from './servicios/publicacion.service';
 import { PublicacionformComponent } from './componentes/publicacionform/publicacionform.component';
+import { GalleriaModule } from 'primeng/galleria';
+import { TablacomentarioComponent } from './admin/tablacomentario/tablacomentario.component';
 
 @NgModule({
   declarations: [
@@ -56,12 +58,14 @@ import { PublicacionformComponent } from './componentes/publicacionform/publicac
     MenuadminComponent,
     TablausuarioComponent,
     TablapublicacionComponent,
-    PublicacionformComponent
+    PublicacionformComponent,
+    TablacomentarioComponent
   ],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
     InputSwitchModule,
+    GalleriaModule,
     CardModule,
     TagModule,
     HttpClientModule,

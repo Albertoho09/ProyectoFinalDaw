@@ -42,6 +42,7 @@ export class AuthServiceService {
   logout() {
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('currentUser');
       this.router.navigate(['/login']);
     }
   }

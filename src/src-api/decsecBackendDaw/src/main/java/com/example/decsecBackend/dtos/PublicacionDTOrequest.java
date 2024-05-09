@@ -4,7 +4,5 @@ import lombok.Data;
 
 @Data
 public class PublicacionDTOrequest {
-    private byte[] foto;
-
     private String comentarioUsuario;
 }

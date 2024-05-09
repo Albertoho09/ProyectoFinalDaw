@@ -13,19 +13,29 @@
             <p>En caso de no subir imagenes se tratará la publicación como un comentario.</p>
             <div class="flex-column justify-content-center">
                 <div class="p-5">
-                    <p-fileUpload name="myfile[]" (onUpload)="onUpload($event)"
-                    uploadLabel="Subir" [multiple]="true" [auto]="true" accept="image/*" [fileLimit]="5" [maxFileSize]="1000000" chooseLabel="Elegir" cancelLabel="Cancelar">
-                       <ng-template pTemplate="toolbar">
-                           <div class="py-3">Puedes subir un maximo de 5 imagenes</div>
-                       </ng-template>
+                   <p-fileUpload 
+                   name="demo[]" 
+                   url="https://www.primefaces.org/cdn/api/upload.php" 
+                   (onUpload)="onUpload($event)" 
+                   [multiple]="true"
+                   chooseLabel="Elegir"
+                   accept="image/*" 
+                   uploadLabel="Subir"
+                   cancelLabel="Cancelar"
+                   [maxFileSize]="1000000">
+                    <ng-template pTemplate="toolbar">
+                        <div class="py-3">Puedes subir un maximo de 5 imagenes</div>
+                    </ng-template>
                        <ng-template pTemplate="content">
                            <ul *ngIf="uploadedFiles.length">
-                               <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                               <li *ngFor="let file of uploadedFiles">
+                                    {{ file.name }} - {{ file.size }} bytes
+                               </li>
                            </ul>
                        </ng-template>
-                   </p-fileUpload>
+               </p-fileUpload>
                 </div>
-                <form [formGroup]="publicacionForm" (ngSubmit)="registrarPublicacion()">
+                <form [formGroup]="publicacionForm">
                     <div class="grid formgrid p-fluid p-5">
                         <div class="field col-12">
                             <label for="comentarioUsuario">Comentario</label>
@@ -35,7 +45,7 @@
                 </form>
             </div>
         <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="visible = false" label="Publicar" pAutoFocus [autofocus]="true"></p-button>
+            <p-button icon="pi pi-check" (click)="registrarPublicacion()" [disabled]="publicacionForm.invalid" label="Publicar" pAutoFocus [autofocus]="true"></p-button>
         </ng-template>
     </p-dialog>
 </div>

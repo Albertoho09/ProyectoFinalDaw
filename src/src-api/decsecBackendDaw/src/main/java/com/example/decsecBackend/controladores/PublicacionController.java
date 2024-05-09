@@ -1,5 +1,7 @@
 package com.example.decsecBackend.controladores;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,13 +18,18 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.decsecBackend.dtos.PublicacionDTOrequest;
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.PublicacionServicioImpl;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
+import com.google.gson.Gson;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -67,21 +74,21 @@ public class PublicacionController {
             }
         }
     }
-
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> crearPublicacion(@RequestBody Map<String, Object> datos,
-            @AuthenticationPrincipal Usuario usuario) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
+    public ResponseEntity<?> crearPubli(@RequestPart("publicacion") String publicacion,
+                                        @RequestParam(required = false) Map<String, MultipartFile> imagenes,
+                                        @AuthenticationPrincipal Usuario usuario) {
+        PublicacionDTOrequest publi;
         try {
-            logger.info("##### CREANDO PUBLICACION (USUARIO) #####");
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(publicacionService.crearPublicacion(datos, usuario.getEmail()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.info("##### CREACION DE PUBLICACION FALLIDO (USUARIO) #####");
-            return ResponseEntity.badRequest().body("Faltan valores o estos son erroneos");
+            publi = new Gson().fromJson(publicacion, PublicacionDTOrequest.class);
+            return ResponseEntity.ok(publicacionService.crearPublicacion(publi, imagenes, usuario));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")

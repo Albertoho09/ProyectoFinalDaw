@@ -1,16 +1,25 @@
 package com.example.decsecBackend.serviciosImpl;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.decsecBackend.dtos.PublicacionDTO;
+import com.example.decsecBackend.dtos.PublicacionDTOrequest;
 import com.example.decsecBackend.errores.NotFoundException;
+import com.example.decsecBackend.modelo.Imagen;
 import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.repositorios.ImagenRepositorio;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.servicios.PublicacionServicio;
 
@@ -24,16 +33,11 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     private PublicacionRepositorio repositorioPublicacion;
     @Autowired
     private UsuarioServicioImpl servicioUsuario;
+    @Autowired
+    private ImagenRepositorio repositorioImagen;
 
-    @SuppressWarnings("null")
-    @Override
-    public PublicacionDTO crearPublicacion(Map<String, Object> datos, String email) {
-        Usuario usu = servicioUsuario.encontrarPorEmail(email);
-        Publicacion publicacion = new Publicacion();
-        publicacion.setComentarioUsuario(datos.get("comentarioUsuario").toString());
-        publicacion.setUsuario(usu);
-        return new PublicacionDTO(repositorioPublicacion.save(publicacion));
-    }
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+
 
     @Override
     public List<PublicacionDTO> listarPublicaciones() {
@@ -113,6 +117,24 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return publicaciones.stream()
                 .anyMatch(objeto -> objeto.getId() == id);
 
+    }
+
+    public PublicacionDTO crearPublicacion(PublicacionDTOrequest publi, Map<String, MultipartFile> imagenes, Usuario usuario) throws IOException {
+        List<Imagen> listImagenes = new ArrayList<>();
+        Publicacion publicacion = new Publicacion();
+        if (imagenes != null) {
+            for (Map.Entry<String, MultipartFile> entry : imagenes.entrySet()) {
+                MultipartFile imagen = entry.getValue();
+                Imagen img = new Imagen(imagen.getOriginalFilename(), imagen.getContentType(), imagen.getBytes());
+                repositorioImagen.save(img);
+                listImagenes.add(img);
+            }
+            publicacion.setImagenes(listImagenes);
+        }
+        publicacion.setComentarioUsuario(publi.getComentarioUsuario());
+        publicacion.setFechaPublicacion(LocalDate.now());
+        publicacion.setUsuario(usuario);
+        return new PublicacionDTO(repositorioPublicacion.save(publicacion));
     }
 
 }
