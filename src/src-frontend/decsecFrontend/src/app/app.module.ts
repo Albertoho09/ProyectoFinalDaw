@@ -47,6 +47,7 @@ import { PublicacionService } from './servicios/publicacion.service';
 import { PublicacionformComponent } from './componentes/publicacionform/publicacionform.component';
 import { GalleriaModule } from 'primeng/galleria';
 import { TablacomentarioComponent } from './admin/tablacomentario/tablacomentario.component';
+import { ComentarioService } from './servicios/comentario.service';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,7 @@ import { TablacomentarioComponent } from './admin/tablacomentario/tablacomentari
     MenubarModule,
     AppRoutingModule
   ],
-  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService],
+  providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService, ComentarioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

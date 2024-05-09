@@ -37,4 +37,15 @@ public class Comentario {
     @JsonManagedReference
     private Usuario usuario;
 
+    public Comentario(String comentario, Usuario usu, Publicacion publi) {
+        this.comentario = comentario;
+        this.hora = LocalDateTime.now();
+        this.usuario = usu;
+        this.publicacion = publi;
+    }
+
+    public Comentario() {
+
+    }
+
 }

@@ -1,1 +1,38 @@
-<p>tablacomentario works!</p>
+<p-toast></p-toast>
+<p-table [value]="comentarios" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} de {last} del {totalRecords} total" [rowsPerPageOptions]="[5, 10, 20]">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Comentarios</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Comentario</th>
+            <th>Fecha</th>
+            <th>Propietario</th>
+            <th>Borrar</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-comentario>
+        <tr>
+            <td>{{ comentario.id }}</td>
+            <td>{{ comentario.comentario }}</td>
+            <td>{{ comentario.hora }}</td>
+            <td>{{ comentario.nickUsuario }}</td>
+            <td>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteProduct(comentario.id)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Hay en total {{comentarios ? comentarios.length : 0 }}.
+        </div>
+    </ng-template>
+</p-table>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

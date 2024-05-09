@@ -7,7 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.repositorios.ComentarioRepositorio;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
+import com.example.decsecBackend.modelo.Comentario;
 import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
@@ -21,6 +23,8 @@ public class InicializarDatos implements CommandLineRunner {
     private UsuarioServicioImpl usuarioservicio;
     @Autowired
     private PublicacionRepositorio publicacionRepositorio;
+    @Autowired
+    private ComentarioRepositorio comentarioRepositorio;
 
     @Override
     public void run(String... args) throws Exception {
@@ -124,6 +128,18 @@ public class InicializarDatos implements CommandLineRunner {
             publicacionRepositorio.save(publi6);
             publicacionRepositorio.save(publi7);
             publicacionRepositorio.save(publi8);
+
+            Comentario c1 = new Comentario("comentario1", usu4, publi5);
+            Comentario c2 = new Comentario("comentario2", usu3, publi5);
+            Comentario c3 = new Comentario("comentario3", usu4, publi6);
+            Comentario c4 = new Comentario("comentario4", usu4, publi6);
+            Comentario c5 = new Comentario("comentario5", usu3, publi7);
+
+            comentarioRepositorio.save(c1);
+            comentarioRepositorio.save(c2);
+            comentarioRepositorio.save(c3);
+            comentarioRepositorio.save(c4);
+            comentarioRepositorio.save(c5);
 
         } catch (Exception e) {
             e.printStackTrace();
