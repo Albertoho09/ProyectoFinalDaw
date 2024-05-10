@@ -22,6 +22,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AvatarModule } from 'primeng/avatar';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { ImageModule } from 'primeng/image';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -48,6 +49,7 @@ import { PublicacionformComponent } from './componentes/publicacionform/publicac
 import { GalleriaModule } from 'primeng/galleria';
 import { TablacomentarioComponent } from './admin/tablacomentario/tablacomentario.component';
 import { ComentarioService } from './servicios/comentario.service';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -60,13 +62,15 @@ import { ComentarioService } from './servicios/comentario.service';
     TablausuarioComponent,
     TablapublicacionComponent,
     PublicacionformComponent,
-    TablacomentarioComponent
+    TablacomentarioComponent,
+    UserComponent
   ],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
     InputSwitchModule,
     GalleriaModule,
+    ImageModule,
     CardModule,
     TagModule,
     HttpClientModule,
