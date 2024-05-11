@@ -50,6 +50,10 @@ import { GalleriaModule } from 'primeng/galleria';
 import { TablacomentarioComponent } from './admin/tablacomentario/tablacomentario.component';
 import { ComentarioService } from './servicios/comentario.service';
 import { UserComponent } from './user/user.component';
+import { HeaderComponent } from './user/header/header.component';
+import { PerfilComponent } from './user/perfil/perfil.component';
+import { PrincipalComponent } from './user/principal/principal.component';
+import { FooterComponent } from './user/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +67,11 @@ import { UserComponent } from './user/user.component';
     TablapublicacionComponent,
     PublicacionformComponent,
     TablacomentarioComponent,
-    UserComponent
+    UserComponent,
+    HeaderComponent,
+    PerfilComponent,
+    PrincipalComponent,
+    FooterComponent
   ],
   imports: [
     ReactiveFormsModule,
