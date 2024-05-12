@@ -1,10 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
-export class PerfilComponent {
+export class PerfilComponent implements OnInit{
+  constructor(){}
 
+  formGroupSelect!: FormGroup;
+  imagenes: string[] = ['assets/fondo/guts.webp', 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
+  ,'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
+  ,'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
+  ];
+  stateOptions: any[] = [
+    { label: 'Todas', value: 'todas' },
+    { label: 'Con Foto', value: 'confoto' },
+    { label: 'Sin Foto', value: 'sinfoto' }
+];
+
+ngOnInit() {
+  this.formGroupSelect = new FormGroup({
+      value: new FormControl('todas')
+  });
+}
 }

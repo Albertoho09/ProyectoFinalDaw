@@ -1,0 +1,30 @@
+.imagen-cuadrada {
+    width: 19rem;
+    height: 19rem;
+    object-fit: cover;
+    border-radius: 0.8cap;
+}
+.contenedor-imagen {
+    position: relative;
+  }
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco translúcido */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Invisible por defecto */
+    transition: opacity 0.3s ease; /* Transición suave */
+}
+  
+.contenedor-imagen:hover .overlay {
+    opacity: 1; /* Visible al pasar el ratón */
+}
+  
+.texto {
+    font-size: 20px; /* Tamaño del texto */
+}  
