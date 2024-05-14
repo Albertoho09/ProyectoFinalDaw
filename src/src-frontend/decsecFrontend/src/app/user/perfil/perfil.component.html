@@ -34,16 +34,8 @@
                         style="height: 48px; width: 48px; top: 5.5px; left: 6px;"></span></button>
             </div>
         </div>
-        <div class="flex justify-content-end">
-            <form [formGroup]="formGroupSelect">
-                <p-selectButton
-                    [options]="stateOptions" 
-                    formControlName="value" 
-                    optionLabel="label" 
-                    optionValue="value"
-                    />
-            </form>
-        </div>
+        
+
         <div class="lg:px-8 md:px-6 px-4 py-5 surface-0 ng-star-inserted">
             <div class="flex w-full relative align-items-center justify-content-center my-3 px-4">
                 <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
@@ -51,18 +43,45 @@
                         class="pi pi-images text-900 mr-2"></i><span class="text-900 font-medium">Mis Publicaciones</span></div>
             </div>
         </div>
-        <div class="flex justify-content-evenly flex-wrap">
-            <div class="m-auto mb-4" *ngFor="let imagen of imagenes">
-                <div class="contenedor-imagen">
-                    <img [src]="imagen" class="imagen-cuadrada">
-                    <div class="overlay">
-                      <div class="flex texto">
-                        <span class="pi pi-comments text-black text-2xl"> 5</span>
-                        <span class="pi pi-heart ml-3 text-black text-2xl"> 123</span>
-                    </div>
+
+        <div class="flex justify-content-center">
+            <div class="text-center">
+                <i class="pi pi-lock mb-4" style="font-size: 5rem"></i>
+                <h4 class="text-900">Este usuario es PRIVADO</h4>
+                <p>Para poder ver las publicaciones de este usuario es necesario que acepte tu petición de amistad</p>
+            </div>
+        </div>
+        <!--<div class="flex justify-content-center">
+            <div class="text-center">
+                <i class="pi pi-image mb-4" style="font-size: 5rem"></i>
+                <h4 class="text-900">Sin Publicaciones</h4>
+            </div>
+        </div>-->
+        <!--
+<div class="flex justify-content-end">
+                <form [formGroup]="formGroupSelect">
+                    <p-selectButton
+                        [options]="stateOptions" 
+                        formControlName="value" 
+                        optionLabel="label" 
+                        optionValue="value"
+                        />
+                </form>
+            </div>
+            <div class="flex justify-content-evenly flex-wrap">
+                <div class="mb-4" *ngFor="let imagen of imagenes">
+                    <div class="contenedor-imagen">
+                        <img [src]="imagen" class="imagen-cuadrada">
+                        <div class="overlay">
+                            <div class="flex texto">
+                                <span class="pi pi-comments text-black text-2xl"> 5</span>
+                                <span class="pi pi-heart ml-3 text-black text-2xl"> 123</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-          </div>
+
+        -->    
     </div>
 </div>

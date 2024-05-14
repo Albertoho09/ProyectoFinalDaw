@@ -3,10 +3,11 @@
     height: 19rem;
     object-fit: cover;
     border-radius: 0.8cap;
+    transition: height 0.3s ease; /* Transición suave */
 }
 .contenedor-imagen {
     position: relative;
-  }
+}
 .overlay {
     position: absolute;
     top: 0;
@@ -21,10 +22,13 @@
     transition: opacity 0.3s ease; /* Transición suave */
 }
   
-.contenedor-imagen:hover .overlay {
-    opacity: 1; /* Visible al pasar el ratón */
+.contenedor-imagen:hover .imagen-cuadrada {
+    height: 20rem;
 }
-  
+.contenedor-imagen:hover .overlay{
+    opacity: 1; /* Visible al pasar el ratón */
+} 
+
 .texto {
     font-size: 20px; /* Tamaño del texto */
 }  
