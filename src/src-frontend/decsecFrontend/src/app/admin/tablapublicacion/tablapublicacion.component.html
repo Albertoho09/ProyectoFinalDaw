@@ -24,14 +24,14 @@
             <td>{{ publicacion.comentarioUsuario }}</td>
             <td>
                 <div class="flex align-items-center justify-content-center gap-2">
-                      <p-button 
-                      icon="pi pi-external-link"
-                      [disabled]="publicacion.imagenes.length === 0"  
-                      label="{{ publicacion.imagenes.length !== 0 ? 'Mostrar imagen' : 'Sin imagen' }}" 
-                      (click)="displayBasic = true" />
+                    <p-button 
+                    icon="pi pi-external-link"
+                    [disabled]="publicacion?.imagenes?.length == 0"  
+                    [label]="publicacion?.imagenes?.length !== 0 ? 'Mostrar imagen' : 'Sin imagen'" 
+                    (onClick)="handleClick(publicacion)" />
                   <p-galleria 
                       [value]="publicacion.imagenes" 
-                      [(visible)]="displayBasic" 
+                      [(visible)]="publicacion.displayBasic" 
                       [responsiveOptions]="responsiveOptions" 
                       [containerStyle]="{'max-width': '50%'}" 
                       [numVisible]="7"

@@ -13,7 +13,6 @@ export class TablapublicacionComponent implements OnInit {
 
   publicaciones!: publicacionAdmin[];
   usuario!: usuarioAdmin;
-  displayBasic: boolean = false;
   responsiveOptions: any[] = [
     {
         breakpoint: '1500px',
@@ -38,6 +37,13 @@ export class TablapublicacionComponent implements OnInit {
     this.servicioPubli.obtenerPublicaciones().subscribe(
       (data) => {
         this.publicaciones = data;
+        this.publicaciones = data.map((publicacion: any) => ({
+          ...publicacion,
+          displayBasic: false
+        }));
+        this.publicaciones.forEach(element => {
+          console.log(element);
+        });
       }
     )
 
@@ -46,6 +52,13 @@ export class TablapublicacionComponent implements OnInit {
         this.usuario = data
       }
     )
+  }
+
+  handleClick(publicacion: any) {
+    // Establecer todas las galerías como no visibles
+    this.publicaciones.forEach(p => p.displayBasic = false);
+    // Mostrar solo la galería de la publicación clicada
+    publicacion.displayBasic = true;
   }
 
   obtenerUsuarioToken(): usuarioAdmin | null {

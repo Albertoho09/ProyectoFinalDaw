@@ -17,9 +17,6 @@ export class TablausuarioComponent implements OnInit {
     this.servicio.obtenerUsuarios().subscribe(
       response => {
         this.usuarios = response;
-        this.usuarios.forEach(element => {
-          console.log(element);
-        });
       },
       error => {
         console.log(error.data)

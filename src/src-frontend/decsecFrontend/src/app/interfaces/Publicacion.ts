@@ -4,6 +4,7 @@ export interface publicacionAdmin {
     comentarioUsuario: string;
     megusta: number;
     fechaPublicacion: Date;
+    displayBasic: Boolean;
 }
 
 export interface publicacionForm {
