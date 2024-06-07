@@ -6,6 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './publicacion-card.component.scss'
 })
 export class PublicacionCardComponent implements OnInit {
+
+  visible: boolean = false;
+  abrirComentarios() {
+    this.visible = true;
+  }
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',

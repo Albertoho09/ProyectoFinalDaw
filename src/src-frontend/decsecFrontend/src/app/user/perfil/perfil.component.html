@@ -19,9 +19,8 @@
             </div>
             <div class="mt-3 lg:mt-0"><button pbutton="" pripple="" label="Follow" icon="pi pi-plus-circle"
                     class="p-element p-ripple p-button-outlined mr-2 p-button p-component"><span
-                        class="p-button-icon p-button-icon-left pi pi-plus-circle"
-                        aria-hidden="true"></span><span class="p-button-label">Follow</span><span
-                        class="p-ink"
+                        class="p-button-icon p-button-icon-left pi pi-plus-circle" aria-hidden="true"></span><span
+                        class="p-button-label">Follow</span><span class="p-ink"
                         style="height: 116px; width: 116px; top: -21.5px; left: 21.375px;"></span></button><button
                     pbutton="" pripple="" label="Website" icon="pi pi-link"
                     class="p-element p-ripple mr-2 p-button p-component"><span
@@ -34,43 +33,43 @@
                         style="height: 48px; width: 48px; top: 5.5px; left: 6px;"></span></button>
             </div>
         </div>
-        
 
-        <div class="lg:px-8 md:px-6 px-4 py-5 surface-0 ng-star-inserted">
-            <div class="flex w-full relative align-items-center justify-content-center my-3 px-4">
-                <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
-                <div class="px-2 z-1 surface-0 flex align-items-center"><i
-                        class="pi pi-images text-900 mr-2"></i><span class="text-900 font-medium">Mis Publicaciones</span></div>
-            </div>
-        </div>
 
-        <div class="flex justify-content-center">
+        <!--AVISO DE USUARIO PRIVADO-->
+        <!--<div class="flex justify-content-center">
             <div class="text-center">
                 <i class="pi pi-lock mb-4" style="font-size: 5rem"></i>
                 <h4 class="text-900">Este usuario es PRIVADO</h4>
                 <p>Para poder ver las publicaciones de este usuario es necesario que acepte tu petición de amistad</p>
             </div>
-        </div>
-        <!--<div class="flex justify-content-center">
-            <div class="text-center">
-                <i class="pi pi-image mb-4" style="font-size: 5rem"></i>
-                <h4 class="text-900">Sin Publicaciones</h4>
-            </div>
         </div>-->
-        <!--
-<div class="flex justify-content-end">
-                <form [formGroup]="formGroupSelect">
-                    <p-selectButton
-                        [options]="stateOptions" 
-                        formControlName="value" 
-                        optionLabel="label" 
-                        optionValue="value"
-                        />
-                </form>
+
+
+        <div class="lg:px-8 md:px-6 px-4 py-5 surface-0 ng-star-inserted">
+            <!--SEPARADOR SELECTOR-->
+            <div class="flex my-3 px-4 justify-content-center relative">
+                <div class="border-top-1 surface-border absolute top-50 w-full"></div><span
+                    class="p-buttonset z-1"><button pripple=""
+                        class="p-ripple p-element appearance-none border-1 border-round-left surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"><i
+                            class="text-600">Mis Publicaciones</i><span class="p-ink"></span></button><button pripple=""
+                        class="p-ripple p-element appearance-none border-1 border-left-none surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"><i
+                            class="text-600">Media</i><span class="p-ink"></span></button><button pripple=""
+                        class="p-ripple p-element appearance-none border-1 border-left-none border-round-right surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"><i
+                            class="text-600">Me gustan</i><span class="p-ink"></span></button></span>
             </div>
-            <div class="flex justify-content-evenly flex-wrap">
+            
+            <!--LISTAR APARTADO 'MIS PUBLICACIONES'-->
+            <div class="m-2">
+                <app-publicacion-card></app-publicacion-card>
+                <app-publicacion-card></app-publicacion-card>
+                <app-publicacion-card></app-publicacion-card>
+                <app-publicacion-card></app-publicacion-card>
+            </div>
+
+        <!--LISTAR APARTADO 'MEDIA'-->
+<!--             <div class="flex justify-content-evenly flex-wrap">
                 <div class="mb-4" *ngFor="let imagen of imagenes">
-                    <div class="contenedor-imagen">
+                    <div class="contenedor-imagen m-1">
                         <img [src]="imagen" class="imagen-cuadrada">
                         <div class="overlay">
                             <div class="flex texto">
@@ -80,8 +79,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+        </div>
 
-        -->    
+        <!--AVISO DE SIN PUBLICACIONES-->
+        <!--<div class="flex justify-content-center">
+            <div class="text-center">
+                <i class="pi pi-image mb-4" style="font-size: 5rem"></i>
+                <h4 class="text-900">Sin Publicaciones</h4>
+            </div>
+        </div>-->
     </div>
 </div>

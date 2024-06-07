@@ -1,18 +1,23 @@
 <div class="cardPublicacion">
     <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
         <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
-        <div class="px-2 z-1 surface-card flex align-items-center">                        
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                shape="circle" class="flex align-items-center" />
+        <div class="px-2 z-1 surface-section flex align-items-center">
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                class="flex align-items-center" />
             <span class="font-bold text-900 white-space-nowrap ml-2">
                 Preachingfire3
             </span>
         </div>
-        <div class="px-2 z-1 surface-card flex align-items-center">
+        <div class="px-2 z-1 surface-section flex align-items-center">
             <div class="flex">
-                <button class="border-circle pi pi-heart p-2" style="background: none; border: solid 1px red; color: red;"></button>
-                <button class="border-circle pi pi-comments p-2 ml-2" style="background: none; border: solid 1px mediumseagreen; color: mediumseagreen;"></button>
-            </div>            
+                <!--                 <button class="border-circle pi pi-heart p-2" style="background: none; border: solid 1px red; color: red;"></button>
+ -->
+                <app-megusta></app-megusta>
+                <button class="border-none ml-2" title="Comentarios"
+                    style="background: none; border: solid 1px mediumseagreen; color: mediumseagreen"
+                    (click)="abrirComentarios()">
+                    <i class="pi pi-comments" style="font-size: 1.7rem"></i></button>
+            </div>
         </div>
     </div>
     <div class="text-600 m-3">
@@ -20,14 +25,99 @@
     </div>
     <!--<img src="assets/fondo/screenshot.png" class="w-100 h-auto border-round">-->
 
-    <p-galleria 
-    [value]="images" 
-    [showIndicators]="true" 
-    [showThumbnails]="false" 
-    [responsiveOptions]="responsiveOptions" 
-    [containerStyle]="{ 'width': '100%','height': 'auto' }">
+    <p-galleria [value]="images" [showIndicators]="true" [showThumbnails]="false"
+        [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'width': '100%','height': 'auto' }">
         <ng-template pTemplate="item" let-imagen>
-            <img [src]="imagen.url" style="width: 100%; height: auto; display: block;" />
+            <img [src]="imagen.url" class="custom-image-style" [ngStyle]="{'width': '100%', 'height': 'auto'}">
         </ng-template>
-</p-galleria>
+    </p-galleria>
 </div>
+
+
+<!--DIALOG DE COMENTARIO-->
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '90%', height: '80%' }" [draggable]="false"
+    [resizable]="false">
+    <div class="grid nested-grid" style="height: 100%;">
+        <div class="col-8" style="background-color: black; height: 100%;">
+            <!-- Contenido de la columna negra -->
+        </div>
+        <div class="col-4 p-3 flex flex-column justify-content-between">
+            <div>
+                <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
+                    <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
+                    <div class="px-2 z-1 surface-section flex align-items-center">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                            class="flex align-items-center" />
+                        <span class="font-bold text-900 white-space-nowrap ml-2">
+                            Preachingfire3
+                        </span>
+                    </div>
+                </div>
+                <div class="text-600 m-3">
+                    <p> La vida pirata la vida mejor 🦜🏴‍☠️☠️</p>
+                </div>
+                <div class="border-top-1 surface-border top-50 left-0 w-full"></div>
+            </div>
+            <div class="flex-1 mt-4 m-2 scrollable">
+                <div class="surface-200 p-3 border-round mb-3">
+                    <div class="flex align-items-center mb-2">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center"/> <b class="ml-3">Usuario 1</b>
+                    </div>
+                    <div class="comment-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitationem officiis odio,
+                        obcaecati minus quaerat? Ad, hic. Consequuntur sit non nesciunt, rerum nam libero dicta recusandae
+                        laborum necessitatibus molestias!
+                    </div>
+                </div>
+                <div class="surface-200 p-3 border-round mb-3">
+                    <div class="flex align-items-center mb-2">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center"/> <b class="ml-3">Usuario 2</b>
+                    </div>
+                    <div class="comment-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitatio
+                    </div>
+                </div>
+                <div class="surface-200 p-3 border-round mb-3">
+                    <div class="flex align-items-center mb-2">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center"/> <b class="ml-3">Usuario 3</b>
+                    </div>
+                    <div class="comment-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitationem officiis odio,
+                        obcaecati minus quaerat?
+                    </div>
+                </div>
+                <div class="surface-200 p-3 border-round mb-3">
+                    <div class="flex align-items-center mb-2">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center"/> <b class="ml-3">Usuario 3</b>
+                    </div>
+                    <div class="comment-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitationem officiis odio,
+                        obcaecati minus quaerat?
+                    </div>
+                </div>
+            </div>
+            <div class="bandeja">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                    class="icon-avatar" />
+                <input pInputText placeholder="Escribe tu mensaje..." id="texto" class="message-input" />
+                <button class="send-button">
+                    <div class="svg-wrapper-1">
+                        <div class="svg-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path fill="currentColor"
+                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Enviar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>

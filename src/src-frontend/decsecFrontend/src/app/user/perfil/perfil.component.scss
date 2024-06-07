@@ -1,6 +1,6 @@
 .imagen-cuadrada {
-    width: 19rem;
-    height: 19rem;
+    width: 15rem;
+    height: 15rem;
     object-fit: cover;
     border-radius: 0.8cap;
     transition: height 0.3s ease; /* Transición suave */
@@ -23,7 +23,7 @@
 }
   
 .contenedor-imagen:hover .imagen-cuadrada {
-    height: 20rem;
+    height: 16rem;
 }
 .contenedor-imagen:hover .overlay{
     opacity: 1; /* Visible al pasar el ratón */

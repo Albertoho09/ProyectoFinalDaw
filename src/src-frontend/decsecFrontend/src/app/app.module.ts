@@ -55,6 +55,7 @@ import { PerfilComponent } from './user/perfil/perfil.component';
 import { PrincipalComponent } from './user/principal/principal.component';
 import { FooterComponent } from './user/footer/footer.component';
 import { PublicacionCardComponent } from './user/principal/publicacion-card/publicacion-card.component';
+import { MegustaComponent } from './componentes/megusta/megusta.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { PublicacionCardComponent } from './user/principal/publicacion-card/publ
     PerfilComponent,
     PrincipalComponent,
     FooterComponent,
-    PublicacionCardComponent
+    PublicacionCardComponent,
+    MegustaComponent
   ],
   imports: [
     ReactiveFormsModule,

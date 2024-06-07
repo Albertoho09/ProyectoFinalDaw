@@ -9,20 +9,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class PerfilComponent implements OnInit{
   constructor(){}
 
-  formGroupSelect!: FormGroup;
   imagenes: string[] = ['assets/fondo/guts.webp', 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
   ,'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
   ,'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
   ];
-  stateOptions: any[] = [
-    { label: 'Todas', value: 'todas' },
-    { label: 'Con Foto', value: 'confoto' },
-    { label: 'Sin Foto', value: 'sinfoto' }
-];
 
 ngOnInit() {
-  this.formGroupSelect = new FormGroup({
-      value: new FormControl('todas')
-  });
 }
 }
