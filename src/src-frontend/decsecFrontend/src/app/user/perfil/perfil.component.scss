@@ -5,6 +5,10 @@
     border-radius: 0.8cap;
     transition: height 0.3s ease; /* Transición suave */
 }
+
+.imagenPerfil{
+    object-fit: cover;
+}
 .contenedor-imagen {
     position: relative;
 }

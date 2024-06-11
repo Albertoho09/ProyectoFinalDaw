@@ -15,7 +15,7 @@ const routes: Routes = [
   canActivate: [authGuard], 
   children: [
     { path: '', redirectTo: 'principal', pathMatch: 'full' },
-    { path: 'perfil', component: PerfilComponent, canActivate: [authGuard]},
+    { path: 'perfil/:nick', component: PerfilComponent, canActivate: [authGuard]},
     { path: 'principal', component: PrincipalComponent, canActivate: [authGuard]}
   ]},
   { path: '', redirectTo: '/login', pathMatch: 'full' }, 

@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="grid nested-grid mt-2">
     <div class="col-8">
         <div class="shadow-2 surface-card p-4" style="border-radius: 12px;">
@@ -21,7 +22,7 @@
                             <p class="mt-1 mb-0 text-600 text-xl">Alberto Hidalgo</p>
                         </div>
                         <div>
-                            <p-button label="Ver Perfil"></p-button>
+                            <p-button label="Ver Perfil" (onClick)="visitarPerfil()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -44,7 +45,7 @@
                                 </ng-template>
                             </p-autoComplete>
                         </span>
-                        <p-button label="Buscar" class="ml-2"></p-button>
+                        <p-button label="Buscar" class="ml-2" (onClick)="buscarUsuario()" ></p-button>
                     </div>
                 </div>
             </div>
