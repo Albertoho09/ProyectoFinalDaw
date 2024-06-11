@@ -43,6 +43,13 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/search")
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> listarUsuariosSearch(
+			@AuthenticationPrincipal Usuario usuario) {
+			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosSearchDTO());
+	}
+
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> listarUsuariosPorId(@PathVariable Long id,

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { iif } from 'rxjs';
+import { AuthServiceService } from '../../servicios/auth-service.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,11 @@ import { iif } from 'rxjs';
 })
 export class HeaderComponent{
 
-  constructor() { }
+
+visiblePeticiones: boolean = false;
+visibleAmigos: boolean = false;
+
+  constructor(private authservice: AuthServiceService) { }
 
   cambiar() {
     const menu = document.querySelectorAll('.surface-overlay'); // Selector que identifica tu menú
@@ -19,5 +24,16 @@ export class HeaderComponent{
         element.classList.add('hidden');
       }
     }); 
+  }
+
+  cerrarSesion(){
+    this.authservice.logout();
+  }
+
+  abrirDialogPeticiones() {
+    this.visiblePeticiones = true;
+  }
+  abrirDialogAmigos() {
+    this.visibleAmigos = true;
   }
 }

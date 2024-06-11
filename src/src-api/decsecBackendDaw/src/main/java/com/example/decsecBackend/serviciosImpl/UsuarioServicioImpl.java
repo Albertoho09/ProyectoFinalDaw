@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.decsecBackend.dtos.UsuarioDTO;
+import com.example.decsecBackend.dtos.UsuarioSearchDTO;
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.UsuarioRepositorio;
@@ -56,6 +57,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	public List<UsuarioDTO> listarTodosUsuariosDTO() {
 		return repositorio.findAll().stream()
 				.map(usuario -> new UsuarioDTO(usuario))
+				.collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<UsuarioSearchDTO> listarTodosUsuariosSearchDTO() {
+		return repositorio.findAll().stream()
+				.map(usuario -> new UsuarioSearchDTO(usuario.getNick(), usuario.getFoto()))
 				.collect(Collectors.toList());
 	}
 

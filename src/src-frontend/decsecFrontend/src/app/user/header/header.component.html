@@ -1,21 +1,20 @@
 <div class="surface-overlay px-6 shadow-2 flex justify-content-between relative lg:static" style="min-height: 84px;">
     <img src="assets/icono/logocontexto.png" alt="Image" height="80" class="mr-0 lg:mr-6 align-self-center">
-    <a
-        pripple="" pstyleclass="@next" enterclass="hidden" leavetoclass="hidden" (click)="cambiar()"
+    <a pripple="" pstyleclass="@next" enterclass="hidden" leavetoclass="hidden" (click)="cambiar()"
         class="p-ripple p-element cursor-pointer block lg:hidden align-self-center text-700"><i
             class="pi pi-bars text-4xl"></i>
-            <span class="p-ink"></span>
-        </a>
+        <span class="p-ink"></span>
+    </a>
     <div
         class="flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full surface-overlay left-0 top-100 z-1 shadow-2 lg:shadow-none">
         <ul class="list-none p-0 m-0 flex select-none flex-column lg:flex-row">
             <li><a pripple=""
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><i
                         class="pi pi-home mr-2"></i><span>Principal</span><span class="p-ink"></span></a></li>
-            <li><a pripple=""
+            <li><a (click)="abrirDialogAmigos()" pRipple=""
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><i
                         class="pi pi-users mr-2"></i><span>Amigos</span><span class="p-ink"></span></a></li>
-            <li><a pripple=""
+            <li><a (click)="abrirDialogPeticiones()" pripple=""
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><i
                         class="pi pi-envelope mr-2"></i><span>Peticiones</span><span class="p-ink"></span></a></li>
             <li><a pripple=""
@@ -28,18 +27,19 @@
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><i
                         class="text-base lg:text-2xl mr-2 lg:mr-0">
                         <app-boton-tema></app-boton-tema>
-                    </i><span class="block lg:hidden font-medium">Cambiar tema</span><span class="p-ink"></span></a></li>
-            <li><a pripple=""
+                    </i><span class="block lg:hidden font-medium">Cambiar tema</span><span class="p-ink"></span></a>
+            </li>
+            <li><a pripple="" (click)="cerrarSesion()"
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><i
                         class="pi pi-sign-out text-base lg:text-2xl mr-2 lg:mr-0"></i><span
                         class="block lg:hidden font-medium">Cerrar Sesión</span><span class="p-ink"></span>
                 </a>
             </li>
             <li id="privacidad" class="hidden flex align-items-center pl-3">
-                    <a
-                        class="px-6 p-3 lg:px-3 lg:py-2 text-green-600 bg-green-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 mr-2">
-                        Público 
-                    </a>
+                <a
+                    class="px-6 p-3 lg:px-3 lg:py-2 text-green-600 bg-green-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 mr-2">
+                    Público
+                </a>
             </li>
             <li class="border-top-1 surface-border lg:border-top-none"><a pripple=""
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><img
@@ -52,3 +52,90 @@
         </ul>
     </div>
 </div>
+
+<!--DIALOG PETICIONES-->
+<p-dialog header="Peticiones de amistad" [modal]="true" [(visible)]="visiblePeticiones" [position]="'top'"
+    [style]="{ width: '50rem' }">
+
+    <p-accordion [activeIndex]="0">
+        <p-accordionTab header="Peticiones Pendientes">
+            <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+                <div class="flex">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+                </div>
+                <div class="flex">
+                    <button pButton label="Denegar" class="p-button-danger"></button>
+                    <button pButton label="Aceptar" class="p-button-success ml-2"></button>
+                </div>
+            </div>
+            <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+                <div class="flex">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+                </div>
+                <div class="flex">
+                    <button pButton label="Denegar" class="p-button-danger"></button>
+                    <button pButton label="Aceptar" class="p-button-success ml-2"></button>
+                </div>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Todas las Peticiones">
+            <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+                <div class="flex">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+                </div>
+                <div class="flex">
+                    <button pButton label="Aceptada" class="p-button-success" [disabled]="true"></button>
+                </div>
+            </div>
+            <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+                <div class="flex">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+                </div>
+                <div class="flex">
+                    <button pButton label="Denegada" class="p-button-danger" [disabled]="true"></button>
+                </div>
+            </div>
+            <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+                <div class="flex">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                        class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+                </div>
+                <div class="flex">
+                    <button pButton label="Denegada" class="p-button-danger" [disabled]="true"></button>
+                </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
+</p-dialog>
+
+
+<!--DIALOG AMIGOS-->
+<p-dialog header="Amigos" [modal]="true" [(visible)]="visibleAmigos" [position]="'top'"
+    [style]="{ width: '50rem' }">
+    <div class="p-4">
+        <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+            <div class="flex">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                    class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+            </div>
+            <div class="flex">
+                <button pButton label="Borrar" class="p-button-danger"></button>
+                <button pButton label="Ver Perfil" class="ml-2"></button>
+            </div>
+        </div>
+        <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
+            <div class="flex">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                    class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+            </div>
+            <div class="flex">
+                <button pButton label="Borrar" class="p-button-danger"></button>
+                <button pButton label="Ver Perfil" class="ml-2"></button>
+            </div>
+        </div>
+    </div>
+</p-dialog>

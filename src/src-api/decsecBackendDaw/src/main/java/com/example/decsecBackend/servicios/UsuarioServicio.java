@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.example.decsecBackend.dtos.UsuarioDTO;
+import com.example.decsecBackend.dtos.UsuarioSearchDTO;
 import com.example.decsecBackend.modelo.Usuario;
 
 public interface UsuarioServicio {
@@ -30,4 +31,6 @@ public interface UsuarioServicio {
 	Usuario actualizarUsuario(Long id, Map<String, Object> updates);
 
 	Boolean usuarioPrivado(String email);
+
+	public List<UsuarioSearchDTO> listarTodosUsuariosSearchDTO();
 }

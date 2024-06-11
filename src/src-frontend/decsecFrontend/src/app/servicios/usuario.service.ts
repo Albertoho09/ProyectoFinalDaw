@@ -47,6 +47,16 @@ export class UsuarioService {
 
     return this.http.get<any>(this.baseURL, {headers:headers});
   }
+
+  obtenerUsuariosSearch(){
+    const accessToken = this.serviciotoken.getToken();
+
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer '+accessToken
+    })
+    return this.http.get<any>(this.baseURL+'/search', {headers:headers});
+  }
+  
   validarEmail(email:String) {
      return this.http.get<boolean>(this.baseURLAUTH+'/validar-email?email=' + email);
   }

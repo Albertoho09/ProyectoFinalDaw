@@ -24,6 +24,12 @@ export interface usuarioAdmin {
     roles: Array<String>;
     foto: Imagen;
 }
+
+export interface usuarioSearch {
+    nick: string;
+    foto: Imagen;
+}
+
 interface Imagen {
     id: number;
     nombre: string;

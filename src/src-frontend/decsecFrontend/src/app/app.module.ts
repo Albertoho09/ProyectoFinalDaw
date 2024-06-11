@@ -23,6 +23,9 @@ import { AvatarModule } from 'primeng/avatar';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ImageModule } from 'primeng/image';
+import { AccordionModule } from 'primeng/accordion';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -83,8 +86,10 @@ import { MegustaComponent } from './componentes/megusta/megusta.component';
     InputSwitchModule,
     GalleriaModule,
     ImageModule,
+    AutoCompleteModule,
     CardModule,
     TagModule,
+    AccordionModule,
     HttpClientModule,
     PasswordModule,
     CalendarModule,
