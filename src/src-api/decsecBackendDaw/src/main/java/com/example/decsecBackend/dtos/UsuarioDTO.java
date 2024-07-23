@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.example.decsecBackend.modelo.Imagen;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 
@@ -24,6 +25,10 @@ public class UsuarioDTO {
 
 	private int npublicaciones;
 
+	private Imagen fotoperfil;
+
+	private Imagen banner;
+
 	private Set<Role> roles = new HashSet<>();
 
 	public UsuarioDTO(Usuario usu) {
@@ -34,6 +39,7 @@ public class UsuarioDTO {
 		this.fechaNac = usu.getFechaNac();
 		this.roles = usu.getRoles();
 		this.npublicaciones = usu.getPublicaciones().size();
+		this.banner = usu.getBanner();
+		this.fotoperfil = usu.getFoto();
 	}
-
 }

@@ -9,10 +9,14 @@ import com.example.decsecBackend.modelo.Usuario;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
+
     Optional<Usuario> findByEmail(String email);
 
     @SuppressWarnings("null")
     Optional<Usuario> findById(Long id);
 
+    Optional<Usuario> findByNick(String nick);
+
     Boolean existsByEmail(String email);
+
 }

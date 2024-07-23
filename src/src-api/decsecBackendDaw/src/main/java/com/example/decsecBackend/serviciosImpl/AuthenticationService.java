@@ -29,7 +29,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy",
+            Locale.ENGLISH);
 
     // Constructor para inyección de dependencias (si usas Spring)
     public AuthenticationService(UsuarioServicioImpl servicio,
@@ -42,7 +43,8 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public JwtAuthenticationResponse signup(SignUpRequest request, MultipartFile imagen) throws java.io.IOException{
+    public JwtAuthenticationResponse signup(SignUpRequest request, MultipartFile imagen,
+            MultipartFile banner) throws java.io.IOException {
 
         if (usuarioservicio.existePorEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email already in use.");
@@ -59,6 +61,11 @@ public class AuthenticationService {
             Imagen img = new Imagen(imagen.getOriginalFilename(), imagen.getContentType(), imagen.getBytes());
             imagenRepositorio.save(img);
             user.setFoto(img);
+        }
+        if (banner != null) {
+            Imagen bannerimg = new Imagen(banner.getOriginalFilename(), banner.getContentType(), banner.getBytes());
+            imagenRepositorio.save(bannerimg);
+            user.setBanner(bannerimg);
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.getRoles().add(Role.ROLE_USER); // Asegúrate de que Role.USER esté definido correctamente

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { usuarioAdmin, usuarioSearch } from '../../interfaces/Usuario';
+import { usuarioSesion, usuarioSearch } from '../../interfaces/Usuario';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -20,10 +20,10 @@ export class PrincipalComponent implements OnInit {
   selectedusuariosSearchAdvanced: any | undefined;
 
   filteredusuariosSearch: any[] = [];
-  
-  usuario!: usuarioAdmin;
 
-  constructor(private usuarioService: UsuarioService,private messageService: MessageService, private router: Router) { }
+  usuario!: usuarioSesion;
+
+  constructor(private usuarioService: UsuarioService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.usuarioService.obtenerUsuariosSearch().subscribe((usuariosSearch) => {
@@ -36,28 +36,28 @@ export class PrincipalComponent implements OnInit {
     let query = event.query;
 
     for (let i = 0; i < (this.usuariosSearch as any[]).length; i++) {
-        let country = (this.usuariosSearch as any[])[i];
-        if (country.nick.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-            filtered.push(country);
-        }
+      let country = (this.usuariosSearch as any[])[i];
+      if (country.nick.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
     }
 
     this.filteredusuariosSearch = filtered;
-  } 
+  }
 
   buscarUsuario() {
     if (this.selectedusuariosSearchAdvanced && this.selectedusuariosSearchAdvanced.hasOwnProperty('nick')) {
-        this.router.navigate(['/user/perfil', this.selectedusuariosSearchAdvanced.nick]);    
+      this.router.navigate(['/user/perfil', this.selectedusuariosSearchAdvanced.nick]);
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Usuario no encontrado: '+ this.selectedusuariosSearchAdvanced });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Usuario no encontrado: ' + this.selectedusuariosSearchAdvanced });
     }
   }
 
   visitarPerfil() {
     const usuarioStr = sessionStorage.getItem('currentUser');
-    if (usuarioStr){
+    if (usuarioStr) {
       const usuario = JSON.parse(usuarioStr);
-      this.router.navigate(['/user/perfil', usuario.nick]);    
+      this.router.navigate(['/user/perfil', usuario.nick]);
     }
   }
 

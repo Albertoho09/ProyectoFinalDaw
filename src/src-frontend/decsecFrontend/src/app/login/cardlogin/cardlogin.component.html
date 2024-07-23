@@ -4,7 +4,8 @@
         <section>
             <span class="block text-6xl font-bold mb-1 text-center">Bienvenido</span>
             <div class="text-3xl text-primary font-bold mb-3 text-center">Inicia Sesión</div>
-            <p class="mt-0 mb-4 text-700 line-height-3">Para poder entrar a la consola de administrador será necesario que ingrese su correo y contraseña.</p>
+            <p class="mt-0 mb-4 text-700 line-height-3">Para poder entrar a la consola de administrador será necesario
+                que ingrese su correo y contraseña.</p>
             <form (submit)="iniciarSesion()">
                 <label for="email" class="block text-900 font-medium mb-2">Correo</label>
                 <input pInputText id="email" type="text" placeholder="Correo Electronico" class="w-full mb-3"
@@ -52,7 +53,7 @@
         </div>
     </div>
     <form [formGroup]="usuarioForm" (ngSubmit)="registrarUsuario()">
-        <div class="grid formgrid p-fluid p-5">
+        <div class="grid formgrid p-fluid p-5 pt-0">
             <div class="field col-12">
                 <label for="email">Correo Electrónico</label>
                 <input pInputText id="email" class="form-control" formControlName="email" (blur)="validarEmail()" />
@@ -80,6 +81,16 @@
             <div class="field col-12">
                 <label for="fechaNac">Fecha de Nacimiento</label>
                 <p-calendar [showIcon]="true" inputId="fechaNac" formControlName="fechaNac"></p-calendar>
+            </div>
+            <div class="field col-12">
+                <b>Banner</b>
+                <p>Para la elección del banner se recomienda una imagen con la siguiente relación (21:9)</p>
+                <img class="imagenBanner" [src]="imagenBanner" alt="imagen Banner">
+                <div class="flex justify-content-end mt-2">
+                    <p-fileUpload mode="basic" name="foto" url="https://www.primefaces.org/cdn/api/upload.php"
+                        accept="image/*" chooseLabel="Elegir" class="ml-3" (onUpload)="onUploadBanner($event)"
+                        [auto]="true"></p-fileUpload>
+                </div>
             </div>
             <div class="field col-12 md:col-6 flex justify-content-center align-items-center flex-wrap">
                 <label class="mr-3">Foto de perfil</label>

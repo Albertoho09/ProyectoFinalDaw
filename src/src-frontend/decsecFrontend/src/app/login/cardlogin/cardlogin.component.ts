@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Usuario, SignUpRequest, usuarioAdmin } from '../../interfaces/Usuario';
+import { Usuario, SignUpRequest, usuarioSesion } from '../../interfaces/Usuario';
 import { AuthServiceService } from '../../servicios/auth-service.service';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { FileUploadEvent } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-cardlogin',
@@ -23,7 +24,9 @@ export class CardloginComponent implements OnInit {
   usu!: Usuario;
   usuario!: SignUpRequest;
   file!: File;
+  filebanner!: File;
   imagenURL: string = "https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png";
+  imagenBanner: string = "https://i.pinimg.com/736x/88/eb/a5/88eba554eb141ad1bc126daaab018594.jpg";
   usuarioForm!: FormGroup;
   emailRepetido = false;
   constructor(private router: Router, private formBuilder: FormBuilder, private messageService: MessageService, private usuariService: UsuarioService) { }
@@ -46,6 +49,20 @@ export class CardloginComponent implements OnInit {
 
 
   get f() { return this.usuarioForm.controls; }
+
+  onUploadBanner(event: any) {
+    this.filebanner = event.files[0];
+    if (this.filebanner) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenBanner = reader.result as string;
+      };
+      reader.readAsDataURL(this.filebanner);
+    }
+    console.log(this.filebanner);
+    console.log(this.imagenBanner);
+  }
+
 
   onUpload(event: any) {
     this.file = event.files[0];
@@ -72,7 +89,7 @@ export class CardloginComponent implements OnInit {
 
   registrarUsuario() {
     const socio = this.usuarioForm.value as unknown as SignUpRequest;
-    this.usuariService.crearUsuario(socio, this.file).subscribe(
+    this.usuariService.crearUsuario(socio, this.file, this.filebanner).subscribe(
       response => {
         console.log('Respuesta del servidor:', response);
       },

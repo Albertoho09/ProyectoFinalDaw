@@ -32,5 +32,9 @@ public interface UsuarioServicio {
 
 	Boolean usuarioPrivado(String email);
 
+	UsuarioDTO obtenerPorNick(String nick);
+
+	Boolean existePorNick(String nick);
+
 	public List<UsuarioSearchDTO> listarTodosUsuariosSearchDTO();
 }

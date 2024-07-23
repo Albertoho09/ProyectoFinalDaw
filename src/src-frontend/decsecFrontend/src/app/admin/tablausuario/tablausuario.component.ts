@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../servicios/usuario.service';
-import { usuarioAdmin } from '../../interfaces/Usuario';
+import { usuarioSesion } from '../../interfaces/Usuario';
 
 @Component({
   selector: 'app-tablausuario',
@@ -9,7 +9,7 @@ import { usuarioAdmin } from '../../interfaces/Usuario';
 })
 export class TablausuarioComponent implements OnInit {
 
-  usuarios!: usuarioAdmin[];
+  usuarios!: usuarioSesion[];
 
   constructor(private servicio: UsuarioService) { }
 

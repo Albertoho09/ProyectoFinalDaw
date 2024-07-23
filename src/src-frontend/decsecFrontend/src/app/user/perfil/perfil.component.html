@@ -9,31 +9,38 @@
             <div>
                 <div class="mb-3 surface-card shadow-3 flex align-items-center justify-content-center"
                     style="width: 140px; height: 140px; border-radius: 10px;">
-                    <img src="https://i.pinimg.com/736x/37/10/e1/3710e1d3ec4b8c8bca3b622aa07a34ba.jpg" alt="Image" class="w-100 h-100 border-round">
+                    <img src="https://i.pinimg.com/736x/37/10/e1/3710e1d3ec4b8c8bca3b622aa07a34ba.jpg" alt="Image"
+                        class="w-100 h-100 border-round">
                 </div>
-                <div class="text-900 text-3xl font-medium mb-3">Company Name</div>
-                <p class="mt-0 mb-3 text-700 text-xl">Vitae tortor condimentum lacinia quis vel eros.
+                <div class="text-900 text-3xl font-medium mb-3">{{usuarioPerfil.nick}}</div>
+                <p class="mt-0 mb-3 text-700 text-xl">{{usuarioPerfil.nombre+' '+usuarioPerfil.apellidos}}
                 </p>
-                <div class="text-600 font-medium"><span>Software | USA | 15523 Followers</span></div>
+                <div class="text-600 font-medium"><span>{{usuarioPerfil.email}} | {{usuarioPerfil.fechaNac}} |
+                        {{usuarioPerfil.npublicaciones}} Publicaciones</span></div>
 
             </div>
-            <div class="mt-3 lg:mt-0"><button pbutton="" pripple="" label="Follow" icon="pi pi-plus-circle"
-                    class="p-element p-ripple p-button-outlined mr-2 p-button p-component"><span
-                        class="p-button-icon p-button-icon-left pi pi-plus-circle" aria-hidden="true"></span><span
-                        class="p-button-label">Follow</span><span class="p-ink"
-                        style="height: 116px; width: 116px; top: -21.5px; left: 21.375px;"></span></button><button
-                    pbutton="" pripple="" label="Website" icon="pi pi-link"
-                    class="p-element p-ripple mr-2 p-button p-component"><span
-                        class="p-button-icon p-button-icon-left pi pi-link" aria-hidden="true"></span><span
-                        class="p-button-label">Website</span><span class="p-ink"
-                        style="height: 127px; width: 127px; top: -33px; left: 32.1406px;"></span></button><button
-                    pbutton="" pripple="" icon="pi pi-ellipsis-v"
-                    class="p-element p-ripple p-button-outlined p-button-rounded p-button p-component p-button-icon-only"><span
-                        class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span class="p-ink"
-                        style="height: 48px; width: 48px; top: 5.5px; left: 6px;"></span></button>
+            <div class="mt-3 lg:mt-0">
+
+                <div *ngIf="usuarioPerfil.email == usuarioSesion.email; else elseBlock">
+                    <button pbutton="" pripple="" icon="pi pi-ellipsis-v"
+                        class="p-element p-ripple p-button-outlined p-button p-component">Editar<span
+                            class="p-button-icon pi pi-pencil ml-2" aria-hidden="true"></span><span class="p-ink"
+                            style="height: 48px; width: 48px; top: 5.5px; left: 6px;"></span></button>
+                </div>
+                <ng-template #elseBlock>
+                    <button pbutton="" pripple="" label="Follow" icon="pi pi-plus-circle"
+                        class="p-element p-ripple p-button-outlined mr-2 p-button p-component"><span
+                            class="p-button-icon p-button-icon-left pi pi-plus-circle" aria-hidden="true"></span><span
+                            class="p-button-label">Agregar</span><span class="p-ink"
+                            style="height: 116px; width: 116px; top: -21.5px; left: 21.375px;"></span></button>
+                    <button pbutton="" pripple="" label="Website" icon="pi pi-link"
+                        class="p-element p-ripple mr-2 p-button p-component"><span
+                            class="p-button-icon p-button-icon-left pi pi-send" aria-hidden="true"></span><span
+                            class="p-button-label">Enviar Solicitud</span><span class="p-ink"
+                            style="height: 127px; width: 127px; top: -33px; left: 32.1406px;"></span></button>
+                </ng-template>
             </div>
         </div>
-
 
         <!--AVISO DE USUARIO PRIVADO-->
         <!--<div class="flex justify-content-center">
@@ -57,7 +64,7 @@
                         class="p-ripple p-element appearance-none border-1 border-left-none border-round-right surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"><i
                             class="text-600">Me gustan</i><span class="p-ink"></span></button></span>
             </div>
-            
+
             <!--LISTAR APARTADO 'MIS PUBLICACIONES'-->
             <div class="m-2">
                 <app-publicacion-card></app-publicacion-card>
@@ -66,8 +73,8 @@
                 <app-publicacion-card></app-publicacion-card>
             </div>
 
-        <!--LISTAR APARTADO 'MEDIA'-->
-<!--             <div class="flex justify-content-evenly flex-wrap">
+            <!--LISTAR APARTADO 'MEDIA'-->
+            <!--             <div class="flex justify-content-evenly flex-wrap">
                 <div class="mb-4" *ngFor="let imagen of imagenes">
                     <div class="contenedor-imagen m-1">
                         <img [src]="imagen" class="imagen-cuadrada">

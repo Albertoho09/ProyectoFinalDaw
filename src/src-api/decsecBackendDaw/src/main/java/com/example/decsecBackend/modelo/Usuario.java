@@ -50,8 +50,11 @@ public class Usuario implements UserDetails {
 
 	private Boolean privado;
 
-    @OneToOne
-    private Imagen foto;
+	@OneToOne
+	private Imagen foto;
+
+	@OneToOne
+	private Imagen banner;
 
 	@Column(unique = true)
 	private String email;

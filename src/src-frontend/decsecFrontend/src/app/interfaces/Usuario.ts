@@ -1,3 +1,5 @@
+import { publicacionAdmin } from "./Publicacion";
+
 export interface Usuario {
     email: string;
     password: string;
@@ -13,7 +15,7 @@ export interface SignUpRequest {
     privado: Boolean;
 }
 
-export interface usuarioAdmin {
+export interface usuarioSesion {
     nick: string;
     nombre: string;
     apellidos: string;
@@ -24,6 +26,20 @@ export interface usuarioAdmin {
     roles: Array<String>;
     foto: Imagen;
 }
+
+export interface usuarioPerfil {
+    nick: string;
+    nombre: string;
+    apellidos: string;
+    email: string;
+    fechaNac: Date;
+    privado: Boolean;
+    npublicaciones: number;
+    roles: Array<String>;
+    fotoperfil: Imagen;
+    banner: Imagen;
+}
+
 
 export interface usuarioSearch {
     nick: string;

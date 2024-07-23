@@ -25,19 +25,21 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
-	@Autowired
-	private UsuarioServicioImpl usuarioservice;
+    @Autowired
+    private UsuarioServicioImpl usuarioservice;
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestPart("usuario") String usuario,
-                                                            @RequestPart(value = "imagen", required = false) MultipartFile imagen) {
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen,
+            @RequestPart(value = "banner", required = false) MultipartFile banner) {
         SignUpRequest request;
         try {
             request = new Gson().fromJson(usuario, SignUpRequest.class);
-            return ResponseEntity.ok(authenticationService.signup(request, imagen));
+            return ResponseEntity.ok(authenticationService.signup(request, imagen, banner));
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -50,11 +52,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("/validar-email")
-	public Boolean postMethodName(@RequestParam String email) {		
-		if (usuarioservice.existePorEmail(email)) {
-			return true;
-		}
-		return false;
-	}
-	
+    public Boolean postMethodName(@RequestParam String email) {
+        if (usuarioservice.existePorEmail(email)) {
+            return true;
+        }
+        return false;
+    }
+
 }

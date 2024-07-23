@@ -18,46 +18,57 @@ export class UsuarioService {
     })
   };
 
-  registroUsuario(usuario:Usuario){
-    return this.http.post<any>(this.baseURLAUTH+'/signin', usuario);
+  registroUsuario(usuario: Usuario) {
+    return this.http.post<any>(this.baseURLAUTH + '/signin', usuario);
   }
 
-  obtenerUsuarioToken(){
+  obtenerUsuarioToken() {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
-      'Authorization': 'Bearer '+accessToken
+      'Authorization': 'Bearer ' + accessToken
     })
-    return this.http.get<any>(this.baseURL+"/token", {headers:headers});
+    return this.http.get<any>(this.baseURL + "/token", { headers: headers });
   }
 
-  crearUsuario(datos: SignUpRequest, fotoPerfil:File) {
+  crearUsuario(datos: SignUpRequest, fotoPerfil: File, banner: File) {
     const formData = new FormData();
     formData.append('usuario', JSON.stringify(datos));
     formData.append('imagen', fotoPerfil);
-    return this.http.post<any>(this.baseURLAUTH+'/signup', formData);
+    formData.append('banner', banner);
+    return this.http.post<any>(this.baseURLAUTH + '/signup', formData);
   }
 
-  obtenerUsuarios(){
+  obtenerUsuarios() {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
-      'Authorization': 'Bearer '+accessToken
+      'Authorization': 'Bearer ' + accessToken
     })
 
-    return this.http.get<any>(this.baseURL, {headers:headers});
+    return this.http.get<any>(this.baseURL, { headers: headers });
   }
 
-  obtenerUsuariosSearch(){
+  ObtenerUsuarioNick(nick: string) {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
-      'Authorization': 'Bearer '+accessToken
+      'Authorization': 'Bearer ' + accessToken
     })
-    return this.http.get<any>(this.baseURL+'/search', {headers:headers});
+
+    return this.http.get<any>(`${this.baseURL}/nick/${nick}`, { headers: headers });
   }
-  
-  validarEmail(email:String) {
-     return this.http.get<boolean>(this.baseURLAUTH+'/validar-email?email=' + email);
+
+  obtenerUsuariosSearch() {
+    const accessToken = this.serviciotoken.getToken();
+
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    })
+    return this.http.get<any>(this.baseURL + '/search', { headers: headers });
+  }
+
+  validarEmail(email: String) {
+    return this.http.get<boolean>(this.baseURLAUTH + '/validar-email?email=' + email);
   }
 }

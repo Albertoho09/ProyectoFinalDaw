@@ -23,8 +23,7 @@ import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
-
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -47,7 +46,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> listarUsuariosSearch(
 			@AuthenticationPrincipal Usuario usuario) {
-			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosSearchDTO());
+		return ResponseEntity.ok(usuarioservice.listarTodosUsuariosSearchDTO());
 	}
 
 	@GetMapping("/{id}")
@@ -74,12 +73,14 @@ public class UserController {
 			if (usuarioservice.existePorEmail(usuario.getEmail())) {
 				return ResponseEntity.ok(usuarioservice.encontrarPorEmail(usuario.getEmail()));
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con email:" + usuario.getEmail() + " no existe");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("El usuario con email:" + usuario.getEmail() + " no existe");
 		} else {
 			if (usuarioservice.existePorEmail(usuario.getEmail())) {
 				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.encontrarPorEmail(usuario.getEmail())));
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con email:" + usuario.getEmail() + " no existe");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("El usuario con email:" + usuario.getEmail() + " no existe");
 		}
 	}
 
@@ -124,5 +125,14 @@ public class UserController {
 				updates));
 	}
 
+	@GetMapping("/nick/{nick}")
+	public ResponseEntity<?> devolverUsuarioNick(@PathVariable String nick,
+			@AuthenticationPrincipal Usuario usuario) {
+		if (usuarioservice.existePorNick(nick)) {
+			return ResponseEntity.ok(usuarioservice.obtenerPorNick(nick));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con nick:" + nick + " no existe");
+		}
+	}
 
 }

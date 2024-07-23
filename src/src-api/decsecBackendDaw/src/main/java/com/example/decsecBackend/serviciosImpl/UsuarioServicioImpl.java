@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.print.DocFlavor.READER;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -59,7 +61,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 				.map(usuario -> new UsuarioDTO(usuario))
 				.collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public List<UsuarioSearchDTO> listarTodosUsuariosSearchDTO() {
 		return repositorio.findAll().stream()
@@ -132,6 +134,19 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public UsuarioDTO obtenerPorNick(String nick) {
+		return new UsuarioDTO(
+				repositorio.findByNick(nick).orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+	}
+
+	@Override
+	public Boolean existePorNick(String nick) {
+		UsuarioDTO usuario = new UsuarioDTO(repositorio.findByNick(nick)
+				.orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+		return existePorEmail(usuario.getEmail());
 	}
 
 }
