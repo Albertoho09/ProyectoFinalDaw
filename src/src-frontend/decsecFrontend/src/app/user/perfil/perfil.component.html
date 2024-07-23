@@ -1,6 +1,8 @@
 <div class="m-5">
-    <div style="height: 200px; background: url('https://a-static.besthdwallpaper.com/city-and-neon-colors-wallpaper-1600x600-85366_84.jpg') no-repeat; background-size: cover;
-        border-top-left-radius: 1.5cap; border-top-right-radius: 1.5cap;">
+    <div
+        [style]="'background: url(' + (usuarioPerfil.banner ? 'data:' + usuarioPerfil.banner.tipo + ';base64,'
+         + usuarioPerfil.banner.datos : 'assets/icono/default-banner.jpg')
+          + ')center center;height: 200px; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; background-size: cover;'">
     </div>
     <div class="px-4 py-5 md:px-6 lg:px-8 surface-card"
         style="border-bottom-left-radius: 1.5cap; border-bottom-right-radius: 1.5cap;">
@@ -9,8 +11,8 @@
             <div>
                 <div class="mb-3 surface-card shadow-3 flex align-items-center justify-content-center"
                     style="width: 140px; height: 140px; border-radius: 10px;">
-                    <img src="https://i.pinimg.com/736x/37/10/e1/3710e1d3ec4b8c8bca3b622aa07a34ba.jpg" alt="Image"
-                        class="w-100 h-100 border-round">
+                    <img [src]="usuarioPerfil.fotoperfil ? 'data:' + usuarioPerfil.fotoperfil.tipo + ';base64,' + usuarioPerfil.fotoperfil.datos : 'assets/icono/userDefault.png'"
+                        alt="Image" class="w-100 h-100 border-round">
                 </div>
                 <div class="text-900 text-3xl font-medium mb-3">{{usuarioPerfil.nick}}</div>
                 <p class="mt-0 mb-3 text-700 text-xl">{{usuarioPerfil.nombre+' '+usuarioPerfil.apellidos}}
