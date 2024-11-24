@@ -1,6 +1,7 @@
 package com.example.decsecBackend.dtos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.decsecBackend.modelo.Imagen;
@@ -23,9 +24,11 @@ public class PublicacionDTO {
 
     private int megusta = 0;
 
-    private LocalDate fechaPublicacion;
+    private LocalDateTime fechaPublicacion;
 
-    private String emailUsuario;
+    private String nick;
+
+    private Imagen fotoPerfil;
 
     public PublicacionDTO(Publicacion publi) {
         this.id = publi.getId();
@@ -33,6 +36,7 @@ public class PublicacionDTO {
         this.comentarioUsuario = publi.getComentarioUsuario();
         this.megusta = publi.getMegusta();
         this.fechaPublicacion = publi.getFechaPublicacion();
-        this.emailUsuario = publi.getUsuario().getEmail();
+        this.nick = publi.getUsuario().getNick();
+        this.fotoPerfil = publi.getUsuario().getFoto();
     }
 }

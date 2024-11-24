@@ -3,6 +3,8 @@ import { usuarioSesion, usuarioSearch } from '../../interfaces/Usuario';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { PublicacionService } from '../../servicios/publicacion.service';
+import { Publicacion } from '../../interfaces/Publicacion';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -17,18 +19,32 @@ export class PrincipalComponent implements OnInit {
 
   usuariosSearch: usuarioSearch[] | undefined;
 
+  publicacionesFeed: Publicacion[] | undefined;
+
+
   selectedusuariosSearchAdvanced: any | undefined;
 
   filteredusuariosSearch: any[] = [];
 
   usuario!: usuarioSesion;
 
-  constructor(private usuarioService: UsuarioService, private messageService: MessageService, private router: Router) { }
+  constructor(private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.usuarioService.obtenerUsuariosSearch().subscribe((usuariosSearch) => {
       this.usuariosSearch = usuariosSearch;
     });
+
+    this.publicacionesService.obtenerPublicacionesFeed().subscribe((publicacionesFeed) => {
+      this.publicacionesFeed = publicacionesFeed;
+      console.log(this.publicacionesFeed);
+    });
+
+    this.usuarioService.obtenerUsuarioToken().subscribe(
+      (data) => {
+        this.usuario = data
+      }
+    )
   }
 
   filterCountry(event: AutoCompleteCompleteEvent) {

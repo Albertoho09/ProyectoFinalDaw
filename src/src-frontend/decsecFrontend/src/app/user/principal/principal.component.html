@@ -7,10 +7,8 @@
                 <h3>Tu Feed</h3>
                 <i class="pi pi-arrow-down ml-3" style="font-size: 2rem"></i>
             </div>
-            <app-publicacion-card></app-publicacion-card>
-            <app-publicacion-card></app-publicacion-card>
-            <app-publicacion-card></app-publicacion-card>
-            <app-publicacion-card></app-publicacion-card>
+            <app-publicacion-card *ngFor="let publicacion of publicacionesFeed"
+                [publicacion]="publicacion"></app-publicacion-card>
         </div>
     </div>
     <div class="col-4">
@@ -45,7 +43,7 @@
                                 </ng-template>
                             </p-autoComplete>
                         </span>
-                        <p-button label="Buscar" class="ml-2" (onClick)="buscarUsuario()" ></p-button>
+                        <p-button label="Buscar" class="ml-2" (onClick)="buscarUsuario()"></p-button>
                     </div>
                 </div>
             </div>

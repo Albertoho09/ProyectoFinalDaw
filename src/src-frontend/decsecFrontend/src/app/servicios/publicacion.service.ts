@@ -10,21 +10,31 @@ export class PublicacionService {
   private baseURL = 'http://localhost:8081/api/v1/publicaciones';
   constructor(private serviciotoken: AuthServiceService, private http: HttpClient) { }
 
-  obtenerPublicaciones(){
+  obtenerPublicaciones() {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
-      'Authorization': 'Bearer '+accessToken
+      'Authorization': 'Bearer ' + accessToken
     })
 
-    return this.http.get<any>(this.baseURL, {headers:headers});
+    return this.http.get<any>(this.baseURL, { headers: headers });
   }
 
-  crearPublicacion(datos: publicacionForm, fotoPerfil:File[]) {
+  obtenerPublicacionesFeed() {
+    const accessToken = this.serviciotoken.getToken();
+
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    })
+
+    return this.http.get<any>(this.baseURL + '/publicacionesFeed', { headers: headers });
+  }
+
+  crearPublicacion(datos: publicacionForm, fotoPerfil: File[]) {
     const accessToken = this.serviciotoken.getToken();
     const usuario = sessionStorage.getItem('currentUser');
     let headers = new HttpHeaders({
-      'Authorization': 'Bearer '+accessToken
+      'Authorization': 'Bearer ' + accessToken
     })
     console.log(fotoPerfil);
     const formData = new FormData();
@@ -32,6 +42,6 @@ export class PublicacionService {
     fotoPerfil.forEach((foto, index) => {
       formData.append(`imagen_${index}`, foto);
     });
-    return this.http.post<any>(this.baseURL, formData, {headers:headers});
+    return this.http.post<any>(this.baseURL, formData, { headers: headers });
   }
 }

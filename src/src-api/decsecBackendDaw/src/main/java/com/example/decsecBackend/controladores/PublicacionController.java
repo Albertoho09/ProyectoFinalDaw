@@ -33,7 +33,7 @@ import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/v1/publicaciones")
 public class PublicacionController {
@@ -74,11 +74,24 @@ public class PublicacionController {
             }
         }
     }
+
+    @GetMapping("/publicacionesFeed")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<?> listarPublicacionesFeed(@AuthenticationPrincipal Usuario usuario) {
+        try {
+            logger.info("##### LISTANDO PUBLICACIONES FEED (USUARIO) #####");
+            return ResponseEntity.ok(publicacionService.listarPublicacionesdFeed(usuario.getId()));
+        } catch (Exception e) {
+            logger.error("Error al listar publicaciones feed: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al listar las publicaciones.");
+        }
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
     public ResponseEntity<?> crearPubli(@RequestPart("publicacion") String publicacion,
-                                        @RequestParam(required = false) Map<String, MultipartFile> imagenes,
-                                        @AuthenticationPrincipal Usuario usuario) {
+            @RequestParam(required = false) Map<String, MultipartFile> imagenes,
+            @AuthenticationPrincipal Usuario usuario) {
         PublicacionDTOrequest publi;
         try {
             publi = new Gson().fromJson(publicacion, PublicacionDTOrequest.class);
@@ -88,7 +101,6 @@ public class PublicacionController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -130,15 +142,15 @@ public class PublicacionController {
     @PostMapping("darmegusta/{id}")
     public ResponseEntity<?> darMegusta(@PathVariable(required = true) Long id,
             @AuthenticationPrincipal Usuario usuario) {
-                publicacionService.megusta(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Has indicado que te gusta la publicacion");
+        publicacionService.megusta(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Has indicado que te gusta la publicacion");
     }
 
     @PostMapping("quitarmegusta/{id}")
     public ResponseEntity<?> quitarMegusta(@PathVariable(required = true) Long id,
             @AuthenticationPrincipal Usuario usuario) {
-                publicacionService.noMegusta(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Has indicado que no te gusta la publicacion");
+        publicacionService.noMegusta(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Has indicado que no te gusta la publicacion");
     }
 
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.decsecBackend.dtos.PublicacionDTO;
-import com.example.decsecBackend.modelo.Publicacion;
 
 public interface PublicacionServicio {
 
@@ -14,7 +13,7 @@ public interface PublicacionServicio {
 
     PublicacionDTO listarPublicacionPorId(Long id);
 
-    List<Publicacion> listarPublicacionesdFeed(Long id);
+    List<PublicacionDTO> listarPublicacionesdFeed(Long id);
 
     void borrarPublicacion(Long id);
 

@@ -1,6 +1,7 @@
 package com.example.decsecBackend.modelo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -27,14 +28,14 @@ public class Publicacion {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Imagen.class)
-    private List<Imagen> imagenes = new ArrayList<>();
+	private List<Imagen> imagenes = new ArrayList<>();
 
 	@NotNull
 	private String comentarioUsuario;
 
 	private int megusta = 0;
 
-	private LocalDate fechaPublicacion;
+	private LocalDateTime fechaPublicacion;
 
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)

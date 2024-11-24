@@ -2,28 +2,32 @@
     <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
         <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
         <div class="px-2 surface-card z-1 flex align-items-center">
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
-                class="flex align-items-center" />
+            <p-avatar
+                [image]="publicacion.fotoPerfil ? 'data:' + publicacion.fotoPerfil.tipo + ';base64,' + publicacion.fotoPerfil.datos : 'assets/icono/userDefault.png'"
+                shape="circle" class="flex align-items-center" />
             <span class="font-bold text-900 white-space-nowrap ml-2">
-                Preachingfire3
+                {{publicacion.nick}}
             </span>
         </div>
         <div class="px-2 z-1 surface-card flex align-items-center">
             <div class="flex">
-                <span>Hace 2 dias</span>
+                <span class="text-900">{{ getTiempoTranscurrido() }}</span>
             </div>
         </div>
     </div>
     <div class="text-600 m-3">
-        <p> La vida pirata la vida mejor 🦜🏴‍☠️☠️</p>
+        <p>{{publicacion.comentarioUsuario}}</p>
     </div>
-    <!--<img src="assets/fondo/screenshot.png" class="w-100 h-auto border-round">-->
 
-    <p-galleria [value]="images" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false"
-        [showIndicators]="false" [showItemNavigatorsOnHover]="true" [responsiveOptions]="responsiveOptions"
-        [containerStyle]="{ 'width': '100%','height': 'auto' }">
+    <p-galleria *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0" [value]="publicacion.imagenes"
+        [circular]="true" [showIndicators]="publicacion.imagenes.length > 1" [showThumbnails]="false"
+        [showIndicatorsOnItem]="true" [responsiveOptions]="responsiveOptions">
         <ng-template pTemplate="item" let-imagen>
-            <img [src]="imagen.url" class="custom-image-style" [ngStyle]="{'width': '100%', 'height': 'auto'}">
+            <div [ngStyle]="{'height': '30rem', 'width': '50rem','overflow':'hidden','background-color': 'black', 'border-radius': '10px'}"
+                class="flex justify-content-center align-content-center">
+                <img [src]="'data:' + imagen.tipo + ';base64,' + imagen.datos"
+                    style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
         </ng-template>
     </p-galleria>
 
@@ -39,25 +43,37 @@
 
 <!--DIALOG DE COMENTARIO-->
 <p-dialog [(visible)]="visible" [modal]="true" [header]="'Detalles de la publicación'"
-    [style]="{ width: '90%', height: '80%' }" [draggable]="false" [resizable]="false">
+    [style]="{ width: '90rem', height: '60rem' }" [draggable]="false" [resizable]="false">
     <div class="grid nested-grid" style="height: 100%;">
-        <div class="col-8" style="background-color: black; height: 100%;">
-            <!-- Contenido de la columna negra -->
+        <div class="col-8 p-0" style="background-color: black; height: 100%;">
+            <p-galleria *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0" [value]="publicacion.imagenes"
+                [circular]="true" [showIndicators]="publicacion.imagenes.length > 1" [showThumbnails]="false"
+                [showIndicatorsOnItem]="true" [responsiveOptions]="responsiveOptions"
+                [containerStyle]="{'height': '100%'}">
+                <ng-template pTemplate="item" let-imagen>
+                    <div [ngStyle]="{'overflow':'hidden','background-color': 'black', 'border-radius': '10px'}"
+                        class="flex justify-content-center align-content-center">
+                        <img [src]="'data:' + imagen.tipo + ';base64,' + imagen.datos"
+                            style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </ng-template>
+            </p-galleria>
         </div>
         <div class="col-4 p-3 flex flex-column justify-content-between">
             <div>
                 <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
                     <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
                     <div class="px-2 z-1 surface-section flex align-items-center">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                        <p-avatar
+                            [image]="publicacion.fotoPerfil ? 'data:' + publicacion.fotoPerfil.tipo + ';base64,' + publicacion.fotoPerfil.datos : 'assets/icono/userDefault.png'"
                             shape="circle" class="flex align-items-center" />
                         <span class="font-bold text-900 white-space-nowrap ml-2">
-                            Preachingfire3
+                            {{publicacion.nick}}
                         </span>
                     </div>
                 </div>
                 <div class="text-600 m-3">
-                    <p> La vida pirata la vida mejor 🦜🏴‍☠️☠️</p>
+                    <p>{{publicacion.comentarioUsuario}}</p>
                 </div>
                 <div class="border-top-1 surface-border top-50 left-0 w-full"></div>
             </div>

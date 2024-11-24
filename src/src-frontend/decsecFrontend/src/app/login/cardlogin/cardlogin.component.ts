@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario, SignUpRequest, usuarioSesion } from '../../interfaces/Usuario';
 import { AuthServiceService } from '../../servicios/auth-service.service';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { FileUploadEvent } from 'primeng/fileupload';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-cardlogin',

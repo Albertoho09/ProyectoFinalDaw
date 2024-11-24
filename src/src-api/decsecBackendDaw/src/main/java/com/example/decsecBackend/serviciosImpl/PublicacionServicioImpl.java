@@ -2,6 +2,8 @@ package com.example.decsecBackend.serviciosImpl;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.ImagenRepositorio;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.servicios.PublicacionServicio;
-
+import java.util.Date;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -36,8 +38,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Autowired
     private ImagenRepositorio repositorioImagen;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy",
+            Locale.ENGLISH);
 
     @Override
     public List<PublicacionDTO> listarPublicaciones() {
@@ -61,14 +63,16 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public List<Publicacion> listarPublicacionesdFeed(Long id) {
-        throw new UnsupportedOperationException("Unimplemented method 'listarPublicacionesdFeed'");
+    public List<PublicacionDTO> listarPublicacionesdFeed(Long id) {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        return repositorioPublicacion.encontrarPublicacionesRecientesPorUsuario(id, sevenDaysAgo);
     }
 
     @SuppressWarnings("null")
     @Override
     public void borrarPublicacion(Long id) {
-        Publicacion publi = repositorioPublicacion.findById(id).orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
+        Publicacion publi = repositorioPublicacion.findById(id)
+                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
         repositorioPublicacion.delete(publi);
     }
 
@@ -119,7 +123,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     }
 
-    public PublicacionDTO crearPublicacion(PublicacionDTOrequest publi, Map<String, MultipartFile> imagenes, Usuario usuario) throws IOException {
+    public PublicacionDTO crearPublicacion(PublicacionDTOrequest publi, Map<String, MultipartFile> imagenes,
+            Usuario usuario) throws IOException {
         List<Imagen> listImagenes = new ArrayList<>();
         Publicacion publicacion = new Publicacion();
         if (imagenes != null) {
@@ -132,7 +137,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
             publicacion.setImagenes(listImagenes);
         }
         publicacion.setComentarioUsuario(publi.getComentarioUsuario());
-        publicacion.setFechaPublicacion(LocalDate.now());
+        publicacion.setFechaPublicacion(LocalDateTime.now());
         publicacion.setUsuario(usuario);
         return new PublicacionDTO(repositorioPublicacion.save(publicacion));
     }

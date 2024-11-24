@@ -1,128 +1,150 @@
-.cardPublicacion{
-    margin: {
-        top: 3rem;
-        left: 2rem;
-        right: 2rem;
-        bottom: 5rem;
-    };
+.cardPublicacion {
+  margin: {
+    top: 3rem;
+    left: 2rem;
+    right: 2rem;
+    bottom: 5rem;
+  }
+
+  ;
+}
+
+::ng-deep .p-galleria-indicator-onitem.p-galleria-indicators-bottom .p-galleria-indicators {
+  background: transparent !important;
+  /* Quitar el fondo */
+  border: none;
+  /* Quitar el borde si es necesario */
 }
 
 .comment-text {
-    word-wrap: break-word; /* Asegura que el texto largo se divida y salte a la línea siguiente */
-    overflow-wrap: break-word; /* Asegura que el texto largo se divida y salte a la línea siguiente */
-    white-space: pre-wrap; /* Mantiene los saltos de línea y espacios en blanco */
+  word-wrap: break-word;
+  /* Asegura que el texto largo se divida y salte a la línea siguiente */
+  overflow-wrap: break-word;
+  /* Asegura que el texto largo se divida y salte a la línea siguiente */
+  white-space: pre-wrap;
+  /* Mantiene los saltos de línea y espacios en blanco */
 }
 
 .scrollable {
-    overflow-x: auto; /* Permite desplazamiento horizontal */
-    white-space: nowrap; /* Evita que los elementos hagan wrap y se alineen horizontalmente */
+  overflow-x: auto;
+  /* Permite desplazamiento horizontal */
+  white-space: nowrap;
+  /* Evita que los elementos hagan wrap y se alineen horizontalmente */
 }
 
 .scrollable p-card {
-    margin-right: 10px; /* Espacio entre los elementos */
+  margin-right: 10px;
+  /* Espacio entre los elementos */
 }
 
 ::ng-deep .p-dialog .p-dialog-content {
-    padding: 0 !important;
-    overflow: hidden; /* Para asegurar que no haya barra de desplazamiento */
-    box-sizing: border-box;
+  padding: 0 !important;
+  overflow: hidden;
+  /* Para asegurar que no haya barra de desplazamiento */
+  box-sizing: border-box;
 }
 
 ::ng-deep .p-dialog .p-dialog-content .grid.nested-grid {
-    margin: 0;
-    height: 100%;
+  margin: 0;
+  height: 100%;
 }
 
 ::ng-deep .p-dialog .p-dialog-content .grid.nested-grid .col-8,
 ::ng-deep .p-dialog .p-dialog-content .grid.nested-grid .col-4 {
-    height: 100%;
+  height: 100%;
 }
 
 .input-wrapper input {
-    background-color: #eee;
-    border: none;
-    padding: 1rem;
-    font-size: 1rem;
-    width: 13em;
-    border-radius: 1rem;
-    box-shadow: 0 0.4rem #dfd9d9;
-    cursor: pointer;
+  background-color: #eee;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  width: 13em;
+  border-radius: 1rem;
+  box-shadow: 0 0.4rem #dfd9d9;
+  cursor: pointer;
 }
 
-.bandeja{
+.bandeja {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  /* Ajusta según sea necesario */
+  box-sizing: border-box;
+
+  /* Asegura que el padding no afecte el width */
+  .icon-avatar {
+    margin-right: 10px;
+    /* Espacio entre el avatar y el input */
+  }
+
+  .message-input {
+    flex: 1;
+    padding: 5px;
+    /* Ajusta el padding según sea necesario */
+    margin-right: 10px;
+    /* Espacio entre el input y el botón */
+    box-sizing: border-box;
+    /* Asegura que el padding no afecte el width */
+  }
+
+  .send-button .svg-wrapper {
+    margin-right: 5px;
+    /* Espacio entre el icono y el texto del botón */
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 20px;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
     display: flex;
+    height: 2.5rem;
     align-items: center;
-    padding: 10px; /* Ajusta según sea necesario */
-    box-sizing: border-box; /* Asegura que el padding no afecte el width */
-    .icon-avatar {
-        margin-right: 10px; /* Espacio entre el avatar y el input */
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  button span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+  }
+
+  button svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  button:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+  }
+
+  button:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+  }
+
+  button:hover span {
+    transform: translateX(5em);
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+
+  @keyframes fly-1 {
+    from {
+      transform: translateY(0.1em);
     }
-    
-    .message-input {
-        flex: 1;
-        padding: 5px; /* Ajusta el padding según sea necesario */
-        margin-right: 10px; /* Espacio entre el input y el botón */
-        box-sizing: border-box; /* Asegura que el padding no afecte el width */
+
+    to {
+      transform: translateY(-0.1em);
     }
-    
-    .send-button .svg-wrapper {
-        margin-right: 5px; /* Espacio entre el icono y el texto del botón */
-    }
-    
-    button {
-        font-family: inherit;
-        font-size: 20px;
-        background: var(--primary-color);
-        color: white;
-        padding: 0.7em 1em;
-        padding-left: 0.9em;
-        display: flex;
-        height: 2.5rem;
-        align-items: center;
-        border: none;
-        border-radius: 16px;
-        overflow: hidden;
-        transition: all 0.2s;
-        cursor: pointer;
-      }
-      
-      button span {
-        display: block;
-        margin-left: 0.3em;
-        transition: all 0.3s ease-in-out;
-      }
-      
-      button svg {
-        display: block;
-        transform-origin: center center;
-        transition: transform 0.3s ease-in-out;
-      }
-      
-      button:hover .svg-wrapper {
-        animation: fly-1 0.6s ease-in-out infinite alternate;
-      }
-      
-      button:hover svg {
-        transform: translateX(1.2em) rotate(45deg) scale(1.1);
-      }
-      
-      button:hover span {
-        transform: translateX(5em);
-      }
-      
-      button:active {
-        transform: scale(0.95);
-      }
-      
-      @keyframes fly-1 {
-        from {
-          transform: translateY(0.1em);
-        }
-      
-        to {
-          transform: translateY(-0.1em);
-        }
-      }
+  }
 }
- 
-  

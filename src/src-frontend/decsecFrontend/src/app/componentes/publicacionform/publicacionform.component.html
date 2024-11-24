@@ -1,51 +1,47 @@
 <div class="card flex justify-content-center">
     <p-button (click)="showDialog()" icon="pi pi-plus" label="Crear Publicacion"></p-button>
-    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50rem' }"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
         <ng-template pTemplate="header">
             <div class="inline-flex align-items-center justify-content-center gap-2">
                 <h5>Crear publicacion como:</h5>
                 <p-avatar
-                [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'"
-                size="large" shape="circle"></p-avatar>
+                    [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'"
+                    size="large" shape="circle"></p-avatar>
                 <span class="font-bold white-space-nowrap">{{usuario.nick}}</span>
             </div>
         </ng-template>
-            <p>En caso de no subir imagenes se tratará la publicación como un comentario.</p>
-            <div class="flex-column justify-content-center">
-                <div class="p-5">
-                   <p-fileUpload 
-                   name="demo[]" 
-                   url="https://www.primefaces.org/cdn/api/upload.php" 
-                   (onUpload)="onUpload($event)" 
-                   [multiple]="true"
-                   chooseLabel="Elegir"
-                   accept="image/*" 
-                   uploadLabel="Subir"
-                   cancelLabel="Cancelar"
-                   [maxFileSize]="1000000">
+        <p class="text-center p-4 mb-0">En caso de no subir imágenes se tratará la publicación como un comentario.</p>
+        <div class="flex-column justify-content-center">
+            <div class="p-1 mr-4 ml-4">
+                <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
+                    (onUpload)="onUpload($event)" [multiple]="true" chooseLabel="Elegir" accept="image/*"
+                    uploadLabel="Subir" cancelLabel="Cancelar" [maxFileSize]="1000000">
                     <ng-template pTemplate="toolbar">
                         <div class="py-3">Puedes subir un maximo de 5 imagenes</div>
                     </ng-template>
-                       <ng-template pTemplate="content">
-                           <ul *ngIf="uploadedFiles.length">
-                               <li *ngFor="let file of uploadedFiles">
-                                    {{ file.name }} - {{ file.size }} bytes
-                               </li>
-                           </ul>
-                       </ng-template>
-               </p-fileUpload>
-                </div>
-                <form [formGroup]="publicacionForm">
-                    <div class="grid formgrid p-fluid p-5">
-                        <div class="field col-12">
-                            <label for="comentarioUsuario">Comentario</label>
-                            <input pInputText id="comentarioUsuario" class="form-control" formControlName="comentarioUsuario" />
-                        </div>
-                    </div>
-                </form>
+                    <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">
+                                {{ file.name }} - {{ file.size }} bytes
+                            </li>
+                        </ul>
+                    </ng-template>
+                </p-fileUpload>
             </div>
+            <form [formGroup]="publicacionForm">
+                <div class="grid formgrid p-fluid p-5">
+                    <div class="field col-12">
+                        <label for="comentarioUsuario">Comentario</label>
+                        <input pInputText id="comentarioUsuario" class="form-control"
+                            formControlName="comentarioUsuario" />
+                    </div>
+                </div>
+            </form>
+        </div>
         <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="registrarPublicacion()" [disabled]="publicacionForm.invalid" label="Publicar" pAutoFocus [autofocus]="true"></p-button>
+            <p-button icon="pi pi-check" (click)="registrarPublicacion()" [disabled]="publicacionForm.invalid"
+                label="Publicar" pAutoFocus [autofocus]="true"></p-button>
         </ng-template>
     </p-dialog>
 </div>

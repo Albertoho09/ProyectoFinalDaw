@@ -1,6 +1,8 @@
 package com.example.decsecBackend.configuracion;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,11 +45,11 @@ public class InicializarDatos implements CommandLineRunner {
             usuarioservicio.crearUsuario(usu1);
 
             Publicacion publi1 = new Publicacion();
-            publi1.setFechaPublicacion(LocalDate.now());
+            publi1.setFechaPublicacion(LocalDateTime.now());
             publi1.setComentarioUsuario("Foto de Andres 1");
 
             Publicacion publi2 = new Publicacion();
-            publi2.setFechaPublicacion(LocalDate.now());
+            publi2.setFechaPublicacion(LocalDateTime.now());
             publi2.setComentarioUsuario("Foto de Andres 2");
 
             Usuario usu2 = new Usuario();
@@ -68,11 +70,11 @@ public class InicializarDatos implements CommandLineRunner {
             publicacionRepositorio.save(publi2);
 
             Publicacion publi3 = new Publicacion();
-            publi3.setFechaPublicacion(LocalDate.now());
+            publi3.setFechaPublicacion(LocalDateTime.now());
             publi3.setComentarioUsuario("Foto de Ana 1");
 
             Publicacion publi4 = new Publicacion();
-            publi4.setFechaPublicacion(LocalDate.now());
+            publi4.setFechaPublicacion(LocalDateTime.now());
             publi4.setComentarioUsuario("Foto de Ana 2");
 
             Usuario usu3 = new Usuario();
@@ -93,19 +95,19 @@ public class InicializarDatos implements CommandLineRunner {
             publicacionRepositorio.save(publi4);
 
             Publicacion publi5 = new Publicacion();
-            publi5.setFechaPublicacion(LocalDate.now());
+            publi5.setFechaPublicacion(LocalDateTime.now());
             publi5.setComentarioUsuario("Foto de Antonio 1");
 
             Publicacion publi6 = new Publicacion();
-            publi6.setFechaPublicacion(LocalDate.now());
+            publi6.setFechaPublicacion(LocalDateTime.now());
             publi6.setComentarioUsuario("Foto de Antonio 2");
 
             Publicacion publi7 = new Publicacion();
-            publi7.setFechaPublicacion(LocalDate.now());
+            publi7.setFechaPublicacion(LocalDateTime.now());
             publi7.setComentarioUsuario("Foto de Antonio 3");
 
             Publicacion publi8 = new Publicacion();
-            publi8.setFechaPublicacion(LocalDate.now());
+            publi8.setFechaPublicacion(LocalDateTime.now());
             publi8.setComentarioUsuario("Foto de Antonio 4");
 
             Usuario usu4 = new Usuario();
