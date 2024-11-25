@@ -11,7 +11,7 @@
         </div>
         <div class="px-2 z-1 surface-card flex align-items-center">
             <div class="flex">
-                <span class="text-900">{{ getTiempoTranscurrido() }}</span>
+                <span class="text-900">{{ getTiempoTranscurrido(publicacion.fechaPublicacion) }}</span>
             </div>
         </div>
     </div>
@@ -42,24 +42,23 @@
 
 
 <!--DIALOG DE COMENTARIO-->
-<p-dialog [(visible)]="visible" [modal]="true" [header]="'Detalles de la publicación'"
-    [style]="{ width: '90rem', height: '60rem' }" [draggable]="false" [resizable]="false">
+<p-dialog [(visible)]="visible" [modal]="true" [header]="'Detalles de la publicación'" class="scrollable"
+    [style]="{ width: publicacion.imagenes && publicacion.imagenes.length > 0 ? '95rem' : '65rem', height: '60rem' }" [draggable]="false" [resizable]="false">
     <div class="grid nested-grid" style="height: 100%;">
-        <div class="col-8 p-0" style="background-color: black; height: 100%;">
+        <div class="col-8 p-0" style="background-color: black; height: 100%;" *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0">
             <p-galleria *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0" [value]="publicacion.imagenes"
                 [circular]="true" [showIndicators]="publicacion.imagenes.length > 1" [showThumbnails]="false"
-                [showIndicatorsOnItem]="true" [responsiveOptions]="responsiveOptions"
-                [containerStyle]="{'height': '100%'}">
+                [showIndicatorsOnItem]="true" [responsiveOptions]="responsiveOptions">
                 <ng-template pTemplate="item" let-imagen>
-                    <div [ngStyle]="{'overflow':'hidden','background-color': 'black', 'border-radius': '10px'}"
+                    <div [ngStyle]="{'height': '49rem', 'width': '100%','overflow':'hidden','background-color': 'black', 'border-radius': '10px'}"
                         class="flex justify-content-center align-content-center">
                         <img [src]="'data:' + imagen.tipo + ';base64,' + imagen.datos"
-                            style="width: 100%; height: 100%; object-fit: contain;">
+                            style="max-width: 100%; max-height: 100%; object-fit: contain;">
                     </div>
                 </ng-template>
             </p-galleria>
         </div>
-        <div class="col-4 p-3 flex flex-column justify-content-between">
+        <div class="col-{{publicacion.imagenes && publicacion.imagenes.length > 0 ? '4' : '12'}} p-3 flex flex-column justify-content-between">
             <div>
                 <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
                     <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
@@ -71,63 +70,43 @@
                             {{publicacion.nick}}
                         </span>
                     </div>
+                    <div class="px-2 z-1 surface-card flex align-items-center">
+                        <div class="flex">
+                            <span class="text-900">{{ getTiempoTranscurrido(publicacion.fechaPublicacion) }}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="text-600 m-3">
                     <p>{{publicacion.comentarioUsuario}}</p>
                 </div>
                 <div class="border-top-1 surface-border top-50 left-0 w-full"></div>
             </div>
-            <div class="flex-1 mt-4 m-2 scrollable">
-                <div class="surface-200 p-3 border-round mb-3">
-                    <div class="flex align-items-center mb-2">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            shape="circle" class="flex align-items-center" /> <b class="ml-3">Usuario 1</b>
+            <div class="flex-1 mt-4 m-2 scrollable" style="max-height: 35rem; overflow-y: auto;">
+                <div *ngFor="let comentario of comentarios" class="surface-200 p-3 border-round mb-3">
+                    <div class="flex align-items-center mb-2 justify-content-between">
+                        <div class="flex align-items-center">
+                            <p-avatar
+                                [image]="comentario.fotoPerfil ? 'data:' + comentario.fotoPerfil.tipo + ';base64,' + comentario.fotoPerfil.datos : 'assets/icono/userDefault.png'"
+                                shape="circle" class="flex align-items-center" />
+                            <b
+                            class="ml-3">{{comentario.nickUsuario}}</b>
+                        </div>
+                        <span class="text-900" style="font-size: smaller;">{{ getTiempoTranscurrido(comentario.hora) }}</span>
                     </div>
                     <div class="comment-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitationem officiis
-                        odio,
-                        obcaecati minus quaerat? Ad, hic. Consequuntur sit non nesciunt, rerum nam libero dicta
-                        recusandae
-                        laborum necessitatibus molestias!
+                        {{comentario.comentario}}
                     </div>
                 </div>
-                <div class="surface-200 p-3 border-round mb-3">
-                    <div class="flex align-items-center mb-2">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            shape="circle" class="flex align-items-center" /> <b class="ml-3">Usuario 2</b>
-                    </div>
-                    <div class="comment-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitatio
-                    </div>
-                </div>
-                <div class="surface-200 p-3 border-round mb-3">
-                    <div class="flex align-items-center mb-2">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            shape="circle" class="flex align-items-center" /> <b class="ml-3">Usuario 3</b>
-                    </div>
-                    <div class="comment-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitationem officiis
-                        odio,
-                        obcaecati minus quaerat?
-                    </div>
-                </div>
-                <div class="surface-200 p-3 border-round mb-3">
-                    <div class="flex align-items-center mb-2">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            shape="circle" class="flex align-items-center" /> <b class="ml-3">Usuario 3</b>
-                    </div>
-                    <div class="comment-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni omnis exercitationem officiis
-                        odio,
-                        obcaecati minus quaerat?
-                    </div>
+                <div *ngIf="comentarios.length === 0" class="text-center text-600">
+                    <p>No hay comentarios para esta publicación.</p>
                 </div>
             </div>
             <div class="bandeja">
                 <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
                     class="icon-avatar" />
-                <input pInputText placeholder="Escribe tu mensaje..." id="texto" class="message-input" />
-                <button class="send-button">
+                <input pInputText placeholder="Escribe tu mensaje..." id="texto" class="message-input"
+                    [(ngModel)]="mensaje" (keydown.enter)="enviarMensaje()" />
+                <button class="send-button" [disabled]="!mensaje" (click)="enviarMensaje()">
                     <div class="svg-wrapper-1">
                         <div class="svg-wrapper">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

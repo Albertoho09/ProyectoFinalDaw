@@ -1,20 +1,16 @@
 package com.example.decsecBackend.serviciosImpl;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.example.decsecBackend.dtos.PublicacionDTO;
 import com.example.decsecBackend.dtos.PublicacionDTOrequest;
 import com.example.decsecBackend.errores.NotFoundException;
@@ -24,7 +20,6 @@ import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.ImagenRepositorio;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.servicios.PublicacionServicio;
-import java.util.Date;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -37,9 +32,6 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     private UsuarioServicioImpl servicioUsuario;
     @Autowired
     private ImagenRepositorio repositorioImagen;
-
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy",
-            Locale.ENGLISH);
 
     @Override
     public List<PublicacionDTO> listarPublicaciones() {

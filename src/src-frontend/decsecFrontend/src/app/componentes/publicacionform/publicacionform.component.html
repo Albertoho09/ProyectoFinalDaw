@@ -16,7 +16,7 @@
             <div class="p-1 mr-4 ml-4">
                 <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
                     (onUpload)="onUpload($event)" [multiple]="true" chooseLabel="Elegir" accept="image/*"
-                    uploadLabel="Subir" cancelLabel="Cancelar" [maxFileSize]="1000000">
+                    uploadLabel="Subir" cancelLabel="Cancelar" [maxFileSize]="5000000">
                     <ng-template pTemplate="toolbar">
                         <div class="py-3">Puedes subir un maximo de 5 imagenes</div>
                     </ng-template>

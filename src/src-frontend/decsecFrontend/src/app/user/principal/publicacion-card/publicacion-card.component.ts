@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Publicacion } from '../../../interfaces/Publicacion';
+import { Comentario } from '../../../interfaces/Comentario';
+import { ComentarioService } from '../../../servicios/comentario.service';
 
 @Component({
   selector: 'app-publicacion-card',
@@ -11,16 +13,28 @@ export class PublicacionCardComponent implements OnInit {
   visible: boolean = false;
 
   @Input() publicacion!: Publicacion;
+  comentarios: Comentario[] = [];
+  mensaje: String = '';
 
-
+  constructor(private comentarioService: ComentarioService){}
 
   abrirComentarios() {
+    this.comentarioService.ObtenerComentariosPublicacion(this.publicacion.id).subscribe((comentariosSearch) => {
+      this.comentarios = comentariosSearch;
+    });
     this.visible = true;
   }
 
-  getTiempoTranscurrido(): string {
+  enviarMensaje() {
+    this.comentarioService.CrearComentario(this.publicacion.id, this.mensaje).subscribe((nuevoComentario) => {
+      this.comentarios.push(nuevoComentario);
+      this.mensaje = '';
+    });
+  }
+
+  getTiempoTranscurrido(fecha: Date): string {
     const ahora = new Date();
-    const tiempoTranscurrido = ahora.getTime() - new Date(this.publicacion.fechaPublicacion).getTime();
+    const tiempoTranscurrido = ahora.getTime() - new Date(fecha).getTime();
     const minutos = Math.floor(tiempoTranscurrido / (1000 * 60));
     const horas = Math.floor(tiempoTranscurrido / (1000 * 60 * 60));
     const dias = Math.floor(tiempoTranscurrido / (1000 * 60 * 60 * 24));

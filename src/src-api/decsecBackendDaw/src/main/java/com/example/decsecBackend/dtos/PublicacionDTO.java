@@ -1,12 +1,8 @@
 package com.example.decsecBackend.dtos;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.example.decsecBackend.modelo.Imagen;
 import com.example.decsecBackend.modelo.Publicacion;
-
 import lombok.Data;
 
 /**

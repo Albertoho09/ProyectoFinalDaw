@@ -13,7 +13,7 @@ import com.example.decsecBackend.modelo.Publicacion;
 @Repository
 public interface PublicacionRepositorio extends JpaRepository<Publicacion, Long> {
 
-    @Query("SELECT p FROM Publicacion p WHERE p.usuario.id = :usuarioId AND p.fechaPublicacion >= :fecha")
+    @Query("SELECT p FROM Publicacion p WHERE p.usuario.id = :usuarioId AND p.fechaPublicacion >= :fecha ORDER BY p.fechaPublicacion DESC")
     List<PublicacionDTO> encontrarPublicacionesRecientesPorUsuario(@Param("usuarioId") Long usuarioId,
             @Param("fecha") LocalDateTime fecha);
 
