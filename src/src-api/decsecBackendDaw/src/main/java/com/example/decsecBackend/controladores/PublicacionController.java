@@ -1,6 +1,7 @@
 package com.example.decsecBackend.controladores;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -141,15 +142,19 @@ public class PublicacionController {
     @PostMapping("darmegusta/{id}")
     public ResponseEntity<?> darMegusta(@PathVariable(required = true) Long id,
             @AuthenticationPrincipal Usuario usuario) {
-        publicacionService.megusta(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Has indicado que te gusta la publicacion");
+        publicacionService.megusta(id, usuario.getId());
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Me gusta registrado con éxito");
+        return ResponseEntity.ok(respuesta);
     }
 
     @PostMapping("quitarmegusta/{id}")
     public ResponseEntity<?> quitarMegusta(@PathVariable(required = true) Long id,
             @AuthenticationPrincipal Usuario usuario) {
-        publicacionService.noMegusta(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Has indicado que no te gusta la publicacion");
+        publicacionService.noMegusta(id, usuario.getId());
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Me gusta registrado con éxito");
+        return ResponseEntity.ok(respuesta);
     }
 
 }

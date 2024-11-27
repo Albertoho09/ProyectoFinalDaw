@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
@@ -32,8 +34,6 @@ public class Publicacion {
 	@NotNull
 	private String comentarioUsuario;
 
-	private int megusta = 0;
-
 	private LocalDateTime fechaPublicacion;
 
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,5 +46,13 @@ public class Publicacion {
 	@JoinColumn(name = "usuario_id", nullable = false)
 	@JsonManagedReference
 	private Usuario usuario;
+
+	@ManyToMany
+    @JoinTable(
+        name = "post_likes",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<Usuario> usuariosQueDieronMeGusta;
 
 }

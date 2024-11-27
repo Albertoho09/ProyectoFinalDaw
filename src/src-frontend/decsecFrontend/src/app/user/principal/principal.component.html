@@ -2,10 +2,13 @@
 <div class="grid nested-grid mt-2">
     <div class="col-8">
         <div class="shadow-2 surface-card p-4" style="border-radius: 12px;">
-            <div class="flex justify-content-center align-items-center mt-3 text-900">
-                <i class="pi pi-arrow-down mr-3" style="font-size: 2rem"></i>
-                <h3>Tu Feed</h3>
-                <i class="pi pi-arrow-down ml-3" style="font-size: 2rem"></i>
+            <div class="flex align-items-center mt-3 text-900 justify-content-between">
+                <span class="text-3xl text-900 font-bold">Publicaciones de Amigos</span>
+                <div>
+                    <p-dropdown [options]="days" [(ngModel)]="selectedDay" optionLabel="name"
+                        placeholder="Filtrar por día" class="mr-2"></p-dropdown>
+                    <p-button icon="pi pi-refresh" (onClick)="recargarPublicaciones()"></p-button>
+                </div>
             </div>
             <app-publicacion-card *ngFor="let publicacion of publicacionesFeed"
                 [publicacion]="publicacion"></app-publicacion-card>

@@ -9,6 +9,13 @@
                 {{publicacion.nick}}
             </span>
         </div>
+        <div class="flex justify-content-end m-3 surface-card px-2 z-1">
+            <app-megusta [numeroMeGusta]="publicacion.megusta" [idPublicacion]="publicacion.id" [estadoBoton]="publicacion.isliked"></app-megusta>
+            <button class="border-none ml-2" title="Comentarios"
+                style="background: none; border: solid 1px mediumseagreen; color: mediumseagreen"
+                (click)="abrirComentarios()">
+                <i class="pi pi-comments" style="font-size: 1.7rem"></i></button>
+        </div>
         <div class="px-2 z-1 surface-card flex align-items-center">
             <div class="flex">
                 <span class="text-900">{{ getTiempoTranscurrido(publicacion.fechaPublicacion) }}</span>
@@ -30,14 +37,6 @@
             </div>
         </ng-template>
     </p-galleria>
-
-    <div class="flex justify-content-end m-3">
-        <app-megusta></app-megusta>
-        <button class="border-none ml-2" title="Comentarios"
-            style="background: none; border: solid 1px mediumseagreen; color: mediumseagreen"
-            (click)="abrirComentarios()">
-            <i class="pi pi-comments" style="font-size: 1.7rem"></i></button>
-    </div>
 </div>
 
 

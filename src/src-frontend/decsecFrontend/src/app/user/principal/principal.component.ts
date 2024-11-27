@@ -10,6 +10,12 @@ interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
 }
+interface Days {
+  name: string;
+  code: string;
+}
+
+
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.component.html',
@@ -21,16 +27,27 @@ export class PrincipalComponent implements OnInit {
 
   publicacionesFeed: Publicacion[] | undefined;
 
-
   selectedusuariosSearchAdvanced: any | undefined;
 
   filteredusuariosSearch: any[] = [];
 
   usuario!: usuarioSesion;
 
+  days!: Days[];
+
+  selectedDay: Days | undefined;
+
   constructor(private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
+
+    this.days = [
+      { name: '7 Dias', code: '7' },
+      { name: '15 Dias', code: '15' },
+      { name: '1 Mes', code: '30' },
+      { name: '3 Meses', code: '90' }
+  ];
+
     this.usuarioService.obtenerUsuariosSearch().subscribe((usuariosSearch) => {
       this.usuariosSearch = usuariosSearch;
     });
@@ -45,6 +62,12 @@ export class PrincipalComponent implements OnInit {
         this.usuario = data
       }
     )
+  }
+
+  recargarPublicaciones(){
+    this.publicacionesService.obtenerPublicacionesFeed().subscribe((publicacionesFeed) => {
+      this.publicacionesFeed = publicacionesFeed;
+    });
   }
 
   filterCountry(event: AutoCompleteCompleteEvent) {

@@ -2,10 +2,8 @@ package com.example.decsecBackend.serviciosImpl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,13 +94,39 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public void megusta(Long id) {
-        repositorioPublicacion.meGusta(id);
+    public void megusta(Long publicacionId, Long usuarioId) {
+        // Buscar la publicación por su ID
+        Publicacion publicacion = repositorioPublicacion.findById(publicacionId)
+        .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
+
+        // Buscar al usuario por su ID
+        Usuario usuario = servicioUsuario.obtenerUsuario(usuarioId);
+
+        // Agregar el usuario a la lista de "me gusta" de la publicación
+        publicacion.getUsuariosQueDieronMeGusta().add(usuario);
+
+        // Guardar la publicación para actualizar la tabla intermedia
+        repositorioPublicacion.save(publicacion);
+
+        System.out.println("ME GUSTA");
     }
 
     @Override
-    public void noMegusta(Long id) {
-        repositorioPublicacion.noMeGusta(id);
+    public void noMegusta(Long publicacionId, Long usuarioId) {
+        // Buscar la publicación por su ID
+        Publicacion publicacion = repositorioPublicacion.findById(publicacionId)
+        .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
+
+        // Buscar al usuario por su ID
+        Usuario usuario = servicioUsuario.obtenerUsuario(usuarioId);
+
+        // Eliminar el usuario de la lista de "me gusta" de la publicación
+        publicacion.getUsuariosQueDieronMeGusta().remove(usuario);
+
+        // Guardar la publicación para actualizar la tabla intermedia
+        repositorioPublicacion.save(publicacion);
+
+        System.out.println("NO ME GUSTA");
     }
 
     @Override

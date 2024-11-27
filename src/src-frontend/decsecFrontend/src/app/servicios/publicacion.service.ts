@@ -44,4 +44,22 @@ export class PublicacionService {
     });
     return this.http.post<any>(this.baseURL, formData, { headers: headers });
   }
+
+  darMegusta(id: number) {
+    const accessToken = this.serviciotoken.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    });
+
+    return this.http.post<any>(this.baseURL + `/darmegusta/${id}`, {}, { headers: headers });
+  }
+
+  quitarMegusta(id: number) {
+    const accessToken = this.serviciotoken.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    });
+
+    return this.http.post<any>(this.baseURL + `/quitarmegusta/${id}`, {}, { headers: headers });
+  }
 }

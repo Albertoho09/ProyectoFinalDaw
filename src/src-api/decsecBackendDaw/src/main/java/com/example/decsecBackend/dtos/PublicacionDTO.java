@@ -18,7 +18,7 @@ public class PublicacionDTO {
 
     private String comentarioUsuario;
 
-    private int megusta = 0;
+    private int megusta;
 
     private LocalDateTime fechaPublicacion;
 
@@ -26,13 +26,16 @@ public class PublicacionDTO {
 
     private Imagen fotoPerfil;
 
+    private Boolean isliked;
+
     public PublicacionDTO(Publicacion publi) {
         this.id = publi.getId();
         this.imagenes = publi.getImagenes();
         this.comentarioUsuario = publi.getComentarioUsuario();
-        this.megusta = publi.getMegusta();
+        this.megusta = publi.getUsuariosQueDieronMeGusta() != null ? publi.getUsuariosQueDieronMeGusta().size() : 0;
         this.fechaPublicacion = publi.getFechaPublicacion();
         this.nick = publi.getUsuario().getNick();
         this.fotoPerfil = publi.getUsuario().getFoto();
+        this.isliked = publi.getUsuariosQueDieronMeGusta() != null && publi.getUsuariosQueDieronMeGusta().stream().anyMatch(u -> u.getId().equals(publi.getUsuario().getId())) ? true : false;
     }
 }

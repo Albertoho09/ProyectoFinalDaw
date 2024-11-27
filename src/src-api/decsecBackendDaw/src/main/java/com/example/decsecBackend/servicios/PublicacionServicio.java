@@ -21,9 +21,9 @@ public interface PublicacionServicio {
 
     Boolean existePorId(Long id);
 
-    void megusta(Long id);
+    void megusta(Long publicacionId, Long idUsuario);
 
-    void noMegusta(Long id);
+    void noMegusta(Long publicacionId, Long idUsuario);
 
     Boolean pertenecePublicacion(Long id, String email);
 

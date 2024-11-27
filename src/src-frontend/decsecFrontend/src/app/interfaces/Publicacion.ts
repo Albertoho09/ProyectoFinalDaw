@@ -19,6 +19,7 @@ export interface Publicacion {
     fechaPublicacion: Date;
     nick: String;
     fotoPerfil: Imagen;
+    isliked: Boolean;
 }
 
 interface Imagen {

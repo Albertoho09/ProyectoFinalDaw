@@ -25,6 +25,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -74,6 +75,9 @@ public class Usuario implements UserDetails {
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)
 	@JsonBackReference
 	private List<Comentario> comentarios = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "usuariosQueDieronMeGusta")
+    private List<Publicacion> publicacionesConMeGusta;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
