@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div class="bandeja">
-                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"
+                <p-avatar [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'" shape="circle"
                     class="icon-avatar" />
                 <input pInputText placeholder="Escribe tu mensaje..." id="texto" class="message-input"
                     [(ngModel)]="mensaje" (keydown.enter)="enviarMensaje()" />

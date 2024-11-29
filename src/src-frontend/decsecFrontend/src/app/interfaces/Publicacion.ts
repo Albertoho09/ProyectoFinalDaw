@@ -20,6 +20,7 @@ export interface Publicacion {
     nick: String;
     fotoPerfil: Imagen;
     isliked: Boolean;
+    ncomentarios: number;
 }
 
 interface Imagen {

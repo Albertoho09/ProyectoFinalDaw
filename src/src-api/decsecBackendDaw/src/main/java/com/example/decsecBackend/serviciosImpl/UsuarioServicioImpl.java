@@ -135,13 +135,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	@Override
 	public UsuarioDTO obtenerPorNick(String nick) {
 		return new UsuarioDTO(
-				repositorio.findByNick(nick).orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+				repositorio.findByNick(nick).orElseThrow(() -> new NotFoundException("Usuario con nick '"+nick+"' no encontrado")));
 	}
 
 	@Override
 	public Boolean existePorNick(String nick) {
 		UsuarioDTO usuario = new UsuarioDTO(repositorio.findByNick(nick)
-				.orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+				.orElseThrow(() -> new NotFoundException("Usuario con nick '"+nick+"' no existe")));
 		return existePorEmail(usuario.getEmail());
 	}
 

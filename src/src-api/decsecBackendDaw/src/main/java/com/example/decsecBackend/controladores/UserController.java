@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.decsecBackend.errores.NotFoundException; // Añadir esta línea
 
 import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.modelo.Role;
@@ -128,10 +129,10 @@ public class UserController {
 	@GetMapping("/nick/{nick}")
 	public ResponseEntity<?> devolverUsuarioNick(@PathVariable String nick,
 			@AuthenticationPrincipal Usuario usuario) {
-		if (usuarioservice.existePorNick(nick)) {
+		try {
 			return ResponseEntity.ok(usuarioservice.obtenerPorNick(nick));
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con nick:" + nick + " no existe");
+		} catch (NotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 

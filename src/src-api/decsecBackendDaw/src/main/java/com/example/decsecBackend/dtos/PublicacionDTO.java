@@ -28,6 +28,8 @@ public class PublicacionDTO {
 
     private Boolean isliked;
 
+    private int ncomentarios;
+
     public PublicacionDTO(Publicacion publi) {
         this.id = publi.getId();
         this.imagenes = publi.getImagenes();
@@ -36,6 +38,7 @@ public class PublicacionDTO {
         this.fechaPublicacion = publi.getFechaPublicacion();
         this.nick = publi.getUsuario().getNick();
         this.fotoPerfil = publi.getUsuario().getFoto();
+        this.ncomentarios = publi.getComentarios().size();
         this.isliked = publi.getUsuariosQueDieronMeGusta() != null && publi.getUsuariosQueDieronMeGusta().stream().anyMatch(u -> u.getId().equals(publi.getUsuario().getId())) ? true : false;
     }
 }

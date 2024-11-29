@@ -12,7 +12,7 @@ interface AutoCompleteCompleteEvent {
 }
 interface Days {
   name: string;
-  code: string;
+  code: number;
 }
 
 
@@ -35,24 +35,24 @@ export class PrincipalComponent implements OnInit {
 
   days!: Days[];
 
-  selectedDay: Days | undefined;
+  selectedDay: Days = { name: '7 Dias', code: 7 };
 
   constructor(private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
 
     this.days = [
-      { name: '7 Dias', code: '7' },
-      { name: '15 Dias', code: '15' },
-      { name: '1 Mes', code: '30' },
-      { name: '3 Meses', code: '90' }
-  ];
+      { name: '7 Dias', code: 7 },
+      { name: '15 Dias', code: 15 },
+      { name: '1 Mes', code: 30 },
+      { name: '3 Meses', code: 90 }
+    ];
 
     this.usuarioService.obtenerUsuariosSearch().subscribe((usuariosSearch) => {
       this.usuariosSearch = usuariosSearch;
     });
 
-    this.publicacionesService.obtenerPublicacionesFeed().subscribe((publicacionesFeed) => {
+    this.publicacionesService.obtenerPublicacionesFeed(this.selectedDay.code).subscribe((publicacionesFeed) => {
       this.publicacionesFeed = publicacionesFeed;
       console.log(this.publicacionesFeed);
     });
@@ -64,8 +64,8 @@ export class PrincipalComponent implements OnInit {
     )
   }
 
-  recargarPublicaciones(){
-    this.publicacionesService.obtenerPublicacionesFeed().subscribe((publicacionesFeed) => {
+  recargarPublicaciones() {
+    this.publicacionesService.obtenerPublicacionesFeed(this.selectedDay.code).subscribe((publicacionesFeed) => {
       this.publicacionesFeed = publicacionesFeed;
     });
   }
@@ -85,10 +85,26 @@ export class PrincipalComponent implements OnInit {
   }
 
   buscarUsuario() {
-    if (this.selectedusuariosSearchAdvanced && this.selectedusuariosSearchAdvanced.hasOwnProperty('nick')) {
-      this.router.navigate(['/user/perfil', this.selectedusuariosSearchAdvanced.nick]);
-    } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Usuario no encontrado: ' + this.selectedusuariosSearchAdvanced });
+    if(this.selectedusuariosSearchAdvanced){
+      if (this.selectedusuariosSearchAdvanced.hasOwnProperty('nick')) {
+        this.usuarioService.ObtenerUsuarioNick(this.selectedusuariosSearchAdvanced.nick).subscribe(
+          (user) => {
+            this.router.navigate(['/user/perfil', user.nick]);
+          },
+          (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error || 'Error desconocido' });
+          }
+        )
+      } else {
+        this.usuarioService.ObtenerUsuarioNick(this.selectedusuariosSearchAdvanced).subscribe(
+          (user) => {
+            this.router.navigate(['/user/perfil', user.nick]);
+          },
+          (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error || 'Error desconocido' });
+          }
+        )
+      }
     }
   }
 

@@ -13,7 +13,7 @@ public interface PublicacionServicio {
 
     PublicacionDTO listarPublicacionPorId(Long id);
 
-    List<PublicacionDTO> listarPublicacionesdFeed(Long id);
+    List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias);
 
     void borrarPublicacion(Long id);
 

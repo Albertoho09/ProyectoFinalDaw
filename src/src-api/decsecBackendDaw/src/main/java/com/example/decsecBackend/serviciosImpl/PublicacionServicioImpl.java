@@ -34,13 +34,15 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Override
     public List<PublicacionDTO> listarPublicaciones() {
         return repositorioPublicacion.findAll().stream()
+                .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
                 .map(publicacion -> new PublicacionDTO(publicacion))
                 .collect(Collectors.toList());
     }
-
+    
     @Override
     public List<PublicacionDTO> listarPublicacionesUsuario(String email) {
         return servicioUsuario.encontrarPorEmail(email).getPublicaciones().stream()
+                .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
                 .map(publicacion -> new PublicacionDTO(publicacion))
                 .collect(Collectors.toList());
     }
@@ -53,8 +55,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public List<PublicacionDTO> listarPublicacionesdFeed(Long id) {
-        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+    public List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias) {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(dias);
         return repositorioPublicacion.encontrarPublicacionesRecientesPorUsuario(id, sevenDaysAgo);
     }
 

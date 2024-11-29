@@ -77,10 +77,10 @@ public class PublicacionController {
 
     @GetMapping("/publicacionesFeed")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> listarPublicacionesFeed(@AuthenticationPrincipal Usuario usuario) {
+    public ResponseEntity<?> listarPublicacionesFeed(@AuthenticationPrincipal Usuario usuario, @RequestParam(required = true) int dias) {
         try {
             logger.info("##### LISTANDO PUBLICACIONES FEED (USUARIO) #####");
-            return ResponseEntity.ok(publicacionService.listarPublicacionesdFeed(usuario.getId()));
+            return ResponseEntity.ok(publicacionService.listarPublicacionesdFeed(usuario.getId(), dias));
         } catch (Exception e) {
             logger.error("Error al listar publicaciones feed: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al listar las publicaciones.");

@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Publicacion } from '../../../interfaces/Publicacion';
 import { Comentario } from '../../../interfaces/Comentario';
 import { ComentarioService } from '../../../servicios/comentario.service';
+import { usuarioSesion } from '../../../interfaces/Usuario';
+import { UsuarioService } from '../../../servicios/usuario.service';
 
 @Component({
   selector: 'app-publicacion-card',
@@ -11,12 +13,13 @@ import { ComentarioService } from '../../../servicios/comentario.service';
 export class PublicacionCardComponent implements OnInit {
 
   visible: boolean = false;
+  usuario!: usuarioSesion;
 
   @Input() publicacion!: Publicacion;
   comentarios: Comentario[] = [];
   mensaje: String = '';
 
-  constructor(private comentarioService: ComentarioService){}
+  constructor(private comentarioService: ComentarioService, private usuarioService: UsuarioService){}
 
   abrirComentarios() {
     this.comentarioService.ObtenerComentariosPublicacion(this.publicacion.id).subscribe((comentariosSearch) => {
@@ -70,5 +73,11 @@ export class PublicacionCardComponent implements OnInit {
       { url: 'assets/fondo/guts.webp' },
       { url: 'assets/fondo/fondoOscuro.jpg' }
     ];
+
+    this.usuarioService.obtenerUsuarioToken().subscribe(
+      (data) => {
+        this.usuario = data
+      }
+    )
   }
 }
