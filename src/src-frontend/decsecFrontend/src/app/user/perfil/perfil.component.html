@@ -45,16 +45,16 @@
         </div>
 
         <!--AVISO DE USUARIO PRIVADO-->
-        <!--<div class="flex justify-content-center">
+        <div class="flex justify-content-center" *ngIf="estadoPerfil == 'PRIVADO'">
             <div class="text-center">
                 <i class="pi pi-lock mb-4" style="font-size: 5rem"></i>
                 <h4 class="text-900">Este usuario es PRIVADO</h4>
                 <p>Para poder ver las publicaciones de este usuario es necesario que acepte tu petición de amistad</p>
             </div>
-        </div>-->
+        </div>
 
 
-        <div class="lg:px-8 md:px-6 px-4 py-5 surface-card ng-star-inserted">
+        <div class="lg:px-8 md:px-6 px-4 py-5 surface-card ng-star-inserted" *ngIf="estadoPerfil == 'PUBLICO'">
             <!--SEPARADOR SELECTOR-->
             <div class="flex my-3 px-4 justify-content-center relative">
                 <div class="border-top-1 surface-border absolute top-50 w-full"></div><span
@@ -68,7 +68,7 @@
             </div>
 
             <!--LISTAR APARTADO 'MIS PUBLICACIONES'-->
-            <div class="m-2" *ngIf="estadoMenu == 'publicaciones'">
+            <div class="m-2" *ngIf="estadoMenu == 'publicaciones' || estadoMenu == 'meGustan'">
                 <app-publicacion-card *ngFor="let publicacion of Publicaciones"
                 [publicacion]="publicacion"></app-publicacion-card>
             </div>
@@ -87,14 +87,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!--AVISO DE SIN PUBLICACIONES-->
-        <!--<div class="flex justify-content-center">
-            <div class="text-center">
-                <i class="pi pi-image mb-4" style="font-size: 5rem"></i>
-                <h4 class="text-900">Sin Publicaciones</h4>
+            <div class="flex justify-content-center" *ngIf="Publicaciones.length == 0">
+                <div class="text-center">
+                    <i class="pi pi-image mb-4" style="font-size: 5rem"></i>
+                    <h4 class="text-900">Sin Publicaciones</h4>
+                </div>
             </div>
-        </div>-->
+        </div>
     </div>
 </div>

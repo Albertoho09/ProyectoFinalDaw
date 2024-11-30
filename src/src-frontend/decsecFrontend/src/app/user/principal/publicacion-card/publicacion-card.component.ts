@@ -13,13 +13,21 @@ import { UsuarioService } from '../../../servicios/usuario.service';
 export class PublicacionCardComponent implements OnInit {
 
   visible: boolean = false;
-  usuario!: usuarioSesion;
+  usuario: usuarioSesion | undefined;
 
   @Input() publicacion!: Publicacion;
   comentarios: Comentario[] = [];
   mensaje: String = '';
 
   constructor(private comentarioService: ComentarioService, private usuarioService: UsuarioService){}
+
+  ngOnInit(): void {
+    this.usuarioService.obtenerUsuarioToken().subscribe(
+      (data) => {
+        this.usuario = data
+      }
+    )
+  }
 
   abrirComentarios() {
     this.comentarioService.ObtenerComentariosPublicacion(this.publicacion.id).subscribe((comentariosSearch) => {
@@ -65,19 +73,4 @@ export class PublicacionCardComponent implements OnInit {
       numVisible: 1
     }
   ];
-  images: any[] | undefined;
-
-  ngOnInit(): void {
-    this.images = [
-      { url: 'assets/fondo/screenshot.png' },
-      { url: 'assets/fondo/guts.webp' },
-      { url: 'assets/fondo/fondoOscuro.jpg' }
-    ];
-
-    this.usuarioService.obtenerUsuarioToken().subscribe(
-      (data) => {
-        this.usuario = data
-      }
-    )
-  }
 }

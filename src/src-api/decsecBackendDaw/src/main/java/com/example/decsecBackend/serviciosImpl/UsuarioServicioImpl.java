@@ -10,10 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.example.decsecBackend.dtos.PeticionDTO;
 import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.dtos.UsuarioSearchDTO;
 import com.example.decsecBackend.errores.NotFoundException;
+import com.example.decsecBackend.modelo.Estado;
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.repositorios.PeticionRepositorio;
 import com.example.decsecBackend.repositorios.UsuarioRepositorio;
 import com.example.decsecBackend.servicios.UsuarioServicio;
 
@@ -22,6 +26,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
 	@Autowired
 	private UsuarioRepositorio repositorio;
+	@Autowired
+	private PeticionRepositorio peticionRepositorio;
 
 	@SuppressWarnings("null")
 	@Override
@@ -121,12 +127,21 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	}
 
 	@Override
-	public Boolean usuarioPrivado(String email) {
+	public Boolean usuarioPrivado(Long idUsuarioEmisor, String email) {
 		Usuario usu = repositorio.findByEmail(email)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-
+		
 		if (usu.getPrivado()) {
-			return true;
+			if(peticionRepositorio.existsByUsuarioEmisorIdAndUsuarioReceptorId(idUsuarioEmisor, idUsuarioEmisor)){
+				PeticionDTO peticion = peticionRepositorio.encontrarPeticion(idUsuarioEmisor, idUsuarioEmisor);
+				if (peticion.getEstado() == Estado.ACEPTADO) {
+					return false;
+				}else{
+					return true;
+				}
+			}else{
+				return true;
+			}
 		} else {
 			return false;
 		}

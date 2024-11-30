@@ -1,7 +1,7 @@
 package com.example.decsecBackend.modelo;
 
 public enum Estado {
-    ACPEPTADO,
+    ACEPTADO,
     DENEGADA,
     PENDIENTE
 }

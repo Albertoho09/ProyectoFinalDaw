@@ -5,6 +5,7 @@ import { Usuario, usuarioPerfil, usuarioSesion } from '../../interfaces/Usuario'
 import { UsuarioService } from '../../servicios/usuario.service';
 import { Publicacion } from '../../interfaces/Publicacion';
 import { PublicacionService } from '../../servicios/publicacion.service';
+import { PeticionService } from '../../servicios/peticion.service';
 
 @Component({
   selector: 'app-perfil',
@@ -13,7 +14,7 @@ import { PublicacionService } from '../../servicios/publicacion.service';
 })
 export class PerfilComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private usuarioService: UsuarioService, private publicacionesService: PublicacionService) { }
+  constructor(private route: ActivatedRoute, private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private peticionesService: PeticionService) { }
 
   imagenes: string[] = ['assets/fondo/guts.webp', 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
     , 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
@@ -22,16 +23,24 @@ export class PerfilComponent implements OnInit {
   usuarioPerfil!: usuarioPerfil;
   usuarioSesion!: usuarioSesion;
   estadoMenu: String = 'publicaciones';
-  Publicaciones : Publicacion[] = [];
+  estadoPerfil: String = 'PUBLICO';
+  Publicaciones: Publicacion[] = [];
   ngOnInit() {
     this.route.params.subscribe(params => {
       const userNick = params['nick'];
       this.usuarioService.ObtenerUsuarioNick(userNick).subscribe(
         response => {
           this.usuarioPerfil = response;
-          this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe((publicaciones) => {
-            this.Publicaciones = publicaciones;
-          });      
+          this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe(
+            response =>{
+              this.Publicaciones = response;
+            },
+            error =>{
+              if(error.error == "Publicaciones no disponibles, usuario privado."){
+                this.estadoPerfil = 'PRIVADO';
+              }
+            }
+          );
         },
         error => {
           console.log(error.data)
@@ -46,19 +55,22 @@ export class PerfilComponent implements OnInit {
     // Lógica para cambiar la vista
     console.log('Cambiando a la vista:', vista);
 
-    if(vista == 'publicaciones'){
+    if (vista == 'publicaciones') {
       this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe((publicaciones) => {
         this.Publicaciones = publicaciones;
         this.estadoMenu = vista
-      });  
-    }else if(vista == 'media'){
+      });
+    } else if (vista == 'media') {
       this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe((publicaciones) => {
         this.Publicaciones = publicaciones;
         this.Publicaciones = this.Publicaciones.filter(publicacion => publicacion.imagenes && publicacion.imagenes.length > 0);
         this.estadoMenu = vista
-      });  
-    }else if(vista == 'meGustan'){
-
+      });
+    } else if (vista == 'meGustan') {
+      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email, true).subscribe((publicaciones) => {
+        this.Publicaciones = publicaciones;
+        this.estadoMenu = vista
+      });
     }
   }
 }

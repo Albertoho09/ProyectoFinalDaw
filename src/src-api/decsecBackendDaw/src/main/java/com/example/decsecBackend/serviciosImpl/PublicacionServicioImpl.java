@@ -160,4 +160,11 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return new PublicacionDTO(repositorioPublicacion.save(publicacion));
     }
 
+    public List<PublicacionDTO> listarPublicacionesConMeGusta(String email){
+        return servicioUsuario.encontrarPorEmail(email).getPublicacionesConMeGusta().stream()
+                .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
+                .map(publicacion -> new PublicacionDTO(publicacion))
+                .collect(Collectors.toList());
+    }
+
 }

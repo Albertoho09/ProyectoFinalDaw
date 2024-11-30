@@ -15,6 +15,8 @@ public interface PublicacionServicio {
 
     List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias);
 
+    List<PublicacionDTO> listarPublicacionesConMeGusta(String email);
+
     void borrarPublicacion(Long id);
 
     PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates);

@@ -30,7 +30,7 @@ public interface UsuarioServicio {
 
 	Usuario actualizarUsuario(Long id, Map<String, Object> updates);
 
-	Boolean usuarioPrivado(String email);
+	Boolean usuarioPrivado(Long idUsuarioEmisor, String email);
 
 	UsuarioDTO obtenerPorNick(String nick);
 

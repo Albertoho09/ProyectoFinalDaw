@@ -10,18 +10,24 @@ export class PublicacionService {
   private baseURL = 'http://localhost:8081/api/v1/publicaciones';
   constructor(private serviciotoken: AuthServiceService, private http: HttpClient) { }
 
-  obtenerPublicaciones(email?: string) {
+  obtenerPublicaciones(email?: string, megusta?: boolean) {
     const accessToken = this.serviciotoken.getToken();
-
+  
+    // Configuración de encabezados con el token de autorización
     let headers = new HttpHeaders({
       'Authorization': 'Bearer ' + accessToken
-    })
-
+    });
+  
+    // Configuración de parámetros opcionales
     let params = new HttpParams();
     if (email) {
       params = params.append('email', email);
     }
-
+    if (megusta !== undefined) {
+      params = params.append('megusta', megusta.toString());
+    }
+  
+    // Llamada HTTP GET
     return this.http.get<any>(this.baseURL, { headers: headers, params: params });
   }
 
