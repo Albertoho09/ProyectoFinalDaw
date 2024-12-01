@@ -1,9 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Publicacion } from '../../../interfaces/Publicacion';
 import { Comentario } from '../../../interfaces/Comentario';
 import { ComentarioService } from '../../../servicios/comentario.service';
 import { usuarioSesion } from '../../../interfaces/Usuario';
 import { UsuarioService } from '../../../servicios/usuario.service';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmPopup } from 'primeng/confirmpopup';
+import { PublicacionService } from '../../../servicios/publicacion.service';
 
 @Component({
   selector: 'app-publicacion-card',
@@ -16,10 +19,10 @@ export class PublicacionCardComponent implements OnInit {
   usuario: usuarioSesion | undefined;
 
   @Input() publicacion!: Publicacion;
+  @Input() media!: Boolean;
   comentarios: Comentario[] = [];
   mensaje: String = '';
-
-  constructor(private comentarioService: ComentarioService, private usuarioService: UsuarioService){}
+  constructor(private comentarioService: ComentarioService, private publicacionesService: PublicacionService, private usuarioService: UsuarioService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.usuarioService.obtenerUsuarioToken().subscribe(
@@ -27,6 +30,37 @@ export class PublicacionCardComponent implements OnInit {
         this.usuario = data
       }
     )
+  }
+
+  @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;
+
+  accept() {
+    this.confirmPopup.accept();
+  }
+
+  reject() {
+    this.confirmPopup.reject();
+  }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Estas seguro que deseas borrar esta publicación?',
+      accept: () => {
+        this.publicacionesService.borrarPublicacion(this.publicacion.id).subscribe(
+          response => {
+            console.log('Respuesta exitosa:', response);
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Publicación borrada', life: 3000 });
+          },
+          error => {
+            console.error('Error capturado:', error);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar', life: 3000 });
+          }
+        );
+      },
+      reject: () => {
+      }
+    });
   }
 
   abrirComentarios() {

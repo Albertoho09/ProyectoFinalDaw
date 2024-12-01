@@ -25,6 +25,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { ImageModule } from 'primeng/image';
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -114,7 +116,9 @@ import { MegustaComponent } from './componentes/megusta/megusta.component';
     DropdownModule,
     ButtonModule,
     MenubarModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SpeedDialModule,
+    ConfirmPopupModule
   ],
   providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService, ComentarioService],
   bootstrap: [AppComponent],

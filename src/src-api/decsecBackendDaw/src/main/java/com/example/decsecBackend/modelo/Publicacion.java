@@ -27,7 +27,7 @@ public class Publicacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Imagen.class)
 	private List<Imagen> imagenes = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class Publicacion {
 
 	private LocalDateTime fechaPublicacion;
 
-	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)
 	@JsonBackReference
 	private List<Comentario> comentarios = new ArrayList<>();
@@ -47,12 +47,8 @@ public class Publicacion {
 	@JsonManagedReference
 	private Usuario usuario;
 
-	@ManyToMany
-    @JoinTable(
-        name = "post_likes",
-        joinColumns = @JoinColumn(name = "post_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<Usuario> usuariosQueDieronMeGusta;
+	@ManyToMany(cascade = CascadeType.REMOVE)
+	@JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private List<Usuario> usuariosQueDieronMeGusta;
 
 }

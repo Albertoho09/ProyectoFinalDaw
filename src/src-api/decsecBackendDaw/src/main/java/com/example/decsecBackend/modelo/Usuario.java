@@ -66,18 +66,18 @@ public class Usuario implements UserDetails {
 	@Column(name = "RolesUsuario")
 	private Set<Role> roles = new HashSet<>();
 
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Publicacion.class)
 	@JsonBackReference
 	private List<Publicacion> publicaciones = new ArrayList<>();
 
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)
 	@JsonBackReference
 	private List<Comentario> comentarios = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "usuariosQueDieronMeGusta")
-    private List<Publicacion> publicacionesConMeGusta;
+	@ManyToMany(mappedBy = "usuariosQueDieronMeGusta", cascade = CascadeType.REMOVE)
+	private List<Publicacion> publicacionesConMeGusta;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -12,12 +12,12 @@ export class PublicacionService {
 
   obtenerPublicaciones(email?: string, megusta?: boolean) {
     const accessToken = this.serviciotoken.getToken();
-  
+
     // Configuración de encabezados con el token de autorización
     let headers = new HttpHeaders({
       'Authorization': 'Bearer ' + accessToken
     });
-  
+
     // Configuración de parámetros opcionales
     let params = new HttpParams();
     if (email) {
@@ -26,7 +26,7 @@ export class PublicacionService {
     if (megusta !== undefined) {
       params = params.append('megusta', megusta.toString());
     }
-  
+
     // Llamada HTTP GET
     return this.http.get<any>(this.baseURL, { headers: headers, params: params });
   }
@@ -73,4 +73,14 @@ export class PublicacionService {
 
     return this.http.post<any>(this.baseURL + `/quitarmegusta/${id}`, {}, { headers: headers });
   }
+
+  borrarPublicacion(id: number) {
+    const accessToken = this.serviciotoken.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    });
+
+    return this.http.delete<any>(this.baseURL + `/${id}`, { headers: headers });
+  }
+
 }

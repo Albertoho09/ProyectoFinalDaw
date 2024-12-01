@@ -59,33 +59,27 @@
             <div class="flex my-3 px-4 justify-content-center relative">
                 <div class="border-top-1 surface-border absolute top-50 w-full"></div><span
                     class="p-buttonset z-1"><button pripple=""
-                        class="p-ripple p-element appearance-none border-1 border-round-left surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer" (click)="cambiarVista('publicaciones')"><i
-                            class="text-600">Mis Publicaciones</i><span class="p-ink"></span></button><button pripple=""
-                        class="p-ripple p-element appearance-none border-1 border-left-none surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer" (click)="cambiarVista('media')"><i
-                            class="text-600">Media</i><span class="p-ink"></span></button><button pripple=""
-                        class="p-ripple p-element appearance-none border-1 border-left-none border-round-right surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer" (click)="cambiarVista('meGustan')"><i
-                            class="text-600">Me gustan</i><span class="p-ink"></span></button></span>
+                        class="p-ripple p-element appearance-none border-1 border-round-left surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"
+                        (click)="cambiarVista('publicaciones')"><i class="text-600">Mis Publicaciones</i><span
+                            class="p-ink"></span></button><button pripple=""
+                        class="p-ripple p-element appearance-none border-1 border-left-none surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"
+                        (click)="cambiarVista('media')"><i class="text-600">Media</i><span
+                            class="p-ink"></span></button><button pripple=""
+                        class="p-ripple p-element appearance-none border-1 border-left-none border-round-right surface-border p-2 surface-0 hover:surface-200 active:surface-300 cursor-pointer"
+                        (click)="cambiarVista('meGustan')"><i class="text-600">Me gustan</i><span
+                            class="p-ink"></span></button></span>
             </div>
 
             <!--LISTAR APARTADO 'MIS PUBLICACIONES'-->
             <div class="m-2" *ngIf="estadoMenu == 'publicaciones' || estadoMenu == 'meGustan'">
                 <app-publicacion-card *ngFor="let publicacion of Publicaciones"
-                [publicacion]="publicacion"></app-publicacion-card>
+                    [publicacion]="publicacion"></app-publicacion-card>
             </div>
 
             <!--LISTAR APARTADO 'MEDIA'-->
             <div class="flex justify-content-evenly flex-wrap" *ngIf="estadoMenu == 'media'">
-                <div class="mb-4" *ngFor="let publicacion of Publicaciones">
-                    <div class="contenedor-imagen m-1">
-                        <img [src]="publicacion.imagenes[0] ? 'data:' + publicacion.imagenes[0].tipo + ';base64,' + publicacion.imagenes[0].datos : 'assets/fondo/imageNotFound.jpg'" class="imagen-cuadrada">
-                        <div class="overlay">
-                            <div class="flex texto">
-                                <span class="pi pi-comments text-black text-2xl"> {{publicacion.ncomentarios}}</span>
-                                <span class="pi pi-heart ml-3 text-black text-2xl"> {{publicacion.megusta}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <app-publicacion-card *ngFor="let publicacion of Publicaciones" [publicacion]="publicacion"
+                    [media]="true"></app-publicacion-card>
             </div>
             <div class="flex justify-content-center" *ngIf="Publicaciones.length == 0">
                 <div class="text-center">

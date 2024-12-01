@@ -38,7 +38,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
                 .map(publicacion -> new PublicacionDTO(publicacion))
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     public List<PublicacionDTO> listarPublicacionesUsuario(String email) {
         return servicioUsuario.encontrarPorEmail(email).getPublicaciones().stream()
@@ -60,7 +60,6 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return repositorioPublicacion.encontrarPublicacionesRecientesPorUsuario(id, sevenDaysAgo);
     }
 
-    @SuppressWarnings("null")
     @Override
     public void borrarPublicacion(Long id) {
         Publicacion publi = repositorioPublicacion.findById(id)
@@ -99,7 +98,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public void megusta(Long publicacionId, Long usuarioId) {
         // Buscar la publicación por su ID
         Publicacion publicacion = repositorioPublicacion.findById(publicacionId)
-        .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
         // Buscar al usuario por su ID
         Usuario usuario = servicioUsuario.obtenerUsuario(usuarioId);
@@ -117,7 +116,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public void noMegusta(Long publicacionId, Long usuarioId) {
         // Buscar la publicación por su ID
         Publicacion publicacion = repositorioPublicacion.findById(publicacionId)
-        .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
         // Buscar al usuario por su ID
         Usuario usuario = servicioUsuario.obtenerUsuario(usuarioId);
@@ -160,7 +159,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         return new PublicacionDTO(repositorioPublicacion.save(publicacion));
     }
 
-    public List<PublicacionDTO> listarPublicacionesConMeGusta(String email){
+    public List<PublicacionDTO> listarPublicacionesConMeGusta(String email) {
         return servicioUsuario.encontrarPorEmail(email).getPublicacionesConMeGusta().stream()
                 .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
                 .map(publicacion -> new PublicacionDTO(publicacion))

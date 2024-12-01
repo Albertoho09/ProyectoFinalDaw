@@ -10,8 +10,8 @@
                     <p-button icon="pi pi-refresh" (onClick)="recargarPublicaciones()"></p-button>
                 </div>
             </div>
-            <app-publicacion-card *ngFor="let publicacion of publicacionesFeed"
-                [publicacion]="publicacion"></app-publicacion-card>
+            <app-publicacion-card *ngFor="let publicacion of publicacionesFeed" [publicacion]="publicacion"
+                [media]=false></app-publicacion-card>
         </div>
     </div>
     <div class="col-4">

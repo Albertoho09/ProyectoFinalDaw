@@ -47,7 +47,8 @@ public class PublicacionController {
 
     @GetMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
-    public ResponseEntity<?> listarPublicaciones(@RequestParam(required = false) String email, @RequestParam(required = false) Boolean megusta,
+    public ResponseEntity<?> listarPublicaciones(@RequestParam(required = false) String email,
+            @RequestParam(required = false) Boolean megusta,
             @AuthenticationPrincipal Usuario usuario) {
 
         if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
@@ -66,7 +67,7 @@ public class PublicacionController {
                             .body("Publicaciones no disponibles, usuario privado.");
                 } else {
                     logger.info("##### LISTANDO PUBLICACIONES USUARIO (USUARIO) #####");
-                    if (megusta != null){
+                    if (megusta != null) {
                         return ResponseEntity.ok(publicacionService.listarPublicacionesConMeGusta(email));
                     }
                     return ResponseEntity.ok(publicacionService.listarPublicacionesUsuario(email));
@@ -80,7 +81,8 @@ public class PublicacionController {
 
     @GetMapping("/publicacionesFeed")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> listarPublicacionesFeed(@AuthenticationPrincipal Usuario usuario, @RequestParam(required = true) int dias) {
+    public ResponseEntity<?> listarPublicacionesFeed(@AuthenticationPrincipal Usuario usuario,
+            @RequestParam(required = true) int dias) {
         try {
             logger.info("##### LISTANDO PUBLICACIONES FEED (USUARIO) #####");
             return ResponseEntity.ok(publicacionService.listarPublicacionesdFeed(usuario.getId(), dias));
@@ -90,10 +92,10 @@ public class PublicacionController {
         }
     }
 
-    
     @GetMapping("/publicacionesMeGusta")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> listarPublicacionesMegusta(@AuthenticationPrincipal Usuario usuario, @RequestParam(required = true) int dias) {
+    public ResponseEntity<?> listarPublicacionesMegusta(@AuthenticationPrincipal Usuario usuario,
+            @RequestParam(required = true) int dias) {
         try {
             logger.info("##### LISTANDO PUBLICACIONES FEED (USUARIO) #####");
             return ResponseEntity.ok(publicacionService.listarPublicacionesdFeed(usuario.getId(), dias));
@@ -140,11 +142,11 @@ public class PublicacionController {
         try {
             if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
                 publicacionService.borrarPublicacion(id);
-                return ResponseEntity.status(HttpStatus.OK).body("Publicacion borrada exitosamente");
+                return ResponseEntity.ok("Publicacion borrada exitosamente");
             } else {
                 if (publicacionService.pertenecePublicacion(id, usuario.getEmail())) {
                     publicacionService.borrarPublicacion(id);
-                    return ResponseEntity.status(HttpStatus.OK).body("Publicacion borrada exitosamente");
+                    return ResponseEntity.ok("Publicacion borrada exitosamente");
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("La publicacion no te pertence");
                 }

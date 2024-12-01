@@ -1,4 +1,17 @@
-<div class="cardPublicacion">
+<div class="mb-4" *ngIf="media">
+    <div class="contenedor-imagen m-1" (click)="abrirComentarios()">
+        <img [src]="publicacion.imagenes[0] ? 'data:' + publicacion.imagenes[0].tipo + ';base64,' + publicacion.imagenes[0].datos : 'assets/fondo/imageNotFound.jpg'"
+            class="imagen-cuadrada">
+        <div class="overlay">
+            <div class="flex texto">
+                <span class="pi pi-comments text-black text-2xl"> {{publicacion.ncomentarios}}</span>
+                <span class="pi pi-heart ml-3 text-black text-2xl"> {{publicacion.megusta}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cardPublicacion" *ngIf="!media">
     <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
         <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
         <div class="px-2 surface-card z-1 flex align-items-center">
@@ -10,16 +23,28 @@
             </span>
         </div>
         <div class="flex justify-content-end m-3 surface-card px-2 z-1">
-            <app-megusta [numeroMeGusta]="publicacion.megusta" [idPublicacion]="publicacion.id" [estadoBoton]="publicacion.isliked"></app-megusta>
+            <app-megusta [numeroMeGusta]="publicacion.megusta" [idPublicacion]="publicacion.id"
+                [estadoBoton]="publicacion.isliked"></app-megusta>
             <button class="border-none ml-2" title="Comentarios"
                 style="background: none; border: solid 1px mediumseagreen; color: mediumseagreen"
                 (click)="abrirComentarios()">
                 <i class="pi pi-comments" style="font-size: 1.7rem"></i></button>
         </div>
         <div class="px-2 z-1 surface-card flex align-items-center">
-            <div class="flex">
-                <span class="text-900">{{ getTiempoTranscurrido(publicacion.fechaPublicacion) }}</span>
-            </div>
+            <span class="text-900">{{ getTiempoTranscurrido(publicacion.fechaPublicacion) }}</span>
+            <p-toast />
+            <p-confirmPopup #confirmPopupRef>
+                <ng-template pTemplate="headless" let-message let-test>
+                    <div class="border-round p-3">
+                        <span>{{ message.message }}</span>
+                        <div class="flex align-items-center gap-2 mt-3">
+                            <p-button (onClick)="accept()" label="Aceptar" size="small" />
+                            <p-button (onClick)="reject()" label="Cancelar" [outlined]="true" size="small" />
+                        </div>
+                    </div>
+                </ng-template>
+            </p-confirmPopup>
+            <p-button (onClick)="confirm($event)" label="Borrar" class="ml-2" />
         </div>
     </div>
     <div class="text-600 m-3">
@@ -42,9 +67,11 @@
 
 <!--DIALOG DE COMENTARIO-->
 <p-dialog [(visible)]="visible" [modal]="true" [header]="'Detalles de la publicación'" class="scrollable"
-    [style]="{ width: publicacion.imagenes && publicacion.imagenes.length > 0 ? '95rem' : '65rem', height: '60rem' }" [draggable]="false" [resizable]="false">
+    [style]="{ width: publicacion.imagenes && publicacion.imagenes.length > 0 ? '95rem' : '65rem', height: '60rem' }"
+    [draggable]="false" [resizable]="false">
     <div class="grid nested-grid" style="height: 100%;">
-        <div class="col-8 p-0" style="background-color: black; height: 100%;" *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0">
+        <div class="col-8 p-0" style="background-color: black; height: 100%;"
+            *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0">
             <p-galleria *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0" [value]="publicacion.imagenes"
                 [circular]="true" [showIndicators]="publicacion.imagenes.length > 1" [showThumbnails]="false"
                 [showIndicatorsOnItem]="true" [responsiveOptions]="responsiveOptions">
@@ -57,7 +84,8 @@
                 </ng-template>
             </p-galleria>
         </div>
-        <div class="col-{{publicacion.imagenes && publicacion.imagenes.length > 0 ? '4' : '12'}} p-3 flex flex-column justify-content-between">
+        <div
+            class="col-{{publicacion.imagenes && publicacion.imagenes.length > 0 ? '4' : '12'}} p-3 flex flex-column justify-content-between">
             <div>
                 <div class="flex w-full relative align-items-center justify-content-between my-3 px-4">
                     <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
@@ -87,10 +115,10 @@
                             <p-avatar
                                 [image]="comentario.fotoPerfil ? 'data:' + comentario.fotoPerfil.tipo + ';base64,' + comentario.fotoPerfil.datos : 'assets/icono/userDefault.png'"
                                 shape="circle" class="flex align-items-center" />
-                            <b
-                            class="ml-3">{{comentario.nickUsuario}}</b>
+                            <b class="ml-3">{{comentario.nickUsuario}}</b>
                         </div>
-                        <span class="text-900" style="font-size: smaller;">{{ getTiempoTranscurrido(comentario.hora) }}</span>
+                        <span class="text-900" style="font-size: smaller;">{{ getTiempoTranscurrido(comentario.hora)
+                            }}</span>
                     </div>
                     <div class="comment-text">
                         {{comentario.comentario}}
@@ -101,8 +129,9 @@
                 </div>
             </div>
             <div class="bandeja">
-                <p-avatar [image]="usuario?.foto ? 'data:' + usuario?.foto?.tipo + ';base64,' + usuario?.foto?.datos : 'assets/icono/userDefault.png'" shape="circle"
-                    class="icon-avatar" />
+                <p-avatar
+                    [image]="usuario?.foto ? 'data:' + usuario?.foto?.tipo + ';base64,' + usuario?.foto?.datos : 'assets/icono/userDefault.png'"
+                    shape="circle" class="icon-avatar" />
                 <input pInputText placeholder="Escribe tu mensaje..." id="texto" class="message-input"
                     [(ngModel)]="mensaje" (keydown.enter)="enviarMensaje()" />
                 <button class="send-button" [disabled]="!mensaje" (click)="enviarMensaje()">
