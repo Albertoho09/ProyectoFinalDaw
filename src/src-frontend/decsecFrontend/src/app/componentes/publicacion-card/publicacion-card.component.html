@@ -44,7 +44,6 @@
                     </div>
                 </ng-template>
             </p-confirmPopup>
-            <p-button (onClick)="confirm($event)" label="Borrar" class="ml-2" />
         </div>
     </div>
     <div class="text-600 m-3">
@@ -66,9 +65,22 @@
 
 
 <!--DIALOG DE COMENTARIO-->
-<p-dialog [(visible)]="visible" [modal]="true" [header]="'Detalles de la publicación'" class="scrollable"
+<p-dialog [(visible)]="visible" [modal]="true" header="Header" class="scrollable"
     [style]="{ width: publicacion.imagenes && publicacion.imagenes.length > 0 ? '95rem' : '65rem', height: '60rem' }"
     [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="font-bold white-space-nowrap">
+                Detalles Publicación
+            </span>
+            <p-button *ngIf="publicacion.nick == usuario?.nick" (onClick)="confirm($event)" icon="pi pi-trash"
+                severity="danger">
+            </p-button>
+            <p-button *ngIf="publicacion.nick == usuario?.nick && !editandoComentario" icon="pi pi-pencil"
+                severity="danger" (click)="editarComentario()">
+            </p-button>
+        </div>
+    </ng-template>
     <div class="grid nested-grid" style="height: 100%;">
         <div class="col-8 p-0" style="background-color: black; height: 100%;"
             *ngIf="publicacion.imagenes && publicacion.imagenes.length > 0">
@@ -104,7 +116,19 @@
                     </div>
                 </div>
                 <div class="text-600 m-3">
-                    <p>{{publicacion.comentarioUsuario}}</p>
+                    <!-- Modo de visualización -->
+                    <p *ngIf="!editandoComentario">{{ publicacion.comentarioUsuario }}</p>
+                    <!-- Modo de edición -->
+                    <div *ngIf="editandoComentario" class="flex align-items-center">
+                        <input pInputText [(ngModel)]="nuevoComentario" class="w-full"
+                            placeholder="Edita tu comentario..." />
+                        <button pButton class="flex-shrink-0 ml-1" icon="pi pi-check" label="Guardar"
+                            (click)="confirmarEdicion()" [disabled]="!nuevoComentario || nuevoComentario == ''">
+                        </button>
+                        <button pButton class="flex-shrink-0 p-button-secondary ml-1" icon="pi pi-times" label="Cancelar"
+                            (click)="cancelarEdicion()">
+                        </button>
+                    </div>
                 </div>
                 <div class="border-top-1 surface-border top-50 left-0 w-full"></div>
             </div>
@@ -130,7 +154,7 @@
             </div>
             <div class="bandeja">
                 <p-avatar
-                    [image]="usuario?.foto ? 'data:' + usuario?.foto?.tipo + ';base64,' + usuario?.foto?.datos : 'assets/icono/userDefault.png'"
+                    [image]="usuario?.fotoperfil ? 'data:' + usuario?.fotoperfil?.tipo + ';base64,' + usuario?.fotoperfil?.datos : 'assets/icono/userDefault.png'"
                     shape="circle" class="icon-avatar" />
                 <input pInputText placeholder="Escribe tu mensaje..." id="texto" class="message-input"
                     [(ngModel)]="mensaje" (keydown.enter)="enviarMensaje()" />

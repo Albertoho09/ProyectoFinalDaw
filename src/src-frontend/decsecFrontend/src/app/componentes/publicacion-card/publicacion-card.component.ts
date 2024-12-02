@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Publicacion } from '../../../interfaces/Publicacion';
-import { Comentario } from '../../../interfaces/Comentario';
-import { ComentarioService } from '../../../servicios/comentario.service';
-import { usuarioSesion } from '../../../interfaces/Usuario';
-import { UsuarioService } from '../../../servicios/usuario.service';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Publicacion } from '../../interfaces/Publicacion';
+import { Comentario } from '../../interfaces/Comentario';
+import { ComentarioService } from '../../servicios/comentario.service';
+import { usuarioSesion } from '../../interfaces/Usuario';
+import { UsuarioService } from '../../servicios/usuario.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ConfirmPopup } from 'primeng/confirmpopup';
-import { PublicacionService } from '../../../servicios/publicacion.service';
+import { PublicacionService } from '../../servicios/publicacion.service';
 
 @Component({
   selector: 'app-publicacion-card',
@@ -20,8 +20,10 @@ export class PublicacionCardComponent implements OnInit {
 
   @Input() publicacion!: Publicacion;
   @Input() media!: Boolean;
+  @Output() eliminar = new EventEmitter<number>();
   comentarios: Comentario[] = [];
   mensaje: String = '';
+  
   constructor(private comentarioService: ComentarioService, private publicacionesService: PublicacionService, private usuarioService: UsuarioService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
@@ -49,8 +51,7 @@ export class PublicacionCardComponent implements OnInit {
       accept: () => {
         this.publicacionesService.borrarPublicacion(this.publicacion.id).subscribe(
           response => {
-            console.log('Respuesta exitosa:', response);
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Publicación borrada', life: 3000 });
+            this.eliminar.emit(this.publicacion.id);
           },
           error => {
             console.error('Error capturado:', error);
@@ -107,4 +108,36 @@ export class PublicacionCardComponent implements OnInit {
       numVisible: 1
     }
   ];
+
+    // Nuevas variables
+    editandoComentario: boolean = false;
+    nuevoComentario: string = '';
+  
+    // Método para activar el modo de edición
+    editarComentario() {
+      this.editandoComentario = true;
+      this.nuevoComentario = this.publicacion.comentarioUsuario; // Inicializa el nuevo comentario
+    }
+  
+    // Método para guardar el nuevo comentario
+    confirmarEdicion() {
+      const updates = { comentarioUsuario: this.nuevoComentario }; // Cambios a aplicar
+
+      this.publicacionesService.actualizarParcialmente(this.publicacion.id, updates).subscribe(
+        response => {
+          console.log('Publicación actualizada:', response);
+          this.publicacion.comentarioUsuario = this.nuevoComentario; // Actualizar localmente
+          this.editandoComentario = false; // Desactiva el modo de edición
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al editar', life: 3000 });
+        }
+      );
+    }
+  
+    // Método para cancelar la edición
+    cancelarEdicion() {
+      this.editandoComentario = false; // Simplemente desactiva el modo de edición
+    }
+
 }

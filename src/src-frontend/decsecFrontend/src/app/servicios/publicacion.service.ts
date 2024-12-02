@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthServiceService } from './auth-service.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { publicacionForm } from '../interfaces/Publicacion';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -83,4 +84,12 @@ export class PublicacionService {
     return this.http.delete<any>(this.baseURL + `/${id}`, { headers: headers });
   }
 
+  actualizarParcialmente(id: number, updates: Partial<any>){
+    const url = `${this.baseURL}/${id}`;
+    const accessToken = this.serviciotoken.getToken();
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken });
+
+    return this.http.patch<any>(url, updates, { headers });
+  }
 }

@@ -48,6 +48,12 @@ export class PrincipalComponent implements OnInit {
       { name: '3 Meses', code: 90 }
     ];
 
+    this.usuarioService.obtenerUsuarioToken().subscribe(
+      (data) => {
+        this.usuario = data;
+      }
+    )
+
     this.usuarioService.obtenerUsuariosSearch().subscribe((usuariosSearch) => {
       this.usuariosSearch = usuariosSearch;
     });
@@ -56,12 +62,11 @@ export class PrincipalComponent implements OnInit {
       this.publicacionesFeed = publicacionesFeed;
       console.log(this.publicacionesFeed);
     });
+  }
 
-    this.usuarioService.obtenerUsuarioToken().subscribe(
-      (data) => {
-        this.usuario = data
-      }
-    )
+  manejarEliminacionPrincipal(id: number) {
+    this.publicacionesFeed = this.publicacionesFeed?.filter(pub => pub.id !== id);
+    this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Publicación borrada', life: 3000 });
   }
 
   recargarPublicaciones() {

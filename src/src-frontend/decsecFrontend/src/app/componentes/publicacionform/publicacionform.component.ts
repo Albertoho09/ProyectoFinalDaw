@@ -42,6 +42,7 @@ export class PublicacionformComponent implements OnInit {
       () => {
         this.publicacionForm.reset();
         this.visible = false;
+        this.uploadedFiles = [];
         this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Publicación Creada' });
       },
       () => {

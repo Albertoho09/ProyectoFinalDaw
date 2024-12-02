@@ -142,20 +142,23 @@ public class PublicacionController {
         try {
             if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
                 publicacionService.borrarPublicacion(id);
-                return ResponseEntity.ok("Publicacion borrada exitosamente");
+                return ResponseEntity.ok(Map.of("mensaje", "Publicacion borrada exitosamente"));
             } else {
                 if (publicacionService.pertenecePublicacion(id, usuario.getEmail())) {
                     publicacionService.borrarPublicacion(id);
-                    return ResponseEntity.ok("Publicacion borrada exitosamente");
+                    return ResponseEntity.ok(Map.of("mensaje", "Publicacion borrada exitosamente"));
                 } else {
-                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("La publicacion no te pertence");
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                            .body(Map.of("error", "La publicacion no te pertence"));
                 }
             }
-
+    
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La publicacion no existe");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "La publicacion no existe"));
         }
     }
+    
 
     @PostMapping("darmegusta/{id}")
     public ResponseEntity<?> darMegusta(@PathVariable(required = true) Long id,

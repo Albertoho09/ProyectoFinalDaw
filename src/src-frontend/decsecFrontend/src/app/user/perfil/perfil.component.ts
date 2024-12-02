@@ -6,6 +6,7 @@ import { UsuarioService } from '../../servicios/usuario.service';
 import { Publicacion } from '../../interfaces/Publicacion';
 import { PublicacionService } from '../../servicios/publicacion.service';
 import { PeticionService } from '../../servicios/peticion.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-perfil',
@@ -14,7 +15,7 @@ import { PeticionService } from '../../servicios/peticion.service';
 })
 export class PerfilComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private peticionesService: PeticionService) { }
+  constructor(private route: ActivatedRoute, private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private peticionesService: PeticionService, private messageService: MessageService) { }
 
   imagenes: string[] = ['assets/fondo/guts.webp', 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
     , 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
@@ -24,31 +25,34 @@ export class PerfilComponent implements OnInit {
   usuarioSesion!: usuarioSesion;
   estadoMenu: String = 'publicaciones';
   estadoPerfil: String = 'PUBLICO';
-  Publicaciones: Publicacion[] = [];
+  Publicaciones: Publicacion[] | undefined;
   ngOnInit() {
     this.route.params.subscribe(params => {
       const userNick = params['nick'];
+      const userJson = sessionStorage.getItem('currentUser');
+      this.usuarioSesion = userJson ? JSON.parse(userJson) : null;
+
       this.usuarioService.ObtenerUsuarioNick(userNick).subscribe(
-        response => {
-          this.usuarioPerfil = response;
+        (data) => {
+          this.usuarioPerfil = data;
           this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe(
-            response =>{
+            response => {
               this.Publicaciones = response;
             },
-            error =>{
-              if(error.error == "Publicaciones no disponibles, usuario privado."){
+            error => {
+              if (error.error == "Publicaciones no disponibles, usuario privado.") {
                 this.estadoPerfil = 'PRIVADO';
               }
             }
           );
-        },
-        error => {
-          console.log(error.data)
         }
       )
     });
-    const userJson = sessionStorage.getItem('currentUser');
-    this.usuarioSesion = userJson ? JSON.parse(userJson) : null;
+  }
+
+  manejarEliminacionPerfil(id: number) {
+    this.Publicaciones = this.Publicaciones?.filter(pub => pub.id !== id);
+    this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Publicación borrada', life: 3000 });
   }
 
   cambiarVista(vista: string) {
@@ -63,7 +67,7 @@ export class PerfilComponent implements OnInit {
     } else if (vista == 'media') {
       this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe((publicaciones) => {
         this.Publicaciones = publicaciones;
-        this.Publicaciones = this.Publicaciones.filter(publicacion => publicacion.imagenes && publicacion.imagenes.length > 0);
+        this.Publicaciones = this.Publicaciones?.filter(publicacion => publicacion.imagenes && publicacion.imagenes.length > 0);
         this.estadoMenu = vista
       });
     } else if (vista == 'meGustan') {

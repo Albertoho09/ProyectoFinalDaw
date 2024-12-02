@@ -59,7 +59,7 @@ import { HeaderComponent } from './user/header/header.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { PrincipalComponent } from './user/principal/principal.component';
 import { FooterComponent } from './user/footer/footer.component';
-import { PublicacionCardComponent } from './user/principal/publicacion-card/publicacion-card.component';
+import { PublicacionCardComponent } from './componentes/publicacion-card/publicacion-card.component';
 import { MegustaComponent } from './componentes/megusta/megusta.component';
 
 @NgModule({

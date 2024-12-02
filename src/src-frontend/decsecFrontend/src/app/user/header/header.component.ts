@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { iif } from 'rxjs';
 import { AuthServiceService } from '../../servicios/auth-service.service';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../servicios/usuario.service';
+import { usuarioSesion } from '../../interfaces/Usuario';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent{
 
+  @Input() usuarioPerfil!: usuarioSesion;
 
 
 visiblePeticiones: boolean = false;

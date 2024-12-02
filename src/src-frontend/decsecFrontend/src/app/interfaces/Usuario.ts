@@ -24,7 +24,7 @@ export interface usuarioSesion {
     password: string;
     privado: Boolean;
     roles: Array<String>;
-    foto: Imagen;
+    fotoperfil: Imagen;
 }
 
 export interface usuarioPerfil {

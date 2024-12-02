@@ -6,7 +6,7 @@
             <div class="inline-flex align-items-center justify-content-center gap-2">
                 <h5>Crear publicacion como:</h5>
                 <p-avatar
-                    [image]="usuario.foto ? 'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.datos : 'assets/icono/userDefault.png'"
+                    [image]="usuario.fotoperfil ? 'data:' + usuario.fotoperfil.tipo + ';base64,' + usuario.fotoperfil.datos : 'assets/icono/userDefault.png'"
                     size="large" shape="circle"></p-avatar>
                 <span class="font-bold white-space-nowrap">{{usuario.nick}}</span>
             </div>
