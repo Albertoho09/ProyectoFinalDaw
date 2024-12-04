@@ -74,6 +74,11 @@ public class AuthenticationService {
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
+    public JwtAuthenticationResponse signupEdit(Usuario usu) throws java.io.IOException {
+        String jwt = jwtService.generateToken(usu);
+        return JwtAuthenticationResponse.builder().token(jwt).build();
+    }
+
     public JwtAuthenticationResponse signin(SigninRequest request) {
         // Maneja la autenticación
         Authentication authentication = authenticationManager.authenticate(

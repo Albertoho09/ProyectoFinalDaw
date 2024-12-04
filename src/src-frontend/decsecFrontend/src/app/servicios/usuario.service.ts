@@ -22,6 +22,15 @@ export class UsuarioService {
     return this.http.post<any>(this.baseURLAUTH + '/signin', usuario);
   }
 
+  actualizarParcialmente(updates: Partial<any>){
+    const accessToken = this.serviciotoken.getToken();
+    console.log(updates)
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    })
+    return this.http.patch<any>(this.baseURL, updates, { headers: headers });
+  }
+
   obtenerUsuarioToken() {
     const accessToken = this.serviciotoken.getToken();
 

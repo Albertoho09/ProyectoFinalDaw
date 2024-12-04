@@ -18,17 +18,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.decsecBackend.errores.NotFoundException; // Añadir esta línea
-
+import com.example.decsecBackend.dtos.SigninRequest;
 import com.example.decsecBackend.dtos.UsuarioDTO;
+import com.example.decsecBackend.dtos.UsuarioTokenResponse;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.seguridad.JwtAuthenticationResponse;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
+import com.example.decsecBackend.serviciosImpl.AuthenticationService;
+import com.example.decsecBackend.serviciosImpl.JwtServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-
+    @Autowired
+    AuthenticationService authenticationService;
 	@Autowired
 	private UsuarioServicioImpl usuarioservice;
 
@@ -118,13 +123,29 @@ public class UserController {
 		}
 	}
 
-	@PatchMapping
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> actualizarParcialmenteMiUsuario(
-			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(usuario.getId(),
-				updates));
-	}
+@PatchMapping
+@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+public ResponseEntity<?> actualizarParcialmenteMiUsuario(
+        @AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
+    try {
+        // Llamada al servicio para actualizar el usuario
+        Usuario resultadoUsuario = usuarioservice.actualizarUsuario(usuario.getId(), updates);
+
+        // Convertir el usuario actualizado en un DTO
+        UsuarioDTO resultado = new UsuarioDTO(resultadoUsuario);
+
+        // Crear la respuesta con el usuario y el token
+        UsuarioTokenResponse respuesta = new UsuarioTokenResponse(resultado, authenticationService.signupEdit(resultadoUsuario).getToken());
+
+        // Devolver los datos con código 200
+        return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+
+    } catch (Exception e) {
+        // En caso de cualquier excepción, retornar un código 400 (Bad Request) con el mensaje de error
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+    }
+}
+
 
 	@GetMapping("/nick/{nick}")
 	public ResponseEntity<?> devolverUsuarioNick(@PathVariable String nick,

@@ -1,6 +1,7 @@
 package com.example.decsecBackend.serviciosImpl;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
 	@Override
 	public Usuario actualizarUsuario(Long id, Map<String, Object> updates) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		Usuario usu = obtenerUsuario(id);
 
 		updates.forEach((campo, valor) -> {
@@ -106,13 +106,33 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 					usu.setApellidos((String) valor);
 					break;
 				case "fechaNac":
-					usu.setFechaNac(LocalDate.parse(valor.toString(), formatter));
+						OffsetDateTime fechaOffset = OffsetDateTime.parse(valor.toString());
+						LocalDate fechaLocal = fechaOffset.toLocalDate(); // Convert to LocalDate
+						usu.setFechaNac(fechaLocal); // Now you can pass the LocalDate
 					break;
 				case "nick":
-					usu.setNick((String) valor);
+					Usuario usuEjemploNick = repositorio.findByNick((String) valor).orElse(null);
+					if(usuEjemploNick == null){
+						usu.setNick((String) valor);
+					}else{
+						if (usuEjemploNick.getId() == id) {
+							usu.setNick((String) valor);
+						}else{
+							throw new RuntimeException("El nick ya está en uso.");
+						}
+					}
 					break;
 				case "email":
-					usu.setEmail((String) valor);
+					Usuario usuEjemploEmail = repositorio.findByEmail((String) valor).orElse(null);
+					if(usuEjemploEmail == null){
+						usu.setEmail((String) valor);
+					}else{
+						if (usuEjemploEmail.getId() == id) {
+							usu.setEmail((String) valor);
+						}else{
+							throw new RuntimeException("El Email ya está en uso.");
+						}
+					}
 					break;
 				case "password":
 					usu.setPassword((String) valor);
