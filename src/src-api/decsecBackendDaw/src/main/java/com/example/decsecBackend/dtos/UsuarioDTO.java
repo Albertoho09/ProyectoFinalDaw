@@ -31,6 +31,8 @@ public class UsuarioDTO {
 
 	private Imagen banner;
 
+	private Boolean privado;
+
 	private Set<Role> roles = new HashSet<>();
 
 	public UsuarioDTO(Usuario usu) {
@@ -43,5 +45,6 @@ public class UsuarioDTO {
 		this.npublicaciones = usu.getPublicaciones().size();
 		this.banner = usu.getBanner();
 		this.fotoperfil = usu.getFoto();
+		this.privado = usu.getPrivado();
 	}
 }

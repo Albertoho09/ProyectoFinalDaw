@@ -2,7 +2,6 @@ package com.example.decsecBackend.serviciosImpl;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,14 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 import com.example.decsecBackend.dtos.PeticionDTO;
 import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.dtos.UsuarioSearchDTO;
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Estado;
+import com.example.decsecBackend.modelo.Imagen;
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.repositorios.ImagenRepositorio;
 import com.example.decsecBackend.repositorios.PeticionRepositorio;
 import com.example.decsecBackend.repositorios.UsuarioRepositorio;
 import com.example.decsecBackend.servicios.UsuarioServicio;
@@ -29,6 +34,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	private UsuarioRepositorio repositorio;
 	@Autowired
 	private PeticionRepositorio peticionRepositorio;
+	@Autowired
+	private ImagenRepositorio imagenRepositorio;
+
+	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@SuppressWarnings("null")
 	@Override
@@ -106,36 +115,39 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 					usu.setApellidos((String) valor);
 					break;
 				case "fechaNac":
-						OffsetDateTime fechaOffset = OffsetDateTime.parse(valor.toString());
-						LocalDate fechaLocal = fechaOffset.toLocalDate(); // Convert to LocalDate
-						usu.setFechaNac(fechaLocal); // Now you can pass the LocalDate
+					OffsetDateTime fechaOffset = OffsetDateTime.parse(valor.toString());
+					LocalDate fechaLocal = fechaOffset.toLocalDate(); // Convert to LocalDate
+					usu.setFechaNac(fechaLocal); // Now you can pass the LocalDate
 					break;
 				case "nick":
 					Usuario usuEjemploNick = repositorio.findByNick((String) valor).orElse(null);
-					if(usuEjemploNick == null){
+					if (usuEjemploNick == null) {
 						usu.setNick((String) valor);
-					}else{
+					} else {
 						if (usuEjemploNick.getId() == id) {
 							usu.setNick((String) valor);
-						}else{
+						} else {
 							throw new RuntimeException("El nick ya está en uso.");
 						}
 					}
 					break;
 				case "email":
 					Usuario usuEjemploEmail = repositorio.findByEmail((String) valor).orElse(null);
-					if(usuEjemploEmail == null){
+					if (usuEjemploEmail == null) {
 						usu.setEmail((String) valor);
-					}else{
+					} else {
 						if (usuEjemploEmail.getId() == id) {
 							usu.setEmail((String) valor);
-						}else{
+						} else {
 							throw new RuntimeException("El Email ya está en uso.");
 						}
 					}
 					break;
 				case "password":
-					usu.setPassword((String) valor);
+					if (!passwordEncoder.matches((String) valor, usu.getPassword())) {
+						throw new RuntimeException("La contraseña no es correcta.");
+					}
+					usu.setPassword(passwordEncoder.encode((String) updates.get("passwordNew")));
 					break;
 				case "privado":
 					usu.setPrivado((valor instanceof Boolean) ? (Boolean) valor : false);
@@ -150,34 +162,46 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	public Boolean usuarioPrivado(Long idUsuarioEmisor, String email) {
 		Usuario usu = repositorio.findByEmail(email)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-		
-		if (usu.getPrivado()) {
-			if(peticionRepositorio.existsByUsuarioEmisorIdAndUsuarioReceptorId(idUsuarioEmisor, idUsuarioEmisor)){
-				PeticionDTO peticion = peticionRepositorio.encontrarPeticion(idUsuarioEmisor, idUsuarioEmisor);
-				if (peticion.getEstado() == Estado.ACEPTADO) {
-					return false;
-				}else{
-					return true;
-				}
-			}else{
-				return true;
-			}
-		} else {
-			return false;
+
+		if (usu.getPrivado() && !usu.getEmail().equals(email)) {
+			return peticionRepositorio.existsByUsuarioEmisorIdAndUsuarioReceptorId(idUsuarioEmisor, idUsuarioEmisor) &&
+					peticionRepositorio.encontrarPeticion(idUsuarioEmisor, idUsuarioEmisor).getEstado() != Estado.ACEPTADO;
 		}
+		return false;
 	}
 
 	@Override
 	public UsuarioDTO obtenerPorNick(String nick) {
 		return new UsuarioDTO(
-				repositorio.findByNick(nick).orElseThrow(() -> new NotFoundException("Usuario con nick '"+nick+"' no encontrado")));
+				repositorio.findByNick(nick)
+						.orElseThrow(() -> new NotFoundException("Usuario con nick '" + nick + "' no encontrado")));
 	}
 
 	@Override
 	public Boolean existePorNick(String nick) {
 		UsuarioDTO usuario = new UsuarioDTO(repositorio.findByNick(nick)
-				.orElseThrow(() -> new NotFoundException("Usuario con nick '"+nick+"' no existe")));
+				.orElseThrow(() -> new NotFoundException("Usuario con nick '" + nick + "' no existe")));
 		return existePorEmail(usuario.getEmail());
 	}
+
+	@Override
+	public UsuarioDTO actualizarMedia(Long id, MultipartFile imagen, MultipartFile banner) {
+		try {
+			Usuario usu = obtenerUsuario(id);
+			if (imagen != null) {
+				Imagen img = new Imagen(imagen.getOriginalFilename(), imagen.getContentType(), imagen.getBytes());
+				imagenRepositorio.save(img);
+				usu.setFoto(img);
+			}
+			if (banner != null) {
+				Imagen bannerimg = new Imagen(banner.getOriginalFilename(), banner.getContentType(), banner.getBytes());
+				imagenRepositorio.save(bannerimg);
+				usu.setBanner(bannerimg);
+			}
+			return new UsuarioDTO(crearUsuario(usu));
+		} catch (IOException e) {
+			throw new RuntimeException("Error al procesar la imagen: " + e.getMessage()); // Manejo de excepción
+		}
+	};
 
 }

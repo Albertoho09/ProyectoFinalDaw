@@ -48,6 +48,18 @@ export class UsuarioService {
     return this.http.post<any>(this.baseURLAUTH + '/signup', formData);
   }
 
+  editarUsuarioMedia(fotoPerfil: File, banner: File) {
+    const accessToken = this.serviciotoken.getToken();
+
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    })
+    const formData = new FormData();
+    formData.append('imagen', fotoPerfil);
+    formData.append('banner', banner);
+    return this.http.patch<any>(this.baseURL + '/actualizarMedia', formData, { headers: headers });
+  }
+
   obtenerUsuarios() {
     const accessToken = this.serviciotoken.getToken();
 

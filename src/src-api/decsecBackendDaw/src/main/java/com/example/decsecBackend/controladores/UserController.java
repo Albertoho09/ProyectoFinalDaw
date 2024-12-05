@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.decsecBackend.errores.NotFoundException; // Añadir esta línea
 import com.example.decsecBackend.dtos.SigninRequest;
 import com.example.decsecBackend.dtos.UsuarioDTO;
@@ -32,8 +35,8 @@ import com.example.decsecBackend.serviciosImpl.JwtServiceImpl;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-    @Autowired
-    AuthenticationService authenticationService;
+	@Autowired
+	AuthenticationService authenticationService;
 	@Autowired
 	private UsuarioServicioImpl usuarioservice;
 
@@ -123,28 +126,48 @@ public class UserController {
 		}
 	}
 
-@PatchMapping
-@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-public ResponseEntity<?> actualizarParcialmenteMiUsuario(
-        @AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
-    try {
-        // Llamada al servicio para actualizar el usuario
-        Usuario resultadoUsuario = usuarioservice.actualizarUsuario(usuario.getId(), updates);
+	@PatchMapping
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> actualizarParcialmenteMiUsuario(
+			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
+		try {
+			// Llamada al servicio para actualizar el usuario
+			Usuario resultadoUsuario = usuarioservice.actualizarUsuario(usuario.getId(), updates);
 
-        // Convertir el usuario actualizado en un DTO
-        UsuarioDTO resultado = new UsuarioDTO(resultadoUsuario);
+			// Convertir el usuario actualizado en un DTO
+			UsuarioDTO resultado = new UsuarioDTO(resultadoUsuario);
 
-        // Crear la respuesta con el usuario y el token
-        UsuarioTokenResponse respuesta = new UsuarioTokenResponse(resultado, authenticationService.signupEdit(resultadoUsuario).getToken());
+			// Crear la respuesta con el usuario y el token
+			UsuarioTokenResponse respuesta = new UsuarioTokenResponse(resultado,
+					authenticationService.signupEdit(resultadoUsuario).getToken());
 
-        // Devolver los datos con código 200
-        return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+			// Devolver los datos con código 200
+			return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 
-    } catch (Exception e) {
-        // En caso de cualquier excepción, retornar un código 400 (Bad Request) con el mensaje de error
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
-    }
-}
+		} catch (Exception e) {
+			// En caso de cualquier excepción, retornar un código 400 (Bad Request) con el
+			// mensaje de error
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+		}
+	}
+
+	@PatchMapping("/actualizarMedia")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> actualizarParcialmenteMiUsuarioMedia(
+			@AuthenticationPrincipal Usuario usuario, 
+			@RequestPart(value = "imagen", required = false) MultipartFile imagen,
+            @RequestPart(value = "banner", required = false) MultipartFile banner) {
+				try {
+					UsuarioDTO respuesta = usuarioservice.actualizarMedia(usuario.getId(), imagen, banner);
+					// Devolver los datos con código 200
+					return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+		
+				} catch (Exception e) {
+					// En caso de cualquier excepción, retornar un código 400 (Bad Request) con el
+					// mensaje de error
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+				}
+	}
 
 
 	@GetMapping("/nick/{nick}")

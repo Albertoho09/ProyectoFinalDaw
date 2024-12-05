@@ -36,17 +36,23 @@
                 </a>
             </li>
             <li id="privacidad" class="hidden flex align-items-center pl-3">
-                <a
+                <a *ngIf="usuarioPerfil.privado == false"
                     class="px-6 p-3 lg:px-3 lg:py-2 text-green-600 bg-green-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 mr-2">
-                    Público
+                    Publico
+                </a>
+                <a *ngIf="usuarioPerfil.privado == true"
+                    class="px-6 p-3 lg:px-3 lg:py-2 text-red-600 bg-red-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 mr-2">
+                    Privado
                 </a>
             </li>
             <li class="border-top-1 surface-border lg:border-top-none"><a pripple=""
                     class="p-ripple p-element flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-primary-500 font-medium cursor-pointer transition-colors transition-duration-150"><img
-                    [src]="usuarioPerfil.fotoperfil ? 'data:' + usuarioPerfil.fotoperfil.tipo + ';base64,' + usuarioPerfil.fotoperfil.datos : 'assets/icono/userDefault.png'" class="mr-3 lg:mr-0" style="width: 35px; height: 35px;">
+                        [src]="usuarioPerfil.fotoperfil ? 'data:' + usuarioPerfil.fotoperfil.tipo + ';base64,' + usuarioPerfil.fotoperfil.datos : 'assets/icono/userDefault.png'"
+                        class="mr-3 lg:mr-0" style="width: 35px; height: 35px;">
                     <div class="block lg:hidden">
-                        <div class="text-900 font-medium">Josephine Lillard</div><span
-                            class="text-600 font-medium text-sm">Marketing Specialist</span>
+                        <div class="text-900 font-medium">{{usuarioPerfil.nick}}</div><span
+                            class="text-600 font-medium text-sm">{{usuarioPerfil.nombre}}
+                            {{usuarioPerfil.apellidos}}</span>
                     </div><span class="p-ink" style="height: 84px; width: 84px; top: 3px; left: -11px;"></span>
                 </a></li>
         </ul>
@@ -114,8 +120,7 @@
 
 
 <!--DIALOG AMIGOS-->
-<p-dialog header="Amigos" [modal]="true" [(visible)]="visibleAmigos" [position]="'top'"
-    [style]="{ width: '50rem' }">
+<p-dialog header="Amigos" [modal]="true" [(visible)]="visibleAmigos" [position]="'top'" [style]="{ width: '50rem' }">
     <div class="p-4">
         <div class="flex align-items-center justify-content-between mb-2 pl-3 pr-3">
             <div class="flex">

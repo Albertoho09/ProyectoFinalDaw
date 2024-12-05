@@ -18,4 +18,16 @@ export class PeticionService {
 
     return this.http.get<any>(this.baseURL + `/?emailReceptor=${emailReceptor}`, { headers: headers });
   }
+
+  cambiarEstado(emailReceptor: string, estado: string){
+    const accessToken = this.serviciotoken.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    });
+    const params = new HttpParams()
+      .set('emailReceptor', emailReceptor)
+      .set('estado', estado);
+
+    return this.http.put<any>(`${this.baseURL}/cambiarEstado`, null, { headers, params });
+  }
 }

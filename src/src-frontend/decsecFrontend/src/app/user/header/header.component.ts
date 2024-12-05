@@ -40,6 +40,8 @@ visibleAmigos: boolean = false;
   }
   
   abrirDialogAmigos() {
+    console.log('Texto')
+    console.log(this.usuarioPerfil)
     this.visibleAmigos = true;
   }
 
