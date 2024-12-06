@@ -9,8 +9,9 @@ public interface PeticionServicio {
 
     PeticionDTO enviarPeticion(Usuario usuarioEmisor, String emailReceptor);
 
-    PeticionDTO cambiarEstado(Usuario usuarioEmisor, String emailReceptor, String estado);
+    PeticionDTO cambiarEstado(Long id, String estado);
 
     List<PeticionDTO> misPeticiones(Long usuarioEmisorId);
 
+    List<PeticionDTO> misAmigos(Long usuarioEmisorId);
 }

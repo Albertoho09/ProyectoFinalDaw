@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/v1/peticiones")
 public class PeticionController {
@@ -30,19 +30,27 @@ public class PeticionController {
     @Autowired
     private PeticionServicioImpl peticionService;
 
-    @Autowired
-    private UsuarioServicioImpl usuarioService;
-
-    @GetMapping("/{emailReceptor}")
+    @GetMapping()
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> obtenerPeticion(@PathVariable(required = true) String emailReceptor,
+    public ResponseEntity<?> obtenerPeticion(@RequestParam(required = false) String emailReceptor,
             @AuthenticationPrincipal Usuario usuario){
-            return ResponseEntity.ok(peticionService.obtenerPeticion(usuario.getId(), emailReceptor));
+                if(emailReceptor != null){
+                    return ResponseEntity.ok(peticionService.obtenerPeticion(usuario.getId(), emailReceptor));
+                }else{
+                    return ResponseEntity.ok(peticionService.misPeticiones(usuario.getId()));
+                }
     }
 
-    @PostMapping("/{emailReceptor}")
+    @GetMapping("/amigos")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> emviarPeticion(@PathVariable(required = true) String emailReceptor,
+    public ResponseEntity<?> obtenerPeticionAmigos(@AuthenticationPrincipal Usuario usuario){
+        System.out.println(usuario.getNombre());
+        return ResponseEntity.ok(peticionService.misAmigos(usuario.getId()));
+    }
+
+    @PostMapping()
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<?> emviarPeticion(@RequestParam(required = true) String emailReceptor,
             @AuthenticationPrincipal Usuario usuario){
             return ResponseEntity.ok(peticionService.enviarPeticion(usuario, emailReceptor));
     }
@@ -50,18 +58,12 @@ public class PeticionController {
     @PutMapping("/cambiarEstado")
     @PreAuthorize("hasRole('ROLE_USER')")
     public  ResponseEntity<?> cambiarEstado(
-                                      @RequestParam String emailReceptor, 
+                                      @RequestParam Long id,
                                       @RequestParam String estado, @AuthenticationPrincipal Usuario usuario) {
         try {
-            return ResponseEntity.ok(peticionService.cambiarEstado(usuario, emailReceptor, estado));
+            return ResponseEntity.ok(peticionService.cambiarEstado(id, estado));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public  ResponseEntity<?> misPeticiones(@AuthenticationPrincipal Usuario usuario) {
-        return ResponseEntity.ok(peticionService.misPeticiones(usuario.getId()));
     }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { usuarioSesion, usuarioSearch } from '../../interfaces/Usuario';
+import { usuarioDTO, usuarioSearch } from '../../interfaces/Usuario';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -21,25 +21,25 @@ interface Days {
   templateUrl: './principal.component.html',
   styleUrl: './principal.component.scss'
 })
-export class PrincipalComponent implements OnInit {
+export class PrincipalComponent {
 
-  usuariosSearch: usuarioSearch[] | undefined;
+  usuariosSearch: usuarioSearch[] | null = null;
 
-  publicacionesFeed: Publicacion[] | undefined;
+  publicacionesFeed: Publicacion[] | null = [];
 
-  selectedusuariosSearchAdvanced: any | undefined;
+  selectedusuariosSearchAdvanced: any | null = null;
 
   filteredusuariosSearch: any[] = [];
 
-  usuario!: usuarioSesion;
+  usuario: usuarioDTO | null = null;
 
   days!: Days[];
 
   selectedDay: Days = { name: '7 Dias', code: 7 };
 
-  constructor(private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private messageService: MessageService, private router: Router) { }
-
-  ngOnInit(): void {
+  constructor(private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private messageService: MessageService, private router: Router) {
+    const currentUser = sessionStorage.getItem('currentUser');
+    this.usuario = currentUser ? JSON.parse(currentUser) : null;
 
     this.days = [
       { name: '7 Dias', code: 7 },
@@ -48,16 +48,11 @@ export class PrincipalComponent implements OnInit {
       { name: '3 Meses', code: 90 }
     ];
 
-    this.usuarioService.obtenerUsuarioToken().subscribe(
-      (data) => {
-        this.usuario = data;
-      }
-    )
-
-    this.usuarioService.obtenerUsuariosSearch().subscribe((usuariosSearch) => {
-      this.usuariosSearch = usuariosSearch;
+    this.usuarioService.obtenerUsuariosSearch().then((observable) => {
+      observable.subscribe((usuariosSearch) => {
+        this.usuariosSearch = usuariosSearch;
+      });
     });
-
     this.publicacionesService.obtenerPublicacionesFeed(this.selectedDay.code).subscribe((publicacionesFeed) => {
       this.publicacionesFeed = publicacionesFeed;
       console.log(this.publicacionesFeed);
@@ -65,7 +60,7 @@ export class PrincipalComponent implements OnInit {
   }
 
   manejarEliminacionPrincipal(id: number) {
-    this.publicacionesFeed = this.publicacionesFeed?.filter(pub => pub.id !== id);
+    this.publicacionesFeed = this.publicacionesFeed!.filter(pub => pub.id !== id);
     this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Publicación borrada', life: 3000 });
   }
 
@@ -90,25 +85,29 @@ export class PrincipalComponent implements OnInit {
   }
 
   buscarUsuario() {
-    if(this.selectedusuariosSearchAdvanced){
+    if (this.selectedusuariosSearchAdvanced) {
       if (this.selectedusuariosSearchAdvanced.hasOwnProperty('nick')) {
-        this.usuarioService.ObtenerUsuarioNick(this.selectedusuariosSearchAdvanced.nick).subscribe(
-          (user) => {
-            this.router.navigate(['/user/perfil', user.nick]);
-          },
-          (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error || 'Error desconocido' });
-          }
-        )
+        this.usuarioService.ObtenerUsuarioNick(this.selectedusuariosSearchAdvanced.nick).then((observable) => {
+          observable.subscribe({
+            next: (user: usuarioDTO) => {
+              this.router.navigate(['/user/perfil', user.nick]);
+            },
+            error: (error) => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener el usuario' });
+            }
+          });
+        });
       } else {
-        this.usuarioService.ObtenerUsuarioNick(this.selectedusuariosSearchAdvanced).subscribe(
-          (user) => {
-            this.router.navigate(['/user/perfil', user.nick]);
-          },
-          (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error || 'Error desconocido' });
-          }
-        )
+        this.usuarioService.ObtenerUsuarioNick(this.selectedusuariosSearchAdvanced).then((observable) => {
+          observable.subscribe({
+            next: (user: usuarioDTO) => {
+              this.router.navigate(['/user/perfil', user.nick]);
+            },
+            error: (error) => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error || 'Error desconocido' });
+            }
+          });
+        });
       }
     }
   }

@@ -15,19 +15,7 @@ export interface SignUpRequest {
     privado: Boolean;
 }
 
-export interface usuarioSesion {
-    nick: string;
-    nombre: string;
-    apellidos: string;
-    email: string;
-    fechaNac: Date;
-    password: string;
-    privado: Boolean;
-    roles: Array<String>;
-    fotoperfil: Imagen;
-}
-
-export interface usuarioPerfil {
+export interface usuarioDTO {
     nick: string;
     nombre: string;
     apellidos: string;

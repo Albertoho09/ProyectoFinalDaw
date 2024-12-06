@@ -1,8 +1,8 @@
 <p-toast></p-toast>
 <div class="m-5">
     <div
-        [style]="'background: url(' + (usuarioPerfil.banner ? 'data:' + usuarioPerfil.banner.tipo + ';base64,'
-         + usuarioPerfil.banner.datos : 'assets/icono/default-banner.jpg')
+        [style]="'background: url(' + (usuarioPerfil?.banner ? 'data:' + usuarioPerfil?.banner?.tipo + ';base64,'
+         + usuarioPerfil?.banner?.datos : 'assets/icono/default-banner.jpg')
           + ')center center;height: 200px; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; background-size: cover;'">
     </div>
     <div class="px-4 py-5 md:px-6 lg:px-8 surface-card"
@@ -12,29 +12,29 @@
             <div>
                 <div class="mb-3 surface-card shadow-3 flex align-items-center justify-content-center"
                     style="width: 140px; height: 140px; border-radius: 10px;">
-                    <img [src]="usuarioPerfil.fotoperfil ? 'data:' + usuarioPerfil.fotoperfil.tipo + ';base64,' + usuarioPerfil.fotoperfil.datos : 'assets/icono/userDefault.png'"
+                    <img [src]="usuarioPerfil?.fotoperfil ? 'data:' + usuarioPerfil?.fotoperfil?.tipo + ';base64,' + usuarioPerfil?.fotoperfil?.datos : 'assets/icono/userDefault.png'"
                         alt="Image" class="w-100 h-100 border-round">
                 </div>
-                <div class="text-900 text-3xl font-medium mb-3">{{usuarioPerfil.nick}}</div>
-                <p class="mt-0 mb-3 text-700 text-xl">{{usuarioPerfil.nombre+' '+usuarioPerfil.apellidos}}
+                <div class="text-900 text-3xl font-medium mb-3">{{usuarioPerfil?.nick}}</div>
+                <p class="mt-0 mb-3 text-700 text-xl">{{usuarioPerfil?.nombre+' '+usuarioPerfil?.apellidos}}
                 </p>
-                <div class="text-600 font-medium"><span>{{usuarioPerfil.email}} | {{usuarioPerfil.fechaNac}} |
-                        {{usuarioPerfil.npublicaciones}} Publicaciones</span></div>
+                <div class="text-600 font-medium"><span>{{usuarioPerfil?.email}} | {{usuarioPerfil?.fechaNac}} |
+                        {{usuarioPerfil?.npublicaciones}} Publicaciones</span></div>
 
             </div>
             <div class="mt-3 lg:mt-0">
 
-                <div *ngIf="usuarioPerfil.email == usuarioSesion.email; else elseBlock">
+                <div *ngIf="usuarioPerfil?.email == usuarioSesion?.email; else elseBlock">
                     <button pbutton="" pripple="" icon="pi pi-ellipsis-v"
                         class="p-element p-ripple p-button-outlined p-button p-component" (click)="showDialog()">Editar
                         Perfil<span class="p-button-icon pi pi-pencil ml-2" aria-hidden="true"></span><span
                             class="p-ink" style="height: 48px; width: 48px; top: 5.5px; left: 6px;"></span></button>
                 </div>
                 <ng-template #elseBlock>
-                    <button pbutton="" pripple="" label="Website" icon="pi pi-link"
+                    <button pbutton="" pripple="" label="Website" icon="pi pi-link" (click)="enviarPeticion()" [disabled]="!botonActivo"
                         class="p-element p-ripple mr-2 p-button p-component"><span
                             class="p-button-icon p-button-icon-left pi pi-send" aria-hidden="true"></span><span
-                            class="p-button-label">Enviar Solicitud</span><span class="p-ink"
+                            class="p-button-label">{{botonPeticionesTexto}}</span><span class="p-ink"
                             style="height: 127px; width: 127px; top: -33px; left: 32.1406px;"></span></button>
                 </ng-template>
             </div>
@@ -163,7 +163,7 @@
             <b>Banner</b>
             <p>Para la elección del banner se recomienda una imagen con la siguiente relación (21:9)</p>
             <img class="imagenBannerForm"
-                [src]="imagenBanner ? imagenBanner : (usuarioPerfil.banner ? 'data:' + usuarioPerfil.banner.tipo + ';base64,' + usuarioPerfil.banner.datos : 'assets/fondo/fondoOscuro.jpg')"
+                [src]="imagenBanner ? imagenBanner : (usuarioPerfil?.banner ? 'data:' + usuarioPerfil?.banner?.tipo + ';base64,' + usuarioPerfil?.banner?.datos : 'assets/fondo/fondoOscuro.jpg')"
                 alt="imagen Banner">
             <div class="flex justify-content-end mt-2">
                 <p-fileUpload mode="basic" name="foto" url="https://www.primefaces.org/cdn/api/upload.php"
@@ -174,7 +174,7 @@
         <div class="field col-12 md:col-6 flex justify-content-center align-items-center flex-wrap">
             <label class="mr-3">Foto de perfil</label>
             <p-avatar
-                [image]="imagenURL ? imagenURL : (usuarioPerfil.fotoperfil ? 'data:' + usuarioPerfil.fotoperfil.tipo + ';base64,' + usuarioPerfil.fotoperfil.datos : 'assets/icono/userDefault.png')"
+                [image]="imagenURL ? imagenURL : (usuarioPerfil?.fotoperfil ? 'data:' + usuarioPerfil?.fotoperfil?.tipo + ';base64,' + usuarioPerfil?.fotoperfil?.datos : 'assets/icono/userDefault.png')"
                 size="xlarge" shape="circle"></p-avatar>
             <p-fileUpload mode="basic" name="foto" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*"
                 chooseLabel="Elegir" class="ml-3" (onUpload)="onUpload($event)" [auto]="true"></p-fileUpload>

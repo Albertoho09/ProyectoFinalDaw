@@ -2,21 +2,21 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angu
 import { Publicacion } from '../../interfaces/Publicacion';
 import { Comentario } from '../../interfaces/Comentario';
 import { ComentarioService } from '../../servicios/comentario.service';
-import { usuarioSesion } from '../../interfaces/Usuario';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ConfirmPopup } from 'primeng/confirmpopup';
 import { PublicacionService } from '../../servicios/publicacion.service';
+import { usuarioDTO } from '../../interfaces/Usuario';
 
 @Component({
   selector: 'app-publicacion-card',
   templateUrl: './publicacion-card.component.html',
   styleUrl: './publicacion-card.component.scss'
 })
-export class PublicacionCardComponent implements OnInit {
+export class PublicacionCardComponent{
 
   visible: boolean = false;
-  usuario: usuarioSesion | undefined;
+  usuario: usuarioDTO | undefined;
 
   @Input() publicacion!: Publicacion;
   @Input() media!: Boolean;
@@ -24,16 +24,11 @@ export class PublicacionCardComponent implements OnInit {
   comentarios: Comentario[] = [];
   mensaje: String = '';
   
-  constructor(private comentarioService: ComentarioService, private publicacionesService: PublicacionService, private usuarioService: UsuarioService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor(private comentarioService: ComentarioService, private publicacionesService: PublicacionService, private usuarioService: UsuarioService, private messageService: MessageService, private confirmationService: ConfirmationService) {
+    const userJson = sessionStorage.getItem('currentUser');
+    this.usuario = userJson ? JSON.parse(userJson) : null;
 
-  ngOnInit(): void {
-    this.usuarioService.obtenerUsuarioToken().subscribe(
-      (data) => {
-        this.usuario = data
-      }
-    )
-  }
-
+   }
   @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;
 
   accept() {

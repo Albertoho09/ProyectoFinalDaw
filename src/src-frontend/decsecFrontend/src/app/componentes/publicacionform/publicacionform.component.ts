@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { usuarioSesion } from '../../interfaces/Usuario';
 import { MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PublicacionService } from '../../servicios/publicacion.service';
 import { publicacionForm } from '../../interfaces/Publicacion';
+import { usuarioDTO } from '../../interfaces/Usuario';
 
 @Component({
   selector: 'app-publicacionform',
@@ -17,7 +17,7 @@ export class PublicacionformComponent implements OnInit {
   publicacionForm!: FormGroup;
   visible: boolean = false;
   @Input()
-  usuario!: usuarioSesion;
+  usuario!: usuarioDTO;
   constructor(private messageService: MessageService, private formBuilder: FormBuilder, private publicacionService: PublicacionService) { }
 
   ngOnInit(): void {

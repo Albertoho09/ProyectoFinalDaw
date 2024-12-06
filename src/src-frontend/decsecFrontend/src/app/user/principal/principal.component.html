@@ -20,8 +20,7 @@
                 <div class="shadow-2 surface-card p-4" style="border-radius: 12px;">
                     <div class="flex align-items-center justify-content-between">
                         <div><span class="text-3xl text-900 font-bold">Bienvenido</span>
-                            <p class="mt-1 mb-0 text-600 text-xl">{{usuario.nombre}}
-                                {{usuario.apellidos}}</p>
+                            <p class="mt-1 mb-0 text-600 text-xl">{{usuario!.nombre+' '+usuario!.apellidos}}</p>
                         </div>
                         <div>
                             <p-button label="Ver Perfil" (onClick)="visitarPerfil()"></p-button>
@@ -52,7 +51,7 @@
                 </div>
             </div>
             <div class="col-12 flex justify-content-center align-items-center p-4">
-                <app-publicacionform [usuario]="usuario"></app-publicacionform>
+                <app-publicacionform [usuario]="usuario!"></app-publicacionform>
             </div>
         </div>
     </div>

@@ -21,6 +21,8 @@ public class PeticionDTO {
 
     private Imagen usuarioEmisorFoto;
 
+    private Imagen usuarioReceptorFoto;
+
     private Estado estado;
 
     public PeticionDTO(Peticion peti) {
@@ -28,6 +30,7 @@ public class PeticionDTO {
         this.usuarioReceptorNick = peti.getUsuarioReceptor().getNick();
         this.usuarioEmisorNick = peti.getUsuarioEmisor().getNick();
         this.usuarioEmisorFoto = peti.getUsuarioEmisor().getFoto();
+        this.usuarioEmisorFoto = peti.getUsuarioReceptor().getFoto();
         this.estado = peti.getEstado();
     }
 }

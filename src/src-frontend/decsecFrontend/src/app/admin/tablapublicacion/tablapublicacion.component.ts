@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PublicacionService } from '../../servicios/publicacion.service';
 import { UsuarioService } from '../../servicios/usuario.service';
-import { usuarioSesion } from '../../interfaces/Usuario';
+import { usuarioDTO } from '../../interfaces/Usuario';
 import { publicacionAdmin } from '../../interfaces/Publicacion';
 
 @Component({
@@ -9,10 +9,10 @@ import { publicacionAdmin } from '../../interfaces/Publicacion';
   templateUrl: './tablapublicacion.component.html',
   styleUrl: './tablapublicacion.component.scss'
 })
-export class TablapublicacionComponent implements OnInit {
+export class TablapublicacionComponent{
 
   publicaciones!: publicacionAdmin[];
-  usuario!: usuarioSesion;
+  usuario!: usuarioDTO;
   responsiveOptions: any[] = [
     {
       breakpoint: '1500px',
@@ -32,8 +32,7 @@ export class TablapublicacionComponent implements OnInit {
     }
   ];
 
-  constructor(private servicioPubli: PublicacionService, private servicioUsu: UsuarioService) { }
-  ngOnInit(): void {
+  constructor(private servicioPubli: PublicacionService, private servicioUsu: UsuarioService) {
     this.servicioPubli.obtenerPublicaciones().subscribe(
       (data) => {
         this.publicaciones = data;
@@ -47,11 +46,16 @@ export class TablapublicacionComponent implements OnInit {
       }
     )
 
-    this.servicioUsu.obtenerUsuarioToken().subscribe(
-      (data) => {
-        this.usuario = data
-      }
-    )
+    this.servicioUsu.obtenerUsuarioToken().then((observable) => {
+      observable.subscribe({
+        next: (data) => {
+          this.usuario = data;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    });
   }
 
   handleClick(publicacion: any) {
@@ -59,10 +63,6 @@ export class TablapublicacionComponent implements OnInit {
     this.publicaciones.forEach(p => p.displayBasic = false);
     // Mostrar solo la galería de la publicación clicada
     publicacion.displayBasic = true;
-  }
-
-  obtenerUsuarioToken(): usuarioSesion | null {
-    return null;
   }
 
   mostrarImagen() {

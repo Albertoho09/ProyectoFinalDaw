@@ -1,28 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SignUpRequest, Usuario, usuarioPerfil, usuarioSesion } from '../../interfaces/Usuario';
+import { SignUpRequest, usuarioDTO } from '../../interfaces/Usuario';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { Publicacion } from '../../interfaces/Publicacion';
 import { PublicacionService } from '../../servicios/publicacion.service';
 import { PeticionService } from '../../servicios/peticion.service';
 import { MenuItem, MessageService } from 'primeng/api';
+import { Estado, Peticion } from '../../interfaces/Peticion';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
-export class PerfilComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute, private router: Router ,private formBuilder: FormBuilder, private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private peticionesService: PeticionService, private messageService: MessageService) { }
+export class PerfilComponent {
 
   imagenes: string[] = ['assets/fondo/guts.webp', 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
     , 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
     , 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
   ];
-  usuarioPerfil!: usuarioPerfil;
-  usuarioSesion!: usuarioSesion;
+  usuarioPerfil: usuarioDTO | null = null;
+  usuarioSesion: usuarioDTO | null = null;
   estadoMenu: String = 'publicaciones';
   estadoPerfil: String = 'PUBLICO';
   Publicaciones: Publicacion[] | undefined;
@@ -38,27 +37,58 @@ export class PerfilComponent implements OnInit {
   items: MenuItem[] | undefined;
   activeItem!: MenuItem;
 
-  ngOnInit() {
+  botonPeticionesTexto : String = 'Enviar Petición';
+  botonActivo : Boolean = true;
+
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private peticionesService: PeticionService, private messageService: MessageService) {
     this.route.params.subscribe(params => {
       const userNick = params['nick'];
       const userJson = sessionStorage.getItem('currentUser');
       this.usuarioSesion = userJson ? JSON.parse(userJson) : null;
 
-      this.usuarioService.ObtenerUsuarioNick(userNick).subscribe(
-        (data) => {
-          this.usuarioPerfil = data;
-          this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe(
-            response => {
-              this.Publicaciones = response;
-            },
-            error => {
-              if (error.error == "Publicaciones no disponibles, usuario privado.") {
-                this.estadoPerfil = 'PRIVADO';
+      this.usuarioService.ObtenerUsuarioNick(userNick).then((observable) => {
+        observable.subscribe({
+          next: (user: usuarioDTO) => {
+            this.usuarioPerfil = user;
+            this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe(
+              response => {
+                this.Publicaciones = response;
+                this.peticionesService.obtenerPeticionPerfilUsuario(this.usuarioPerfil!.email).then((observable) => {
+                  observable.subscribe({
+                    next: (peticion: Peticion) => {
+                      if(peticion != null){
+                        console.log(peticion)
+                        if(peticion.estado == Estado.ACEPTADO){
+                          this.botonPeticionesTexto = 'Peticion Aceptada';
+                          this.botonActivo = false;
+                        }else if(peticion.estado == Estado.PENDIENTE){
+                          this.botonPeticionesTexto = 'Peticion Pendiente';
+                          this.botonActivo = false;
+                        }
+                      }else{
+                        console.log("no hay peticion disponible");
+                      }
+                    },
+                    error: (error) => {
+                      console.log(error)
+                      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error || 'Error desconocido' });
+                    }
+                  });
+                });
+              },
+              error => {
+                if (error.error == "Publicaciones no disponibles, usuario privado.") {
+                  this.estadoPerfil = 'PRIVADO';
+                }
               }
-            }
-          );
-        }
-      )
+            );
+          },
+          error: (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener el usuario' });
+          }
+        });
+      });
+
       this.items = [
         { label: 'Datos', icon: 'pi pi-user-edit' },
         { label: 'Seguridad', icon: 'pi pi-shield' },
@@ -68,23 +98,22 @@ export class PerfilComponent implements OnInit {
       this.activeItem = this.items[0];
 
       this.usuarioForm = this.formBuilder.group({
-        nick: [this.usuarioSesion.nick, Validators.required],
-        nombre: [this.usuarioSesion.nombre, Validators.required],
-        apellidos: [this.usuarioSesion.apellidos, Validators.required],
-        email: [this.usuarioSesion.email, [Validators.required, Validators.email]],
-        fechaNac: [new Date(this.usuarioSesion.fechaNac.toString())]
+        nick: [this.usuarioSesion!.nick, Validators.required],
+        nombre: [this.usuarioSesion!.nombre, Validators.required],
+        apellidos: [this.usuarioSesion!.apellidos, Validators.required],
+        email: [this.usuarioSesion!.email, [Validators.required, Validators.email]],
+        fechaNac: [new Date(this.usuarioSesion!.fechaNac.toString())]
       });
-      console.log('==========')
-      console.log(this.usuarioSesion.privado)
+
       this.usuarioSecurityForm = this.formBuilder.group({
         password: ['', Validators.minLength(6)],
         passwordNew: ['', Validators.minLength(6)],
         passwordRepeat: ['', Validators.minLength(6)],
-        privado: [this.usuarioSesion.privado],
+        privado: [this.usuarioSesion!.privado],
       },
-      {
-        validator: this.passwordsMatchValidator
-      });
+        {
+          validator: this.passwordsMatchValidator
+        });
     });
   }
 
@@ -92,7 +121,7 @@ export class PerfilComponent implements OnInit {
     const passwordNew = form.get('passwordNew')?.value;
     const passwordRepeat = form.get('passwordRepeat')?.value;
     const password = form.get('password')?.value;
-    
+
     if (!password || !passwordNew || !passwordRepeat) {
       return null; // Si todos los campos están vacíos, no hay error
     }
@@ -139,31 +168,30 @@ export class PerfilComponent implements OnInit {
 
   registrarUsuario() {
     if (this.usuarioForm.valid) {
-      const formValues = this.usuarioForm.value; 
-      this.usuarioService.actualizarParcialmente(formValues).subscribe(
-        (response) => {
-              sessionStorage.setItem('token', response.token);
-              sessionStorage.setItem('currentUser', JSON.stringify(response.usuario));
-              this.usuarioPerfil = response.usuario;
-              const newUrl = `/user/perfil/${response.usuario.nick}`; // Ajusta según los datos que obtengas
-              this.router.navigateByUrl(newUrl);
-              this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Datos Actualizados', life: 3000 });
-        },
-        (err) => {
+      const formValues = this.usuarioForm.value;
+      this.usuarioService.actualizarParcialmente(formValues).then((observable) => {
+        observable.subscribe((response) => {
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('currentUser', JSON.stringify(response.usuario));
+          this.usuarioPerfil = response.usuario;
+          const newUrl = `/user/perfil/${response.usuario.nick}`; // Ajusta según los datos que obtengas
+          this.router.navigateByUrl(newUrl);
+          this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Datos Actualizados', life: 3000 });
+        }, (err) => {
           if (err.error === "Error: El nick ya está en uso.") {
             this.usuarioForm.get('nick')?.setErrors({ nickExists: true });
           }
           if (err.error === "Error: El Email ya está en uso.") {
             this.usuarioForm.get('email')?.setErrors({ emailExists: true });
           }
-        }
-      );
+        });
+      });
     } else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Formulario no valido.', life: 3000 });
     }
   }
 
-  registrarUsuarioSecurity(){
+  registrarUsuarioSecurity() {
     if (this.usuarioSecurityForm.valid) {
       const formValues = Object.keys(this.usuarioSecurityForm.value).reduce((obj, key) => {
         if (this.usuarioSecurityForm.value[key] !== "") {
@@ -171,42 +199,56 @@ export class PerfilComponent implements OnInit {
         }
         return obj;
       }, {} as Record<string, unknown>);
-      console.log(formValues) 
-      this.usuarioService.actualizarParcialmente(formValues).subscribe(
-        (response) => {
-              sessionStorage.setItem('token', response.token);
-              sessionStorage.setItem('currentUser', JSON.stringify(response.usuario));
-              this.usuarioPerfil = response.usuario;
-              this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Datos Actualizados', life: 3000 });
-        },
-        (err) => {
+
+      this.usuarioService.actualizarParcialmente(formValues).then((observable) => {
+        observable.subscribe((response) => {
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('currentUser', JSON.stringify(response.usuario));
+          this.usuarioPerfil = response.usuario;
+          this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Datos Actualizados'});
+        }, (err) => {
           if (err.error === "Error: La contraseña no es correcta.") {
             this.usuarioSecurityForm.get('password')?.setErrors({ passwordConflict: true });
           }
-        }
-      );
+        });
+      });
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La nueva contraseña no coincide.', life: 3000 });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La nueva contraseña no coincide.'});
     }
   }
 
-  editarMedia(){
-    this.usuarioService.editarUsuarioMedia(this.file, this.filebanner).subscribe(
-      (response) => {
+  enviarPeticion(){
+    this.peticionesService.enviarPeticionPerfilUsuario(this.usuarioPerfil!.email).then((observable) => {
+      observable.subscribe({
+        next: (peti: Peticion) => {
+          console.log(peti);
+          this.botonPeticionesTexto = 'Peticion Pendiente';
+          this.botonActivo = false;
+          this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Petición Enviada'});
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al enviar Petición' });
+        }
+      });
+    });
+  }
+
+  editarMedia() {
+    this.usuarioService.editarUsuarioMedia(this.file, this.filebanner).then((observable) => {
+      observable.subscribe((response) => {
         sessionStorage.setItem('currentUser', JSON.stringify(response));
         this.usuarioPerfil = response;
-        this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Datos Actualizados', life: 3000 });
-      },
-      (err) => {
+        this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Datos Actualizados'});
+      }, (err) => {
         console.log(err)
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: err, life: 3000 });
-      }
-    );
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err});
+      });
+    });
   }
 
   manejarEliminacionPerfil(id: number) {
     this.Publicaciones = this.Publicaciones?.filter(pub => pub.id !== id);
-    this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Publicación borrada', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Publicación borrada'});
   }
 
   cambiarVista(vista: string) {
@@ -214,18 +256,18 @@ export class PerfilComponent implements OnInit {
     console.log('Cambiando a la vista:', vista);
 
     if (vista == 'publicaciones') {
-      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe((publicaciones) => {
+      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil!.email).subscribe((publicaciones) => {
         this.Publicaciones = publicaciones;
         this.estadoMenu = vista
       });
     } else if (vista == 'media') {
-      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email).subscribe((publicaciones) => {
+      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil!.email).subscribe((publicaciones) => {
         this.Publicaciones = publicaciones;
         this.Publicaciones = this.Publicaciones?.filter(publicacion => publicacion.imagenes && publicacion.imagenes.length > 0);
         this.estadoMenu = vista
       });
     } else if (vista == 'meGustan') {
-      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil.email, true).subscribe((publicaciones) => {
+      this.publicacionesService.obtenerPublicaciones(this.usuarioPerfil!.email, true).subscribe((publicaciones) => {
         this.Publicaciones = publicaciones;
         this.estadoMenu = vista
       });

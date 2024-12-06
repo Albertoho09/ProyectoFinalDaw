@@ -1,16 +1,21 @@
 export interface Peticion {
     id: number;
-
-    usuarioEmisor: number;
-
-    usuarioReceptor: number;
-
+    usuarioReceptorNick: String;
+    usuarioEmisorNick: String;
     estado: Estado;
-
+    usuarioEmisorFoto: Imagen;
+    usuarioReceptorFoto: Imagen;
 }
 
-enum Estado{
-    ACEPTADO,
-    DENEGADA,
-    PENDIENTE
+interface Imagen {
+    id: number;
+    nombre: string;
+    tipo: string;
+    datos: any;
+}
+
+export enum Estado{
+    ACEPTADO = "ACEPTADO",
+    DENEGADA = "DENEGADA",
+    PENDIENTE = "PENDIENTE"
 }

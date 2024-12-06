@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Usuario, SignUpRequest, usuarioSesion } from '../../interfaces/Usuario';
+import { Usuario, SignUpRequest, usuarioDTO } from '../../interfaces/Usuario';
 import { AuthServiceService } from '../../servicios/auth-service.service';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -78,47 +78,46 @@ export class CardloginComponent implements OnInit {
   }
 
   validarEmail() {
-    this.usuariService.validarEmail(this.usuarioForm.get('email')?.value)
-      .subscribe(
-        response => {
-          this.emailRepetido = response;
-          console.log(this.emailRepetido);
-        }
-      )
+
+    this.usuariService.validarEmail(this.usuarioForm.get('email')?.value).then((observable) => {
+      observable.subscribe((response) => {
+        this.emailRepetido = response;
+        console.log(this.emailRepetido);
+      });
+    });
   }
 
   registrarUsuario() {
     const socio = this.usuarioForm.value as unknown as SignUpRequest;
-    this.usuariService.crearUsuario(socio, this.file, this.filebanner).subscribe(
-      response => {
+    this.usuariService.crearUsuario(socio, this.file, this.filebanner).then((observable) => {
+      observable.subscribe((response) => {
         console.log('Respuesta del servidor:', response);
-      },
-      error => {
+      }, (error) => {
         console.error('Error al enviar datos:', error);
-      }
-    )
+      });
+    });
   }
 
   iniciarSesion() {
-    this.usuariService.registroUsuario(this.usu).subscribe(
-      response => {
+
+    this.usuariService.registroUsuario(this.usu).then((observable) => {
+      observable.subscribe((response) => {
         console.log(response);
         sessionStorage.setItem('token', response.token);
-        this.usuariService.obtenerUsuarioToken().subscribe(
-          (data) => {
+        this.usuariService.obtenerUsuarioToken().then((observable) => {
+          observable.subscribe((data) => {
             sessionStorage.setItem('currentUser', JSON.stringify(data));
             if (data.roles[0] == 'ROLE_ADMIN') {
               this.router.navigate(['admin']);
             }
             else {
               this.router.navigate(['user']);
-            }
-          }
-        )
-      },
-      error => {
+            }          
+          })
+        })
+      }, (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Credenciales incorrectas' });
-      }
-    );
+      });
+    });
   }
 }

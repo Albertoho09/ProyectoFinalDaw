@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Usuario, SignUpRequest } from '../interfaces/Usuario';
+import { Usuario, SignUpRequest, usuarioDTO, usuarioSearch } from '../interfaces/Usuario';
 import { AuthServiceService } from './auth-service.service';
 
 @Injectable({
@@ -18,11 +18,11 @@ export class UsuarioService {
     })
   };
 
-  registroUsuario(usuario: Usuario) {
+  async registroUsuario(usuario: Usuario) {
     return this.http.post<any>(this.baseURLAUTH + '/signin', usuario);
   }
 
-  actualizarParcialmente(updates: Partial<any>){
+  async actualizarParcialmente(updates: Partial<any>){
     const accessToken = this.serviciotoken.getToken();
     console.log(updates)
     let headers = new HttpHeaders({
@@ -31,24 +31,24 @@ export class UsuarioService {
     return this.http.patch<any>(this.baseURL, updates, { headers: headers });
   }
 
-  obtenerUsuarioToken() {
+  async obtenerUsuarioToken() {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
       'Authorization': 'Bearer ' + accessToken
     })
-    return this.http.get<any>(this.baseURL + "/token", { headers: headers });
+    return this.http.get<usuarioDTO>(this.baseURL + "/token", { headers: headers });
   }
 
-  crearUsuario(datos: SignUpRequest, fotoPerfil: File, banner: File) {
+  async crearUsuario(datos: SignUpRequest, fotoPerfil: File, banner: File) {
     const formData = new FormData();
     formData.append('usuario', JSON.stringify(datos));
     formData.append('imagen', fotoPerfil);
     formData.append('banner', banner);
-    return this.http.post<any>(this.baseURLAUTH + '/signup', formData);
+    return this.http.post<usuarioDTO>(this.baseURLAUTH + '/signup', formData);
   }
 
-  editarUsuarioMedia(fotoPerfil: File, banner: File) {
+  async editarUsuarioMedia(fotoPerfil: File, banner: File) {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
@@ -60,36 +60,36 @@ export class UsuarioService {
     return this.http.patch<any>(this.baseURL + '/actualizarMedia', formData, { headers: headers });
   }
 
-  obtenerUsuarios() {
+  async obtenerUsuarios() {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
       'Authorization': 'Bearer ' + accessToken
     })
 
-    return this.http.get<any>(this.baseURL, { headers: headers });
+    return this.http.get<usuarioDTO[]>(this.baseURL, { headers: headers });
   }
 
-  ObtenerUsuarioNick(nick: string) {
+  async ObtenerUsuarioNick(nick: string) {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
       'Authorization': 'Bearer ' + accessToken
     })
 
-    return this.http.get<any>(`${this.baseURL}/nick/${nick}`, { headers: headers });
+    return this.http.get<usuarioDTO>(`${this.baseURL}/nick/${nick}`, { headers: headers });
   }
 
-  obtenerUsuariosSearch() {
+  async obtenerUsuariosSearch() {
     const accessToken = this.serviciotoken.getToken();
 
     let headers = new HttpHeaders({
       'Authorization': 'Bearer ' + accessToken
     })
-    return this.http.get<any>(this.baseURL + '/search', { headers: headers });
+    return this.http.get<usuarioSearch[]>(this.baseURL + '/search', { headers: headers });
   }
 
-  validarEmail(email: String) {
+  async validarEmail(email: String) {
     return this.http.get<boolean>(this.baseURLAUTH + '/validar-email?email=' + email);
   }
 }

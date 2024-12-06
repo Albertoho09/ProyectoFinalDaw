@@ -1,28 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../servicios/usuario.service';
-import { usuarioSesion } from '../../interfaces/Usuario';
+import { usuarioDTO } from '../../interfaces/Usuario';
 
 @Component({
   selector: 'app-tablausuario',
   templateUrl: './tablausuario.component.html',
   styleUrl: './tablausuario.component.scss'
 })
-export class TablausuarioComponent implements OnInit {
+export class TablausuarioComponent{
 
-  usuarios!: usuarioSesion[];
+  usuarios: usuarioDTO[] | null = [];
 
-  constructor(private servicio: UsuarioService) { }
-
-  ngOnInit(): void {
-    this.servicio.obtenerUsuarios().subscribe(
-      response => {
-        this.usuarios = response;
-      },
-      error => {
-        console.log(error.data)
-      }
-    )
+  constructor(private servicio: UsuarioService) { 
+    this.servicio.obtenerUsuarios().then((observable) => {
+      observable.subscribe({
+        next: (response: usuarioDTO[]) => {
+          this.usuarios = response;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    });
   }
+
 
   getSeverityPrivado(status: boolean) {
     switch (status) {
