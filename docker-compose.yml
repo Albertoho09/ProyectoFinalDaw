@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  sql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: decsec
+    networks:
+      - local-network
+
+  api:
+    build:
+      context: ./src/src-api/decsecBackendDaw
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - sql
+    networks:
+      - local-network
+  
+  frontend:
+    build:
+      context: ./src/src-frontend/DecsecFrontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./:/angular-app
+    depends_on:
+      - api
+    networks:
+      - local-network
+
+networks:
+  local-network:
+    driver: bridge

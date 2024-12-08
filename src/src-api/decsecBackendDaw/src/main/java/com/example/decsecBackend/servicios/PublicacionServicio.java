@@ -4,22 +4,23 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.decsecBackend.dtos.PublicacionDTO;
+import com.example.decsecBackend.modelo.Usuario;
 
 public interface PublicacionServicio {
 
-    List<PublicacionDTO> listarPublicaciones();
+    List<PublicacionDTO> listarPublicaciones(Usuario usuario);
 
-    List<PublicacionDTO> listarPublicacionesUsuario(String email);
+    List<PublicacionDTO> listarPublicacionesUsuario(String email, Usuario usuario);
 
-    PublicacionDTO listarPublicacionPorId(Long id);
+    PublicacionDTO listarPublicacionPorId(Long id, Usuario usuario);
 
-    List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias);
+    List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias, Usuario usuario);
 
-    List<PublicacionDTO> listarPublicacionesConMeGusta(String email);
+    List<PublicacionDTO> listarPublicacionesConMeGusta(String email, Usuario usuario);
 
     void borrarPublicacion(Long id);
 
-    PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates);
+    PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates, Usuario usuario);
 
     Boolean existePorId(Long id);
 

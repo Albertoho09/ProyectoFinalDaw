@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import com.example.decsecBackend.modelo.Imagen;
 import com.example.decsecBackend.modelo.Publicacion;
+import com.example.decsecBackend.modelo.Usuario;
 import lombok.Data;
 
 /**
@@ -30,7 +31,7 @@ public class PublicacionDTO {
 
     private int ncomentarios;
 
-    public PublicacionDTO(Publicacion publi) {
+    public PublicacionDTO(Publicacion publi, Usuario usuario) {
         this.id = publi.getId();
         this.imagenes = publi.getImagenes();
         this.comentarioUsuario = publi.getComentarioUsuario();
@@ -39,6 +40,6 @@ public class PublicacionDTO {
         this.nick = publi.getUsuario().getNick();
         this.fotoPerfil = publi.getUsuario().getFoto();
         this.ncomentarios = publi.getComentarios().size();
-        this.isliked = publi.getUsuariosQueDieronMeGusta() != null && publi.getUsuariosQueDieronMeGusta().stream().anyMatch(u -> u.getId().equals(publi.getUsuario().getId())) ? true : false;
+        this.isliked = publi.getUsuariosQueDieronMeGusta() != null && publi.getUsuariosQueDieronMeGusta().stream().anyMatch(u -> u.getId().equals(usuario.getId()));
     }
 }

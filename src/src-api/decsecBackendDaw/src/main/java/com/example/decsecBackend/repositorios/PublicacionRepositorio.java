@@ -14,7 +14,7 @@ import com.example.decsecBackend.modelo.Publicacion;
 public interface PublicacionRepositorio extends JpaRepository<Publicacion, Long> {
 
     @Query("SELECT p FROM Publicacion p WHERE (p.usuario.id = :usuarioId OR EXISTS (SELECT 1 FROM Peticion pet WHERE pet.usuarioEmisor.id = :usuarioId AND pet.usuarioReceptor.id = p.usuario.id AND pet.estado = 'ACEPTADO')) AND p.fechaPublicacion >= :fecha ORDER BY p.fechaPublicacion DESC")
-    List<PublicacionDTO> encontrarPublicacionesRecientesPorUsuario(@Param("usuarioId") Long usuarioId,
+    List<Publicacion> encontrarPublicacionesRecientesPorUsuario(@Param("usuarioId") Long usuarioId,
             @Param("fecha") LocalDateTime fecha);
 
 }

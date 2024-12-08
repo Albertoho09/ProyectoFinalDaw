@@ -15,41 +15,57 @@ import { usuarioDTO } from '../../interfaces/Usuario';
 })
 export class PublicacionCardComponent{
 
+  // Variable para controlar la visibilidad de los comentarios
   visible: boolean = false;
+  // Variable para almacenar el usuario actual
   usuario: usuarioDTO | undefined;
 
+  // Entrada para la publicación
   @Input() publicacion!: Publicacion;
+  // Entrada para indicar si se muestra la media
   @Input() media!: Boolean;
+  // Salida para emitir el evento de eliminación
   @Output() eliminar = new EventEmitter<number>();
+  // Array para almacenar los comentarios
   comentarios: Comentario[] = [];
+  // Variable para el mensaje a enviar
   mensaje: String = '';
   
+  // Constructor del componente
   constructor(private comentarioService: ComentarioService, private publicacionesService: PublicacionService, private usuarioService: UsuarioService, private messageService: MessageService, private confirmationService: ConfirmationService) {
+    // Obtener el usuario actual de la sesión
     const userJson = sessionStorage.getItem('currentUser');
     this.usuario = userJson ? JSON.parse(userJson) : null;
 
    }
+  // Referencia al componente de confirmación
   @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;
 
+  // Método para aceptar la confirmación
   accept() {
     this.confirmPopup.accept();
   }
 
+  // Método para rechazar la confirmación
   reject() {
     this.confirmPopup.reject();
   }
 
+  // Método para mostrar la confirmación de eliminación
   confirm(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Estas seguro que deseas borrar esta publicación?',
       accept: () => {
+        // Servicio para borrar la publicación
         this.publicacionesService.borrarPublicacion(this.publicacion.id).subscribe(
           response => {
+            // Emitir el evento de eliminación
             this.eliminar.emit(this.publicacion.id);
           },
           error => {
             console.error('Error capturado:', error);
+            // Mostrar mensaje de error
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar', life: 3000 });
           }
         );
@@ -59,20 +75,28 @@ export class PublicacionCardComponent{
     });
   }
 
+  // Método para abrir los comentarios
   abrirComentarios() {
+    // Servicio para obtener los comentarios de la publicación
     this.comentarioService.ObtenerComentariosPublicacion(this.publicacion.id).subscribe((comentariosSearch) => {
       this.comentarios = comentariosSearch;
     });
+    // Mostrar los comentarios
     this.visible = true;
   }
 
+  // Método para enviar un mensaje
   enviarMensaje() {
+    // Servicio para crear un nuevo comentario
     this.comentarioService.CrearComentario(this.publicacion.id, this.mensaje).subscribe((nuevoComentario) => {
+      // Agregar el nuevo comentario al array
       this.comentarios.push(nuevoComentario);
+      // Limpiar el mensaje
       this.mensaje = '';
     });
   }
 
+  // Método para calcular el tiempo transcurrido desde la fecha de publicación
   getTiempoTranscurrido(fecha: Date): string {
     const ahora = new Date();
     const tiempoTranscurrido = ahora.getTime() - new Date(fecha).getTime();
@@ -89,6 +113,7 @@ export class PublicacionCardComponent{
     }
   }
 
+  // Opciones de visualización responsiva
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,105 +31,106 @@ import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 import com.example.decsecBackend.serviciosImpl.AuthenticationService;
 import com.example.decsecBackend.serviciosImpl.JwtServiceImpl;
 
-@CrossOrigin(origins = { "http://localhost:4200" })
-@RestController
-@RequestMapping("/api/v1/users")
+@CrossOrigin(origins = { "http://localhost:4200" }) // Habilita el acceso a recursos de origen cruzado
+@RestController // Indica que esta clase es un controlador REST
+@RequestMapping("/api/v1/users") // Mapea las solicitudes a esta ruta
 public class UserController {
-	@Autowired
+	@Autowired // Inyecta el servicio de autenticación
 	AuthenticationService authenticationService;
-	@Autowired
+	@Autowired // Inyecta el servicio de usuarios
 	private UsuarioServicioImpl usuarioservice;
 
-	@GetMapping
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	@GetMapping // Mapea una solicitud GET
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')") // Requiere autenticación con roles específicos
 	public ResponseEntity<?> listarUsuarios(
-			@AuthenticationPrincipal Usuario usuario) {
-		if (usuario.getRoles().contains(Role.ROLE_USER)) {
-			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosDTO());
-		} else {
-			return ResponseEntity.ok(usuarioservice.listarTodosUsuarios());
+			@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
+		if (usuario.getRoles().contains(Role.ROLE_USER)) { // Si el usuario es un usuario normal
+			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosDTO()); // Devuelve la lista de usuarios como DTO
+		} else { // Si el usuario es administrador
+			return ResponseEntity.ok(usuarioservice.listarTodosUsuarios()); // Devuelve la lista de usuarios sin DTO
 		}
 	}
 
-	@GetMapping("/search")
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	@GetMapping("/search") // Mapea una solicitud GET para búsqueda
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')") // Requiere autenticación con roles específicos
 	public ResponseEntity<?> listarUsuariosSearch(
-			@AuthenticationPrincipal Usuario usuario) {
-		return ResponseEntity.ok(usuarioservice.listarTodosUsuariosSearchDTO());
+			@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
+		return ResponseEntity.ok(usuarioservice.listarTodosUsuariosSearchDTO()); // Devuelve la lista de usuarios para búsqueda como DTO
 	}
 
-	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> listarUsuariosPorId(@PathVariable Long id,
-			@AuthenticationPrincipal Usuario usuario) {
-		if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
-			if (usuarioservice.existePorId(id)) {
-				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id));
+	@GetMapping("/{id}") // Mapea una solicitud GET para un usuario específico
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')") // Requiere autenticación con roles específicos
+	public ResponseEntity<?> listarUsuariosPorId(@PathVariable Long id, // Obtiene el id del usuario
+			@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
+		if (usuario.getRoles().contains(Role.ROLE_ADMIN)) { // Si el usuario es administrador
+			if (usuarioservice.existePorId(id)) { // Verifica si el usuario existe
+				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id)); // Devuelve el usuario
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
-		} else {
-			if (usuarioservice.existePorId(id)) {
-				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.obtenerUsuario(id)));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe"); // Devuelve un mensaje de error si no existe
+		} else { // Si el usuario es un usuario normal
+			if (usuarioservice.existePorId(id)) { // Verifica si el usuario existe
+				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.obtenerUsuario(id))); // Devuelve el usuario como DTO
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe"); // Devuelve un mensaje de error si no existe
 		}
 	}
 
-	@GetMapping("/token")
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> obtenerPorToken(@AuthenticationPrincipal Usuario usuario) {
-		if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
-			if (usuarioservice.existePorEmail(usuario.getEmail())) {
-				return ResponseEntity.ok(usuarioservice.encontrarPorEmail(usuario.getEmail()));
+	@GetMapping("/token") // Mapea una solicitud GET para obtener un usuario por token
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')") // Requiere autenticación con roles específicos
+	public ResponseEntity<?> obtenerPorToken(@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
+		if (usuario.getRoles().contains(Role.ROLE_ADMIN)) { // Si el usuario es administrador
+			if (usuarioservice.existePorEmail(usuario.getEmail())) { // Verifica si el usuario existe por email
+				return ResponseEntity.ok(usuarioservice.encontrarPorEmail(usuario.getEmail())); // Devuelve el usuario
 			}
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("El usuario con email:" + usuario.getEmail() + " no existe");
-		} else {
-			if (usuarioservice.existePorEmail(usuario.getEmail())) {
-				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.encontrarPorEmail(usuario.getEmail())));
+					.body("El usuario con email:" + usuario.getEmail() + " no existe"); // Devuelve un mensaje de error si no existe
+		} else { // Si el usuario es un usuario normal
+			if (usuarioservice.existePorEmail(usuario.getEmail())) { // Verifica si el usuario existe por email
+				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.encontrarPorEmail(usuario.getEmail()))); // Devuelve el usuario como DTO
 			}
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("El usuario con email:" + usuario.getEmail() + " no existe");
+					.body("El usuario con email:" + usuario.getEmail() + " no existe"); // Devuelve un mensaje de error si no existe
 		}
 	}
 
-	@DeleteMapping
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	@DeleteMapping // Mapea una solicitud DELETE para borrar el usuario autenticado
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')") // Requiere autenticación con roles específicos
 	public ResponseEntity<?> borrarMiUsuario(
-			@AuthenticationPrincipal Usuario usuario) {
-		usuarioservice.borrarUsuario(usuario.getId());
+			@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
+		usuarioservice.borrarUsuario(usuario.getId()); // Borra el usuario
 		return ResponseEntity.status(HttpStatus.OK)
-				.body("Tu usuario con correo " + usuario.getEmail() + " ha sido eliminado");
+				.body("Tu usuario con correo " + usuario.getEmail() + " ha sido eliminado"); // Devuelve un mensaje de confirmación
 	}
 
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> borrarUsuarioPorId(@PathVariable Long id,
-			@AuthenticationPrincipal Usuario usuario) {
-		if (usuarioservice.existePorId(id)) {
-			usuarioservice.borrarUsuario(id);
-			return ResponseEntity.status(HttpStatus.OK).body("Usuario con id:" + id + " borrado correctamente");
+	@DeleteMapping("/{email}") // Mapea una solicitud DELETE para borrar un usuario por email
+	@PreAuthorize("hasRole('ROLE_ADMIN')") // Requiere autenticación con el rol de administrador
+	public ResponseEntity<?> borrarUsuarioPorEmail(@PathVariable(required = true) String email, // Obtiene el email del usuario a borrar
+			@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
+		if (usuarioservice.existePorEmail(email)) { // Verifica si el usuario existe
+			Usuario usu = usuarioservice.encontrarPorEmail(email); // Encuentra el usuario por email
+			usuarioservice.borrarUsuario(usu.getId()); // Borra el usuario
+			return ResponseEntity.ok(Map.of("mensaje", "Usuario con email:" + email + " borrado correctamente")); // Devuelve un mensaje de confirmación
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "El usuario no existe")); // Devuelve un mensaje de error si no existe
 		}
 	}
 
-	@PatchMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> actualizarParcialmenteOtroUsuario(@PathVariable(required = false) Long id,
-			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
-		if (usuarioservice.existePorId(id)) {
-			return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(id,
-					updates));
+	@PatchMapping("/{id}") // Mapea una solicitud PATCH para actualizar un usuario específico
+	@PreAuthorize("hasRole('ROLE_ADMIN')") // Requiere autenticación con el rol de administrador
+	public ResponseEntity<?> actualizarParcialmenteOtroUsuario(@PathVariable(required = false) Long id, // Obtiene el id del usuario a actualizar
+			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) { // Obtiene el usuario autenticado y los datos de actualización
+		if (usuarioservice.existePorId(id)) { // Verifica si el usuario existe
+			return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(id, updates)); // Actualiza el usuario y devuelve los datos
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe"); // Devuelve un mensaje de error si no existe
 		}
 	}
 
-	@PatchMapping
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	@PatchMapping // Mapea una solicitud PATCH para actualizar el usuario autenticado
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')") // Requiere autenticación con roles específicos
 	public ResponseEntity<?> actualizarParcialmenteMiUsuario(
-			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
+			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) { // Obtiene el usuario autenticado y los datos de actualización
 		try {
 			// Llamada al servicio para actualizar el usuario
 			Usuario resultadoUsuario = usuarioservice.actualizarUsuario(usuario.getId(), updates);
@@ -151,8 +152,8 @@ public class UserController {
 		}
 	}
 
-	@PatchMapping("/actualizarMedia")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PatchMapping("/actualizarMedia") // Mapea una solicitud PATCH para actualizar la media del usuario autenticado
+	@PreAuthorize("hasRole('ROLE_USER')") // Requiere autenticación con el rol de usuario
 	public ResponseEntity<?> actualizarParcialmenteMiUsuarioMedia(
 			@AuthenticationPrincipal Usuario usuario, 
 			@RequestPart(value = "imagen", required = false) MultipartFile imagen,
@@ -170,13 +171,13 @@ public class UserController {
 	}
 
 
-	@GetMapping("/nick/{nick}")
-	public ResponseEntity<?> devolverUsuarioNick(@PathVariable String nick,
-			@AuthenticationPrincipal Usuario usuario) {
+	@GetMapping("/nick/{nick}") // Mapea una solicitud GET para obtener un usuario por nick
+	public ResponseEntity<?> devolverUsuarioNick(@PathVariable String nick, // Obtiene el nick del usuario
+			@AuthenticationPrincipal Usuario usuario) { // Obtiene el usuario autenticado
 		try {
-			return ResponseEntity.ok(usuarioservice.obtenerPorNick(nick));
+			return ResponseEntity.ok(usuarioservice.obtenerPorNick(nick)); // Devuelve el usuario
 		} catch (NotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // Devuelve un mensaje de error si no existe
 		}
 	}
 

@@ -3,6 +3,7 @@ import { PublicacionService } from '../../servicios/publicacion.service';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { usuarioDTO } from '../../interfaces/Usuario';
 import { publicacionAdmin } from '../../interfaces/Publicacion';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-tablapublicacion',
@@ -11,9 +12,9 @@ import { publicacionAdmin } from '../../interfaces/Publicacion';
 })
 export class TablapublicacionComponent{
 
-  publicaciones!: publicacionAdmin[];
-  usuario!: usuarioDTO;
-  responsiveOptions: any[] = [
+  publicaciones!: publicacionAdmin[]; // Array para almacenar las publicaciones
+  usuario!: usuarioDTO; // Objeto para almacenar el usuario
+  responsiveOptions: any[] = [ // Opciones de visualización responsiva
     {
       breakpoint: '1500px',
       numVisible: 5
@@ -32,10 +33,11 @@ export class TablapublicacionComponent{
     }
   ];
 
-  constructor(private servicioPubli: PublicacionService, private servicioUsu: UsuarioService) {
+  constructor(private servicioPubli: PublicacionService, private servicioUsu: UsuarioService, private messageService: MessageService) {
+    // Obtener las publicaciones
     this.servicioPubli.obtenerPublicaciones().subscribe(
       (data) => {
-        this.publicaciones = data;
+        this.publicaciones = data; // Asignación de las publicaciones obtenidas al array
         this.publicaciones = data.map((publicacion: any) => ({
           ...publicacion,
           displayBasic: false
@@ -46,10 +48,11 @@ export class TablapublicacionComponent{
       }
     )
 
+    // Obtener el usuario
     this.servicioUsu.obtenerUsuarioToken().then((observable) => {
       observable.subscribe({
         next: (data) => {
-          this.usuario = data;
+          this.usuario = data; // Asignación del usuario obtenido al objeto
         },
         error: (error) => {
           console.error(error);
@@ -68,8 +71,16 @@ export class TablapublicacionComponent{
   mostrarImagen() {
     throw new Error('Method not implemented.');
   }
-  deleteProduct(_t24: any) {
-    throw new Error('Method not implemented.');
+  deleteProduct(idPublicacion: number) {
+    // Borrar una publicación
+    this.servicioPubli.borrarPublicacion(idPublicacion).subscribe(
+      response => {
+        this.publicaciones = this.publicaciones.filter(publicacion => publicacion.id !== idPublicacion); // Filtrado del array para eliminar la publicación
+      },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar publicacion'}); // Mensaje de error
+      }
+    );
   }
 
 }

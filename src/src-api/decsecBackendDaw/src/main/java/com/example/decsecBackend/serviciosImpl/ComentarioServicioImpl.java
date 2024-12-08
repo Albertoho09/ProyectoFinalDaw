@@ -31,6 +31,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
     @Override
     public List<ComentarioDTO> listarComentarios() {
+        // Este método lista todos los comentarios disponibles en la base de datos.
         return repositorioComentario.findAll().stream()
                 .map(comentario -> new ComentarioDTO(comentario))
                 .collect(Collectors.toList());
@@ -39,6 +40,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     @SuppressWarnings("null")
     @Override
     public List<ComentarioDTO> listarComentariosPublicacion(Long id) {
+        // Este método lista todos los comentarios asociados a una publicación específica.
         Publicacion publi = repositorioPublicacion.findById(id)
                 .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
         return publi.getComentarios().stream()
@@ -48,6 +50,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
     @Override
     public List<ComentarioDTO> listarMisComentarios(String email) {
+        // Este método lista todos los comentarios realizados por un usuario específico.
         return servicioUsuario.encontrarPorEmail(email).getComentarios().stream()
                 .map(comentario -> new ComentarioDTO(comentario))
                 .collect(Collectors.toList());
@@ -56,6 +59,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     @SuppressWarnings("null")
     @Override
     public ComentarioDTO crearComentario(Comentario comentario, String emailUsuario, Long idPubli) {
+        // Este método crea un nuevo comentario asociado a una publicación y un usuario.
         comentario.setUsuario(servicioUsuario.encontrarPorEmail(emailUsuario));
         comentario.setPublicacion(repositorioPublicacion.findById(idPubli)
                 .orElseThrow(() -> new NotFoundException("Publicacion no encontrada")));
@@ -65,6 +69,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     @SuppressWarnings("null")
     @Override
     public ComentarioDTO actualizarComentario(String nuevoComentario, Long idComentario) {
+        // Este método actualiza el contenido de un comentario específico.
         Comentario coment = repositorioComentario.findById(idComentario)
                 .orElseThrow(() -> new NotFoundException("Comentario no encontrado"));
         coment.setComentario(nuevoComentario);
@@ -74,14 +79,16 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     @SuppressWarnings("null")
     @Override
     public void borrarComentario(Long idComentario) {
+        // Este método elimina un comentario específico de la base de datos.
         repositorioComentario.deleteById(idComentario);
     }
 
     @SuppressWarnings("null")
     @Override
     public boolean comentarioPerteneceAUsuario(Long IdComentario, String email) {
-    Comentario comentario = repositorioComentario.findById(IdComentario).orElseThrow(() -> new NotFoundException("Comentario no encontrado"));
-    return comentario.getUsuario().equals(servicioUsuario.encontrarPorEmail(email));
-}
+        // Este método verifica si un comentario específico pertenece a un usuario específico.
+        Comentario comentario = repositorioComentario.findById(IdComentario).orElseThrow(() -> new NotFoundException("Comentario no encontrado"));
+        return comentario.getUsuario().equals(servicioUsuario.encontrarPorEmail(email));
+    }
 
 }

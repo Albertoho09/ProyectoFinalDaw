@@ -28,6 +28,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { SkeletonModule } from 'primeng/skeleton';
 
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -120,7 +121,8 @@ import { MegustaComponent } from './componentes/megusta/megusta.component';
     AppRoutingModule,
     SpeedDialModule,
     ConfirmPopupModule,
-    TabMenuModule
+    TabMenuModule,
+    SkeletonModule
   ],
   providers: [ConfirmationService, MessageService, AuthServiceService, ConfirmDialogModule, TemasServiceService, UsuarioService, PublicacionService, ComentarioService],
   bootstrap: [AppComponent],

@@ -25,43 +25,53 @@ import jakarta.transaction.Transactional;
 public class PublicacionServicioImpl implements PublicacionServicio {
 
     @Autowired
-    private PublicacionRepositorio repositorioPublicacion;
+    private PublicacionRepositorio repositorioPublicacion; // Inyección de dependencia del repositorio de publicaciones
     @Autowired
-    private UsuarioServicioImpl servicioUsuario;
+    private UsuarioServicioImpl servicioUsuario; // Inyección de dependencia del servicio de usuarios
     @Autowired
-    private ImagenRepositorio repositorioImagen;
+    private ImagenRepositorio repositorioImagen; // Inyección de dependencia del repositorio de imágenes
 
     @Override
-    public List<PublicacionDTO> listarPublicaciones() {
+    public List<PublicacionDTO> listarPublicaciones(Usuario usuario) {
+        // Retorna una lista de DTO de publicaciones ordenadas por fecha de publicación descendente
         return repositorioPublicacion.findAll().stream()
                 .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
-                .map(publicacion -> new PublicacionDTO(publicacion))
+                .map(publicacion -> new PublicacionDTO(publicacion, usuario))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PublicacionDTO> listarPublicacionesUsuario(String email) {
+    public List<PublicacionDTO> listarPublicacionesUsuario(String email, Usuario usuario) {
+        // Retorna una lista de DTO de publicaciones del usuario especificado, ordenadas por fecha de publicación descendente
         return servicioUsuario.encontrarPorEmail(email).getPublicaciones().stream()
                 .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
-                .map(publicacion -> new PublicacionDTO(publicacion))
+                .map(publicacion -> new PublicacionDTO(publicacion, usuario))
                 .collect(Collectors.toList());
     }
 
     @SuppressWarnings("null")
     @Override
-    public PublicacionDTO listarPublicacionPorId(Long id) {
+    public PublicacionDTO listarPublicacionPorId(Long id, Usuario usuario) {
+        // Retorna un DTO de publicación por su ID, lanzando una excepción si no se encuentra
         return new PublicacionDTO(repositorioPublicacion.findById(id)
-                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada")));
+                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada")), usuario);
     }
 
     @Override
-    public List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias) {
+    public List<PublicacionDTO> listarPublicacionesdFeed(Long id, int dias, Usuario usuario) {
+        // Calcula la fecha de hace 'dias' días atrás
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(dias);
-        return repositorioPublicacion.encontrarPublicacionesRecientesPorUsuario(id, sevenDaysAgo);
+        // Encuentra publicaciones recientes del usuario especificado
+        List<Publicacion> publicacionesRecientes = repositorioPublicacion.encontrarPublicacionesRecientesPorUsuario(id, sevenDaysAgo);
+        // Retorna una lista de DTO de publicaciones recientes
+        return publicacionesRecientes.stream()
+                .map(publicacion -> new PublicacionDTO(publicacion, usuario))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void borrarPublicacion(Long id) {
+        // Elimina una publicación por su ID, lanzando una excepción si no se encuentra
         Publicacion publi = repositorioPublicacion.findById(id)
                 .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
         repositorioPublicacion.delete(publi);
@@ -69,11 +79,13 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     @SuppressWarnings("null")
     @Override
-    public PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates) {
+    public PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates, Usuario usuario) {
 
+        // Encuentra la publicación por su ID, lanzando una excepción si no se encuentra
         Publicacion publi = repositorioPublicacion.findById(id)
                 .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
 
+        // Actualiza los campos de la publicación según los updates proporcionados
         updates.forEach((campo, valor) -> {
             switch (campo) {
                 case "comentarioUsuario":
@@ -85,28 +97,30 @@ public class PublicacionServicioImpl implements PublicacionServicio {
             }
         });
 
-        return new PublicacionDTO(repositorioPublicacion.save(publi));
+        // Retorna un DTO de la publicación actualizada
+        return new PublicacionDTO(repositorioPublicacion.save(publi), usuario);
     }
 
     @SuppressWarnings("null")
     @Override
     public Boolean existePorId(Long id) {
+        // Verifica si una publicación existe por su ID
         return repositorioPublicacion.existsById(id);
     }
 
     @Override
     public void megusta(Long publicacionId, Long usuarioId) {
-        // Buscar la publicación por su ID
+        // Busca la publicación por su ID, lanzando una excepción si no se encuentra
         Publicacion publicacion = repositorioPublicacion.findById(publicacionId)
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
-        // Buscar al usuario por su ID
+        // Busca al usuario por su ID
         Usuario usuario = servicioUsuario.obtenerUsuario(usuarioId);
 
-        // Agregar el usuario a la lista de "me gusta" de la publicación
+        // Agrega el usuario a la lista de "me gusta" de la publicación
         publicacion.getUsuariosQueDieronMeGusta().add(usuario);
 
-        // Guardar la publicación para actualizar la tabla intermedia
+        // Guarda la publicación para actualizar la tabla intermedia
         repositorioPublicacion.save(publicacion);
 
         System.out.println("ME GUSTA");
@@ -114,17 +128,17 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     @Override
     public void noMegusta(Long publicacionId, Long usuarioId) {
-        // Buscar la publicación por su ID
+        // Busca la publicación por su ID, lanzando una excepción si no se encuentra
         Publicacion publicacion = repositorioPublicacion.findById(publicacionId)
                 .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
 
-        // Buscar al usuario por su ID
+        // Busca al usuario por su ID
         Usuario usuario = servicioUsuario.obtenerUsuario(usuarioId);
 
-        // Eliminar el usuario de la lista de "me gusta" de la publicación
+        // Elimina el usuario de la lista de "me gusta" de la publicación
         publicacion.getUsuariosQueDieronMeGusta().remove(usuario);
 
-        // Guardar la publicación para actualizar la tabla intermedia
+        // Guarda la publicación para actualizar la tabla intermedia
         repositorioPublicacion.save(publicacion);
 
         System.out.println("NO ME GUSTA");
@@ -133,8 +147,10 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Override
     public Boolean pertenecePublicacion(Long id, String email) {
 
+        // Encuentra el usuario por su email
         List<Publicacion> publicaciones = servicioUsuario.encontrarPorEmail(email).getPublicaciones();
 
+        // Verifica si el usuario tiene una publicación específica
         return publicaciones.stream()
                 .anyMatch(objeto -> objeto.getId() == id);
 
@@ -142,27 +158,35 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     public PublicacionDTO crearPublicacion(PublicacionDTOrequest publi, Map<String, MultipartFile> imagenes,
             Usuario usuario) throws IOException {
+        // Inicializa una lista de imágenes
         List<Imagen> listImagenes = new ArrayList<>();
+        // Crea una nueva publicación
         Publicacion publicacion = new Publicacion();
+        // Si hay imágenes, las procesa y las agrega a la publicación
         if (imagenes != null) {
             for (Map.Entry<String, MultipartFile> entry : imagenes.entrySet()) {
                 MultipartFile imagen = entry.getValue();
+                // Crea una nueva imagen y la guarda
                 Imagen img = new Imagen(imagen.getOriginalFilename(), imagen.getContentType(), imagen.getBytes());
                 repositorioImagen.save(img);
                 listImagenes.add(img);
             }
             publicacion.setImagenes(listImagenes);
         }
+        // Configura los campos de la publicación
         publicacion.setComentarioUsuario(publi.getComentarioUsuario());
         publicacion.setFechaPublicacion(LocalDateTime.now());
         publicacion.setUsuario(usuario);
-        return new PublicacionDTO(repositorioPublicacion.save(publicacion));
+        // Retorna un DTO de la publicación creada
+        return new PublicacionDTO(repositorioPublicacion.save(publicacion), usuario);
     }
 
-    public List<PublicacionDTO> listarPublicacionesConMeGusta(String email) {
+    public List<PublicacionDTO> listarPublicacionesConMeGusta(String email, Usuario usuario) {
+        // Encuentra el usuario por su email
+        // Retorna una lista de DTO de publicaciones que el usuario ha marcado como "me gusta", ordenadas por fecha de publicación descendente
         return servicioUsuario.encontrarPorEmail(email).getPublicacionesConMeGusta().stream()
                 .sorted((p1, p2) -> p2.getFechaPublicacion().compareTo(p1.getFechaPublicacion()))
-                .map(publicacion -> new PublicacionDTO(publicacion))
+                .map(publicacion -> new PublicacionDTO(publicacion, usuario))
                 .collect(Collectors.toList());
     }
 

@@ -9,6 +9,7 @@ import { PeticionService } from '../../servicios/peticion.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Estado, Peticion } from '../../interfaces/Peticion';
 
+// Definición del componente
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
@@ -16,6 +17,8 @@ import { Estado, Peticion } from '../../interfaces/Peticion';
 })
 export class PerfilComponent {
 
+  // Variables de estado
+  isLoading: Boolean = true;
   imagenes: string[] = ['assets/fondo/guts.webp', 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
     , 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
     , 'assets/fondo/guts.webp', 'assets/fondo/guts.webp'
@@ -26,6 +29,7 @@ export class PerfilComponent {
   estadoPerfil: String = 'PUBLICO';
   Publicaciones: Publicacion[] | undefined;
 
+  // Variables de multimedia
   visible: boolean = false;
   file!: File;
   filebanner!: File;
@@ -37,9 +41,11 @@ export class PerfilComponent {
   items: MenuItem[] | undefined;
   activeItem!: MenuItem;
 
+  // Variables de peticiones
   botonPeticionesTexto : String = 'Enviar Petición';
   botonActivo : Boolean = true;
 
+  // Constructor del componente
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private usuarioService: UsuarioService, private publicacionesService: PublicacionService, private peticionesService: PeticionService, private messageService: MessageService) {
     this.route.params.subscribe(params => {
       const userNick = params['nick'];
@@ -68,6 +74,7 @@ export class PerfilComponent {
                       }else{
                         console.log("no hay peticion disponible");
                       }
+                      this.isLoading = false
                     },
                     error: (error) => {
                       console.log(error)
@@ -117,6 +124,7 @@ export class PerfilComponent {
     });
   }
 
+  // Validador de contraseñas
   passwordsMatchValidator(form: AbstractControl) {
     const passwordNew = form.get('passwordNew')?.value;
     const passwordRepeat = form.get('passwordRepeat')?.value;
@@ -131,14 +139,17 @@ export class PerfilComponent {
     return null; // Si coinciden, no hay error
   }
 
+  // Método para mostrar el diálogo de multimedia
   showDialog() {
     this.visible = true;
     console.log(this.visible)
   }
 
+  // Getters para los controles del formulario
   get f() { return this.usuarioForm.controls; }
   get f1() { return this.usuarioSecurityForm.controls; }
 
+  // Método para subir el banner
   onUploadBanner(event: any) {
     this.filebanner = event.files[0];
     if (this.filebanner) {
@@ -152,7 +163,7 @@ export class PerfilComponent {
     console.log(this.imagenBanner);
   }
 
-
+  // Método para subir la imagen de perfil
   onUpload(event: any) {
     this.file = event.files[0];
     if (this.file) {
@@ -166,6 +177,7 @@ export class PerfilComponent {
     console.log(this.imagenURL);
   }
 
+  // Método para registrar un usuario
   registrarUsuario() {
     if (this.usuarioForm.valid) {
       const formValues = this.usuarioForm.value;
@@ -191,6 +203,7 @@ export class PerfilComponent {
     }
   }
 
+  // Método para registrar la seguridad del usuario
   registrarUsuarioSecurity() {
     if (this.usuarioSecurityForm.valid) {
       const formValues = Object.keys(this.usuarioSecurityForm.value).reduce((obj, key) => {
@@ -217,6 +230,7 @@ export class PerfilComponent {
     }
   }
 
+  // Método para enviar una petición
   enviarPeticion(){
     this.peticionesService.enviarPeticionPerfilUsuario(this.usuarioPerfil!.email).then((observable) => {
       observable.subscribe({
@@ -233,6 +247,7 @@ export class PerfilComponent {
     });
   }
 
+  // Método para editar la multimedia del usuario
   editarMedia() {
     this.usuarioService.editarUsuarioMedia(this.file, this.filebanner).then((observable) => {
       observable.subscribe((response) => {
@@ -246,11 +261,13 @@ export class PerfilComponent {
     });
   }
 
+  // Método para manejar la eliminación de un perfil
   manejarEliminacionPerfil(id: number) {
     this.Publicaciones = this.Publicaciones?.filter(pub => pub.id !== id);
     this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Publicación borrada'});
   }
 
+  // Método para cambiar la vista
   cambiarVista(vista: string) {
     // Lógica para cambiar la vista
     console.log('Cambiando a la vista:', vista);

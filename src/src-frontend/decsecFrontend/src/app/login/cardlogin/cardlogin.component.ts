@@ -15,12 +15,15 @@ import { FileUpload } from 'primeng/fileupload';
 
 export class CardloginComponent implements OnInit {
 
+  // Variable para controlar la visibilidad del dialogo
   visible: boolean = false;
 
+  // Método para mostrar el dialogo
   showDialog() {
     this.visible = true;
   }
 
+  // Variables para almacenar el usuario y los archivos cargados
   usu!: Usuario;
   usuario!: SignUpRequest;
   file!: File;
@@ -32,10 +35,12 @@ export class CardloginComponent implements OnInit {
   constructor(private router: Router, private formBuilder: FormBuilder, private messageService: MessageService, private usuariService: UsuarioService) { }
 
   ngOnInit(): void {
+    // Inicialización del usuario
     this.usu = {
       "email": '',
       "password": ''
     };
+    // Creación del formulario de usuario
     this.usuarioForm = this.formBuilder.group({
       nick: ['', Validators.required],
       nombre: ['', Validators.required],
@@ -48,8 +53,10 @@ export class CardloginComponent implements OnInit {
   }
 
 
+  // Método para obtener los controles del formulario
   get f() { return this.usuarioForm.controls; }
 
+  // Método para manejar el evento de carga de archivo de banner
   onUploadBanner(event: any) {
     this.filebanner = event.files[0];
     if (this.filebanner) {
@@ -64,6 +71,7 @@ export class CardloginComponent implements OnInit {
   }
 
 
+  // Método para manejar el evento de carga de archivo de perfil
   onUpload(event: any) {
     this.file = event.files[0];
     if (this.file) {
@@ -77,6 +85,7 @@ export class CardloginComponent implements OnInit {
     console.log(this.imagenURL);
   }
 
+  // Método para validar el email
   validarEmail() {
 
     this.usuariService.validarEmail(this.usuarioForm.get('email')?.value).then((observable) => {
@@ -87,17 +96,25 @@ export class CardloginComponent implements OnInit {
     });
   }
 
+  // Método para registrar un usuario
   registrarUsuario() {
     const socio = this.usuarioForm.value as unknown as SignUpRequest;
     this.usuariService.crearUsuario(socio, this.file, this.filebanner).then((observable) => {
       observable.subscribe((response) => {
-        console.log('Respuesta del servidor:', response);
+        sessionStorage.setItem('token', response.token);
+        this.usuariService.obtenerUsuarioToken().then((observable) => {
+          observable.subscribe((data) => {
+            sessionStorage.setItem('currentUser', JSON.stringify(data));
+            this.router.navigate(['user']);
+          })
+        })
       }, (error) => {
-        console.error('Error al enviar datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al crear el usuario' });
       });
     });
   }
 
+  // Método para iniciar sesión
   iniciarSesion() {
 
     this.usuariService.registroUsuario(this.usu).then((observable) => {

@@ -45,7 +45,7 @@ export class UsuarioService {
     formData.append('usuario', JSON.stringify(datos));
     formData.append('imagen', fotoPerfil);
     formData.append('banner', banner);
-    return this.http.post<usuarioDTO>(this.baseURLAUTH + '/signup', formData);
+    return this.http.post<any>(this.baseURLAUTH + '/signup', formData);
   }
 
   async editarUsuarioMedia(fotoPerfil: File, banner: File) {
@@ -79,6 +79,17 @@ export class UsuarioService {
 
     return this.http.get<usuarioDTO>(`${this.baseURL}/nick/${nick}`, { headers: headers });
   }
+
+  async borrarPorEmail(email: string) {
+    const accessToken = this.serviciotoken.getToken();
+
+    let headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accessToken
+    })
+
+    return this.http.delete<any>(`${this.baseURL}/${email}`, { headers: headers });
+  }
+
 
   async obtenerUsuariosSearch() {
     const accessToken = this.serviciotoken.getToken();
